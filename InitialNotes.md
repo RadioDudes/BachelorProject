@@ -78,6 +78,8 @@ There are many papers on progressive image transmission
 **[First Flight-Testing of LoRa Modulation in Satellite Radio Communications in Low-Earth Orbit](https://ieeexplore.ieee.org/abstract/document/9895236)**
 "In conclusion, we would like to note that we are planning to test our results for the 868 MHz and 2.4 GHz bands in the near future on the new NORBY-2 CubeSat."
 Many more articles...
+**[Thingsat :: LoRa and SatIoT benchmarks from cubesat](https://gricad-gitlab.univ-grenoble-alpes.fr/thingsat/public/-/tree/abbc4336b722b259d66ea14cfae539ba931b1ded/cubesat_mission_2)**
+
 ## Other links
 
 https://github.com/pycubed/software
