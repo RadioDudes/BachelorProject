@@ -31,9 +31,9 @@
 
 ## Preliminary problem statement
 https://itustudent.itu.dk/Study-Administration/Project-Work/the-project-page
-
+Needed at latest feb. 2
 ## Tasks
-- Decide on project title
+- Decide on project title (for when we register project, can be changed later)
 - Preliminary problem statement
 - Prepare board
 	- Install firmware
