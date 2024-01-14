@@ -1,47 +1,17 @@
-## To clarify
-- What would our process be?
-	- Would the hardware be at DASYA on ITU?
-	- Would we be able to test our code on the hardware as we are developing
-	- When do we meet?
-	- 
-- Which board to use?
-	- PyCubed
-	- Others...
-- What would would we need to do on the board?
-	- Installing relevant firmware / driver for the LoRa module
-	- CSP
-- What is our involvment in the TinyG groundstation, is it already in place?
-- Do we use CSP
-- Assumptions and limitations
-	- Bandwidth
-	- Bitrate (how does frequency and bandwidth affect bitrate)
-	- Chirp spreading
-	- Link budget
-	- Doppler effect
-	- How will LoRa 2.4 clash with wifi. When in space? When testing it on ground?
-	- How much information is lost? Is there a specific pattern to the lost information?
-	- One way or two way communication?
-	- Picture...
-		- Picture size / resolution
-		- What would they be used for on ground?
-		- Example pictures
-		- Lossy vs lossless
-		- Confidentiality
-	- Limitations regarding the board (low power)
-
 ## Preliminary problem statement
 https://itustudent.itu.dk/Study-Administration/Project-Work/the-project-page
+
+Setting up communication between two devices over LoRa 2.4 GHz. Developing, testing and evaluating the transfer of images, taking into account factors such as ...
+
+
 Needed at latest feb. 2
 ## Tasks
-- Decide on project title (for when we register project, can be changed later)
-- Preliminary problem statement
-- Prepare board
-	- Install firmware
-	- Own software - code for image transfer
-- Find strategies for image transfer
-- Implement them...
-- Formulate plan for testing these strategies
-- Execute tests...
+- [x] Project title
+- [ ] Preliminary problem statement
+- [ ] Linux, SPI, SX1280 (break these tasks down further)
+	- [ ] Setup
+        - [ ] Perform image transfer
+- [ ] ESP32, via LoRa, using CSP, canbus
 
 ## Image transfer ideas
 
@@ -53,6 +23,12 @@ Joint source and channel coding (?)
 Encoding
 
 ## Relevant Papers / Articles
+
+
+
+### Lora related
+
+### Image transmission related
 
 Google Scholar -> "low bitrate image transmission"
 
