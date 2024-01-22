@@ -3,6 +3,9 @@ https://itustudent.itu.dk/Study-Administration/Project-Work/the-project-page
 
 Setting up communication between two devices over LoRa 2.4 GHz. Developing, testing and evaluating the transfer of images, taking into account factors such as ...
 
+## Meeting times
+- Monday 11-??
+- Thursday 10-16
 
 Needed at latest feb. 2
 ## Tasks
