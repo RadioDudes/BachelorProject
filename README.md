@@ -1,7 +1,9 @@
 ## Preliminary problem statement
 https://itustudent.itu.dk/Study-Administration/Project-Work/the-project-page
 
-Setting up communication between two devices over LoRa 2.4 GHz. Developing, testing and evaluating the transfer of images, taking into account factors such as ...
+Setup communication between 2 LoRa 2.4GHz transceivers, and perform file transfer.
+Investigate the limits of file transfer through LoRa 2.4GHz in regards to bitrate by adjusting on parameters such as spreading factor, antenna choice, distance. 
+Evaluate effective strategies for file transfer over LoRa 2.4GHz over long distances.
 
 Needed at latest feb. 2
 
@@ -16,6 +18,10 @@ Needed at latest feb. 2
 	- [ ] Setup
         - [ ] Perform image transfer
 - [ ] ESP32, via LoRa, using CSP, canbus
+
+## Questions
+
+Why is it that the bitrate decreases with higher spreading factors? The length of a chirp halves, but symbols per chirp double...
 
 ## Image transfer ideas
 
