@@ -32,6 +32,8 @@ Encoding
 
 ### Lora related
 
+How LoRa Modulation really works - https://www.youtube.com/watch?v=jHWepP1ZWTk
+
 ### Image transmission related
 
 Google Scholar -> "low bitrate image transmission"
