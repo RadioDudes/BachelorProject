@@ -42,6 +42,8 @@ How LoRa Modulation really works - https://www.youtube.com/watch?v=jHWepP1ZWTk
 
 Understanding the relationship between LoRa chips, chirps, symbols and bits - https://electronics.stackexchange.com/questions/278192/understanding-the-relationship-between-lora-chips-chirps-symbols-and-bits
 
+**[What is LoRa?](https://www.semtech.com/lora/what-is-lora)**
+
 **[Paper on the LoRa modulation](https://ieeexplore.ieee.org/abstract/document/8067462)**
 
 **[Range and Capacity of LoRa 2.4 GHz](https://link.springer.com/chapter/10.1007/978-3-031-34776-4_21)**
