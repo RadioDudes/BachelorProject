@@ -34,6 +34,8 @@ Encoding
 
 How LoRa Modulation really works - https://www.youtube.com/watch?v=jHWepP1ZWTk
 
+Understanding the relationship between LoRa chips, chirps, symbols and bits - https://electronics.stackexchange.com/questions/278192/understanding-the-relationship-between-lora-chips-chirps-symbols-and-bits
+
 ### Image transmission related
 
 Google Scholar -> "low bitrate image transmission"
