@@ -46,6 +46,8 @@ Understanding the relationship between LoRa chips, chirps, symbols and bits - ht
 
 **[Range and Capacity of LoRa 2.4 GHz](https://link.springer.com/chapter/10.1007/978-3-031-34776-4_21)**
 
+**[LoRa physical layer packet](https://www.thethingsnetwork.org/docs/lorawan/lora-phy-format/)**
+
 ### Image transmission related
 
 Google Scholar -> "low bitrate image transmission"
