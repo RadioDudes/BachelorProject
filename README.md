@@ -59,12 +59,13 @@ Understanding the relationship between LoRa chips, chirps, symbols and bits - ht
 **[LoRa modem doppler immunity](https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/3n000000l9JA/FoIjLVxAx4xpf3Wh5xvvX3B9PWTw.S7R.YPZHazMzBo)**
 
 **[Ranging with SX1280](https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/44000000MDiH/OF02Lve2RzM6pUw9gNgSJXbDNaQJ_NtQ555rLzY3UvY)**
+**[SX1280 design of ranging protocol and result processing](https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/2R000000UypY/5mprGH6TIzeLnfosUgj1xK5ftoqDpoCnRk_dzY_jAx4)**
+Protocol for finding distance between 2 LoRa transcievers
 
 **[Selecting the optimal reference clock](https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/3n000000qQ4C/H3aWcOcSgO0E35Pl87UiFNYvs7qo9LxDjdz2CyRUHW8)**
 
 **[SX1280/SX1281 in low power applications](https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/2R000000HSO9/vmLAj4haZE78QozA8W0mnLRc1WY.SDQ7RYewLFF3k8k)**
 
-**[SX1280 design of ranging protocol and result processing](https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/2R000000UypY/5mprGH6TIzeLnfosUgj1xK5ftoqDpoCnRk_dzY_jAx4)**
 
 
 ### Image transmission related
