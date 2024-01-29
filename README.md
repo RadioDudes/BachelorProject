@@ -66,6 +66,8 @@ Protocol for finding distance between 2 LoRa transcievers
 
 **[SX1280/SX1281 in low power applications](https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/2R000000HSO9/vmLAj4haZE78QozA8W0mnLRc1WY.SDQ7RYewLFF3k8k)**
 
+**[LoRa Calculator](https://www.semtech.com/design-support/lora-calculator)**
+calculates stuff like 'time on air', amount of symbols, as well as link budget and other stuff.
 
 
 ### Image transmission related
