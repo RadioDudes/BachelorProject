@@ -77,6 +77,7 @@ calculates stuff like 'time on air', amount of symbols, as well as link budget a
 
 **[Chirp spread spectrum](https://www.researchgate.net/publication/311980840_Chirp_spread_spectrum_as_a_modulation_technique_for_long_range_communication)**
 
+**[Paper on LoRa doppler LEO](https://www.researchgate.net/publication/356713129_The_influence_of_LEO_satellite_Doppler_effect_on_LoRa_modulation_and_its_solutio)**
 
 ### Image transmission related
 
