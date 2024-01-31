@@ -70,6 +70,8 @@ Protocol for finding distance between 2 LoRa transcievers
 **[LoRa Calculator](https://www.semtech.com/design-support/lora-calculator)**
 calculates stuff like 'time on air', amount of symbols, as well as link budget and other stuff.
 
+**[Chirp spread spectrum](https://www.researchgate.net/publication/311980840_Chirp_spread_spectrum_as_a_modulation_technique_for_long_range_communication)**
+
 
 ### Image transmission related
 
