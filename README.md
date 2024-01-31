@@ -28,9 +28,12 @@ Needed at latest feb. 2
 Why is it that the bitrate decreases with higher spreading factors? The length of a chirp halves, but symbols per chirp double...
 
 What is the impact of doppler effect and doppler rate on LoRa when communicating with a sattelite in LEO? 
-**[See this article](https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/3n000000l9JA/FoIjLVxAx4xpf3Wh5xvvX3B9PWTw.S7R.YPZHazMzBo)**
+**[See this article](https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/3n000000l9JA/FoIjLVxAx4xpf3Wh5xvvX3B9PWTw.S7R.YPZHazMzBo)** and **[this one](https://www.researchgate.net/publication/356713129_The_influence_of_LEO_satellite_Doppler_effect_on_LoRa_modulation_and_its_solutio)**
+
 
 What is the background noise power in different situations (e.g. in the case of sattelite communication)? This is necessary to calculate signal to noise ratio, which affects symbol error rate... 
+
+Related to the two above, which combination of spreading factor and bandwidth will result in the most transmitted information?
 
 ## Image transfer ideas
 
