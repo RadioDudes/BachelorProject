@@ -43,6 +43,7 @@ Encoding
 ### Lora related
 
 How LoRa Modulation really works - https://www.youtube.com/watch?v=jHWepP1ZWTk
+Idea related to video: visualize LoRa chirps with code in various stages... before modulation, during modulation, transmission, after demodulation...
 
 Understanding the relationship between LoRa chips, chirps, symbols and bits - https://electronics.stackexchange.com/questions/278192/understanding-the-relationship-between-lora-chips-chirps-symbols-and-bits
 
