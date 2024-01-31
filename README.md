@@ -23,9 +23,14 @@ Needed at latest feb. 2
         - [ ] Perform image transfer
 - [ ] ESP32, via LoRa, using CSP, canbus
 
-## Questions
+## Questions and other notes
 
 Why is it that the bitrate decreases with higher spreading factors? The length of a chirp halves, but symbols per chirp double...
+
+What is the impact of doppler effect and doppler rate on LoRa when communicating with a sattelite in LEO? 
+**[See this article](https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/3n000000l9JA/FoIjLVxAx4xpf3Wh5xvvX3B9PWTw.S7R.YPZHazMzBo)**
+
+What is the background noise power in different situations (e.g. in the case of sattelite communication)? This is necessary to calculate signal to noise ratio, which affects symbol error rate... 
 
 ## Image transfer ideas
 
