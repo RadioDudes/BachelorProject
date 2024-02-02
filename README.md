@@ -5,9 +5,9 @@ https://www.overleaf.com/project/65ae51a0a8d8acb858f070be
 ## Preliminary problem statement
 https://itustudent.itu.dk/Study-Administration/Project-Work/the-project-page
 
-Setup communication between 2 LoRa 2.4GHz transceivers, and perform file transfer.
-Investigate the limits of file transfer through LoRa 2.4GHz in regards to bitrate by adjusting on parameters such as spreading factor, bandwidth, antenna choice, distance. 
-Evaluate effective strategies for file transfer over LoRa 2.4GHz over long distances.
+Setup communication between a transmitting device and receiving device over LoRa 2.4GHz, and perform file transfer.
+Investigate the challenges and limits of file transfer through LoRa 2.4GHz.
+Evaluate effective strategies for file transfer over LoRa 2.4GHz.
 
 Needed at latest feb. 2
 
