@@ -16,9 +16,7 @@ The goal of this project is to evaluate the feasability of performing file trans
 
 
 
-What is LoRa, who uses it? (background)
-What are the challenged concerning LoRa (motivation)
-How can we face these challenges...
+### Previous problem statement
 
 Setup communication between a transmitting device and receiving device over LoRa 2.4GHz, and perform file transfer.
 Investigate the challenges and limits of file transfer through LoRa 2.4GHz.
