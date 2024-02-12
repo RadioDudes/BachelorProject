@@ -36,6 +36,8 @@ What is the background noise power in different situations (e.g. in the case of 
 
 Related to the two above, which combination of spreading factor and bandwidth will result in the most transmitted information?
 
+How long does it take to switch from send to receive on LoRa transceivers?
+
 ## Image transfer ideas
 
 Partial transfers
