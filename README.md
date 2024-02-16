@@ -12,7 +12,7 @@ LoRa operates at low data rates. This means that while LoRa is very suitable for
 We believe that this is a challenge that warrents further investigation, since the transfer of files through LoRa is relevant in cases where image or audio data is gathered.
 Possible uses could be the transfer of various forms of data from sattelites to groundstations, or video and audio monitoring on ground.
 
-The goal of this project is to evaluate the feasability of performing file transfer using LoRa on the 2.4 GHz ISM band, taking different possible use cases into consideration. For each use case we will propose software solutions, implement them, and test them in a real setting.
+We will implement software solutions that address the challenge of file transfer. These solutions are then tested in a real setting. We will then use data from testing to evaluate our solutions.
 
 
 
