@@ -59,6 +59,8 @@ Understanding the relationship between LoRa chips, chirps, symbols and bits - ht
 
 **[What is LoRa?](https://www.semtech.com/lora/what-is-lora)**
 
+**[LoRa and LoRaWAN technical paper](https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/)**
+
 **[Paper on the LoRa modulation](https://ieeexplore.ieee.org/abstract/document/8067462)**
 
 **[Range and Capacity of LoRa 2.4 GHz](https://link.springer.com/chapter/10.1007/978-3-031-34776-4_21)**
