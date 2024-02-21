@@ -31,7 +31,8 @@ The goal of this experiment is simply to send 1 kB of 'random/trivial' data. The
 #### What to measure
 
 We will measure time from the first delivered packet to the last delivered packet. We take into account the fact that this number will be misleading, since some data might not be delivered.
-We will measure the packet loss, i.e. the amount of delivered packets divided by the amount of expected packets.
+
+We will measure the packet loss, i.e. the amount of delivered packets divided by the amount of sent packets.
 
 #### Parameters
 
