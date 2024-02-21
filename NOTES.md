@@ -1,4 +1,4 @@
-# Notes
+![image](https://github.com/RadioDudes/BachelorProject/assets/126694958/2cd44d7e-24ae-4579-9dde-a4bdba175165)# Notes
 
 ## Spread spectrum modulation
 
@@ -45,6 +45,14 @@ The SX1280 datasheet has the following possible bandwidths:
 - 1625 kHz
 
 ### Coding rate
+Coding rate is the ratio of useful bits to error-correction bits.
+In LoRa, the coding rate can be:
+- 4/5
+- 4/6
+- 5/7
+- 4/8
+Below is an image showing the coding rate 5/7:
+![image](https://github.com/RadioDudes/BachelorProject/assets/126694958/4214f44e-62a7-42b2-9dd3-7fe676e5a599)[7](https://www.thethingsnetwork.org/docs/lorawan/fec-and-code-rate/)
 
 ### LoRa PHY packet
 The LoRa PHY packet consists of:
