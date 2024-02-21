@@ -67,6 +67,8 @@ Understanding the relationship between LoRa chips, chirps, symbols and bits - ht
 
 **[LoRa physical layer packet](https://www.thethingsnetwork.org/docs/lorawan/lora-phy-format/)**
 
+**[LoRa reliable packet delivery](https://stuartsprojects.github.io/2021/08/25/Reliable-Packets-Part1.html)**
+
 **[LoRa modulation basics](https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/2R0000001OJa/2BF2MTeiqIwkmxkcjjDZzalPUGlJ76lLdqiv.30prH8)**
 
 **[LoRa modem doppler immunity](https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/3n000000l9JA/FoIjLVxAx4xpf3Wh5xvvX3B9PWTw.S7R.YPZHazMzBo)**
