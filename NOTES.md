@@ -22,6 +22,12 @@ By increasing the number of pulses / chips, you also increase the frequency band
 ## Frequency shift keying
 
 ### Spreading factor
+"Spreading factor (SF) is the speed at which the signal frequency changes across the bandwidth of a channel."[4](https://blog.ttulka.com/lora-spreading-factor-explained/)
+With every 1 increase in SF, the amount of time spent sending 1 symbol doubles.
+
+However, the amount of symbols is based on spreading factor:
+S = 2^SF - 1 [5](https://ieeexplore.ieee.org/document/8067462)
+This means that with a higher spreading factor, there is more information in each symbol, but it takes a lot longer to send each symbol.
 
 ### Bandwidth
 
