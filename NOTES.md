@@ -36,6 +36,7 @@ This means that with a higher spreading factor, there is more information in eac
 
 ### Bandwidth
 Bandwidth is the range of frequencies that each symbol is spread across. The higher the bandwidth, the quicker each symbol will get sent, but each symbol will be sent over a wider range of frequencies. This means that an increase in bandwidth is an increase in data rate.
+
 The SX1280 datasheet has the following possible bandwidths:
 - 203.125 kHz
 - 406.25 kHz
@@ -44,12 +45,15 @@ The SX1280 datasheet has the following possible bandwidths:
 
 ### Coding rate
 Coding rate is the ratio of useful bits to error-correction bits.
+
 In LoRa, the coding rate can be:
 - 4/5
 - 4/6
 - 5/7
 - 4/8
+
 Below is an image showing the coding rate 5/7:
+
 ![image](https://github.com/RadioDudes/BachelorProject/assets/126694958/4214f44e-62a7-42b2-9dd3-7fe676e5a599)[7](https://www.thethingsnetwork.org/docs/lorawan/fec-and-code-rate/)
 
 ### LoRa PHY packet
