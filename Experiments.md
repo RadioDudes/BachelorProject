@@ -18,5 +18,5 @@ We use these metrics to find a function, for each protocol / strategy, that can 
 
 ## How do we measure this?
 
-We place the two transceivers in different locations, and measure time and packet loss for different protocols we have described. 
+We place the two transceivers in different locations, and measure time, packet loss, total packets delivered, and distance, for different protocols we have described. 
 
