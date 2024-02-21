@@ -37,6 +37,12 @@ S = 2^SF - 1 [5](https://ieeexplore.ieee.org/document/8067462)
 This means that with a higher spreading factor, there is more information in each symbol, but it takes a lot longer to send each symbol.
 
 ### Bandwidth
+Bandwidth is the range of frequencies that each symbol is spread across. The higher the bandwidth, the quicker each symbol will get sent, but each symbol will be sent over a wider range of frequencies. This means that an increase in bandwidth is an increase in data rate.
+The SX1280 datasheet has the following possible bandwidths:
+- 203.125 kHz
+- 406.25 kHz
+- 812.5 kHz
+- 1625 kHz
 
 ### Coding rate
 
