@@ -22,11 +22,16 @@ We place the two transceivers in different locations, and measure time, packet l
 
 ## Experiments
 
-### 500 bytes
+### 50 kB of data
 
 #### Goal
 
-Send 1 kb of data.
+The goal of this experiment is simply to send 1 kB of 'random/trivial' data. The point is to compare to the theoretical data rate, as well as set the expectations of packet loss for future experiments.
+
+### What to measure
+
+We will measure time from the first delivered packet to the last delivered packet. We take into account the fact that this number will be misleading, since some data might not be delivered.
+We will measure the packet loss, i.e. the amount of delivered packets divided by the amount of expected packets.
 
 #### Parameters
 
