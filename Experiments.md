@@ -20,3 +20,43 @@ We use these metrics to find a function, for each protocol / strategy, that can 
 
 We place the two transceivers in different locations, and measure time, packet loss, total packets delivered, and distance, for different protocols we have described. 
 
+## Experiments
+
+### 500 bytes
+
+#### Goal
+
+Send 1 kb of data.
+
+#### Parameters
+
+##### Payload size
+
+We test following payload sizes:
+
+##### Spreading factor
+
+We test following spreading factors: 
+
+##### Bandwidth
+
+We test following bandwidths:
+ - 203.125 kHz
+ - 
+
+##### Frequencies?
+
+We test at following frequencies.
+
+#### Locations
+
+#### Expected result
+
+The time on air for LoRa is calculated by $ToA = 2^{SF}/BW * N_{symbol}$.
+We thus expect the time to transmit to be longer for lower bandwidths, higher spreading factors, and larger payload sizes. 
+We expect the packet loss to increase with bandwidth, (spreading factor). At certain frequencies, we expect a higher packet loss.
+We also expect a higher packet loss depending on the location where we are transmitting. In cases where we are seperated by thick walls, the packet loss will be higher.
+From this
+
+
+
