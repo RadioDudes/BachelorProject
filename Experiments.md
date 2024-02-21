@@ -14,7 +14,7 @@ Metrics include:
 
 Depending on the protocol we are testing, packet loss may or may not affect time.
 
-We use these metrics to find a function, for each protocol / strategy, that can be used to calculate time to transmit as a function of distance, packet loss, and file size. $t(d, l, s) = ...$, or alternately, the bitrate as a function of distance and packet loss $b(d, l) = ...$
+We use these metrics to find a function, for each protocol / strategy, that can be used to calculate time to transmit as a function of distance, packet loss, and file size. $t(d, l, s) = ...$, or alternately, the bitrate as a function of distance and packet loss $b_f(d, l) = ...$ (here bitrate is referring to the rate of transmission of the contents of the file).
 
 ## How do we measure this?
 
