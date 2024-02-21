@@ -140,7 +140,6 @@ From this
 | Right next to each other | 1625 kHz | 2437 MHz | 11 |  16 bytes |              |              |
 | Right next to each other | 1625 kHz | 2437 MHz | 11 |  64 bytes |              |              |
 | Right next to each other | 1625 kHz | 2437 MHz | 11 |  192 bytes |              |              |
-
 | From nth floor to basement | 203.125 kHz | 2400 MHz | 7 |  16 bytes |              |              |
 | From nth floor to basement | 203.125 kHz | 2400 MHz | 7 |  64 bytes |              |              |
 | From nth floor to basement | 203.125 kHz | 2400 MHz | 7 |  192 bytes |              |              |
