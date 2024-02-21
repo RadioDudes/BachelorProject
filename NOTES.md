@@ -34,7 +34,16 @@ This means that with a higher spreading factor, there is more information in eac
 ### Coding rate
 
 ### LoRa PHY packet
-packet size
+The LoRa PHY packet consists of:
+- Preamble, used to sync the devices and to alert the receiver that a frame is coming (12.25 symbols)
+- Header, used to specify payload length
+- Header CRC, used for error correction of the header
+- Payload, the actual message (max 255 bytes?)
+- Payload CRC, used for error correction of the payload
+
+Header, header CRC and payload CRC are optional.
+
+[6](https://www.thethingsnetwork.org/docs/lorawan/lora-phy-format/)
 
 ### LoRa modules
 
