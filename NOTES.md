@@ -17,9 +17,9 @@ By increasing the number of pulses / chips, you also increase the frequency band
 
 [1](https://www.researchgate.net/publication/311980840_Chirp_spread_spectrum_as_a_modulation_technique_for_long_range_communication)
 
-## LoRa modulation
-
 ## Frequency shift keying
+
+## LoRa modulation
 
 ### Spreading factor
 "Spreading factor (SF) is the speed at which the signal frequency changes across the bandwidth of a channel."[4](https://blog.ttulka.com/lora-spreading-factor-explained/)
