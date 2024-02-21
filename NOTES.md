@@ -1,5 +1,3 @@
-![image](https://github.com/RadioDudes/BachelorProject/assets/126694958/2cd44d7e-24ae-4579-9dde-a4bdba175165)# Notes
-
 ## Spread spectrum modulation
 
 Originally created to provide secure communication over a large frequency band, including preventing jamming and others listening in. You use more bandwidth than the original signal requires, thus 'spreading' the signal accross a frequency spectrum. [1](https://www.ni.com/en/solutions/aerospace-defense/communications-navigation/understanding-spread-spectrum-for-communications.html)
