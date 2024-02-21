@@ -17,6 +17,7 @@ By increasing the number of pulses / chips, you also increase the frequency band
 A chirp pulse is a signal going either up or down in frequency (up chirp and down chirp). Chirp spread spectrum utilizes chirp pulses for spread spectrum purposes. [1](https://www.researchgate.net/publication/311980840_Chirp_spread_spectrum_as_a_modulation_technique_for_long_range_communication)
 
 CSS symbols have the properties: Spreading factor, minimum frequency, maximum frequency, and value (bits). The pulse starts at a frequency between the minimum and maximum frequency. The amount of bits that can be represented in a symbol is defined by $log_2(S)$, where S is the spreading factor.
+The chirp starts at $f_0$, goes up to $f_{max}$, and then goes from $f_{min}$ to $f_0$.
 
 The length of a symbol is given by $t_s = S / (f_{max} - f_{min})$.
 
