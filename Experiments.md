@@ -28,6 +28,8 @@ We place the two transceivers in different locations, and measure time, packet l
 
 The goal of this experiment is simply to send 1 kB of 'random/trivial' data. The point is to compare to the theoretical data rate, as well as set the expectations of packet loss for future experiments.
 
+We also hope to find locations and frequencies where packet loss is higher, for future tests.
+
 #### What to measure
 
 We will measure time from the first delivered packet to the last delivered packet. We take into account the fact that this number will be misleading, since some data might not be delivered.
@@ -48,6 +50,7 @@ We test following spreading factors:
 
 We test following bandwidths:
  - 203.125 kHz
+ - 406.25 kHz
  - 
 
 ##### Frequencies?
