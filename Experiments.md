@@ -54,7 +54,7 @@ We test at following frequencies.
 
 The time on air for LoRa is calculated by $ToA = 2^{SF}/BW * N_{symbol}$.
 We thus expect the time to transmit to be longer for lower bandwidths, higher spreading factors, and larger payload sizes. 
-We expect the packet loss to increase with bandwidth, (spreading factor). At certain frequencies, we expect a higher packet loss.
+We expect the packet loss to increase with bandwidth, (spreading factor?). At certain frequencies, we expect a higher packet loss.
 We also expect a higher packet loss depending on the location where we are transmitting. In cases where we are seperated by thick walls, the packet loss will be higher.
 From this
 
