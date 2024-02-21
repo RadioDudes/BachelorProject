@@ -41,23 +41,37 @@ We will measure the packet loss, i.e. the amount of delivered packets divided by
 ##### Payload size
 
 We test following payload sizes:
+ - 16 bytes
+ - 64 bytes
+ - 192 bytes
 
 ##### Spreading factor
 
 We test following spreading factors: 
+ - 7
+ - 9
+ - 11
 
 ##### Bandwidth
 
 We test following bandwidths:
  - 203.125 kHz
  - 406.25 kHz
- - 
+ - 1625 kHz
 
 ##### Frequencies?
 
 We test at following frequencies.
+ - 2400 MHz
+ - 2437 MHz (in the middle of a WiFi channel)
 
 #### Locations
+
+We test at following locations
+ - Right next to each other.
+ - Opposite ends of ITU.
+ - From nth floor to basement. ()
+ - ...
 
 #### Expected result
 
@@ -66,6 +80,123 @@ We thus expect the time to transmit to be longer for lower bandwidths, higher sp
 We expect the packet loss to increase with bandwidth, (spreading factor?). At certain frequencies, we expect a higher packet loss.
 We also expect a higher packet loss depending on the location where we are transmitting. In cases where we are seperated by thick walls, the packet loss will be higher.
 From this
+
+#### Data table
+
+
+| Location        | Bandwidth   | Frequency |  SF  | Payload size | Packet loss | Total transferred data | 
+|:-------------:|:---------------------:|:----------:|:----------:|:----:|:------------:|:-------------:|
+| Right next to each other | 203.125 kHz | 2400 MHz | 7 |  16 bytes |              |              |
+| Right next to each other | 203.125 kHz | 2400 MHz | 7 |  64 bytes |              |              |
+| Right next to each other | 203.125 kHz | 2400 MHz | 7 |  192 bytes |              |              |
+| Right next to each other | 203.125 kHz | 2400 MHz | 9 |  16 bytes |              |              |
+| Right next to each other | 203.125 kHz | 2400 MHz | 9 |  64 bytes |              |              |
+| Right next to each other | 203.125 kHz | 2400 MHz | 9 |  192 bytes |              |              |
+| Right next to each other | 203.125 kHz | 2400 MHz | 11 |  16 bytes |              |              |
+| Right next to each other | 203.125 kHz | 2400 MHz | 11 |  64 bytes |              |              |
+| Right next to each other | 203.125 kHz | 2400 MHz | 11 |  192 bytes |              |              |
+| Right next to each other | 203.125 kHz | 2437 MHz | 7 |  16 bytes |              |              |
+| Right next to each other | 203.125 kHz | 2437 MHz | 7 |  64 bytes |              |              |
+| Right next to each other | 203.125 kHz | 2437 MHz | 7 |  192 bytes |              |              |
+| Right next to each other | 203.125 kHz | 2437 MHz | 9 |  16 bytes |              |              |
+| Right next to each other | 203.125 kHz | 2437 MHz | 9 |  64 bytes |              |              |
+| Right next to each other | 203.125 kHz | 2437 MHz | 9 |  192 bytes |              |              |
+| Right next to each other | 203.125 kHz | 2437 MHz | 11 |  16 bytes |              |              |
+| Right next to each other | 203.125 kHz | 2437 MHz | 11 |  64 bytes |              |              |
+| Right next to each other | 203.125 kHz | 2437 MHz | 11 |  192 bytes |              |              |
+| Right next to each other | 406.25 kHz | 2400 MHz | 7 |  16 bytes |              |              |
+| Right next to each other | 406.25 kHz | 2400 MHz | 7 |  64 bytes |              |              |
+| Right next to each other | 406.25 kHz | 2400 MHz | 7 |  192 bytes |              |              |
+| Right next to each other | 406.25 kHz | 2400 MHz | 9 |  16 bytes |              |              |
+| Right next to each other | 406.25 kHz | 2400 MHz | 9 |  64 bytes |              |              |
+| Right next to each other | 406.25 kHz | 2400 MHz | 9 |  192 bytes |              |              |
+| Right next to each other | 406.25 kHz | 2400 MHz | 11 |  16 bytes |              |              |
+| Right next to each other | 406.25 kHz | 2400 MHz | 11 |  64 bytes |              |              |
+| Right next to each other | 406.25 kHz | 2400 MHz | 11 |  192 bytes |              |              |
+| Right next to each other | 406.25 kHz | 2437 MHz | 7 |  16 bytes |              |              |
+| Right next to each other | 406.25 kHz | 2437 MHz | 7 |  64 bytes |              |              |
+| Right next to each other | 406.25 kHz | 2437 MHz | 7 |  192 bytes |              |              |
+| Right next to each other | 406.25 kHz | 2437 MHz | 9 |  16 bytes |              |              |
+| Right next to each other | 406.25 kHz | 2437 MHz | 9 |  64 bytes |              |              |
+| Right next to each other | 406.25 kHz | 2437 MHz | 9 |  192 bytes |              |              |
+| Right next to each other | 406.25 kHz | 2437 MHz | 11 |  16 bytes |              |              |
+| Right next to each other | 406.25 kHz | 2437 MHz | 11 |  64 bytes |              |              |
+| Right next to each other | 406.25 kHz | 2437 MHz | 11 |  192 bytes |              |              |
+| Right next to each other | 1625 kHz | 2400 MHz | 7 |  16 bytes |              |              |
+| Right next to each other | 1625 kHz | 2400 MHz | 7 |  64 bytes |              |              |
+| Right next to each other | 1625 kHz | 2400 MHz | 7 |  192 bytes |              |              |
+| Right next to each other | 1625 kHz | 2400 MHz | 9 |  16 bytes |              |              |
+| Right next to each other | 1625 kHz | 2400 MHz | 9 |  64 bytes |              |              |
+| Right next to each other | 1625 kHz | 2400 MHz | 9 |  192 bytes |              |              |
+| Right next to each other | 1625 kHz | 2400 MHz | 11 |  16 bytes |              |              |
+| Right next to each other | 1625 kHz | 2400 MHz | 11 |  64 bytes |              |              |
+| Right next to each other | 1625 kHz | 2400 MHz | 11 |  192 bytes |              |              |
+| Right next to each other | 1625 kHz | 2437 MHz | 7 |  16 bytes |              |              |
+| Right next to each other | 1625 kHz | 2437 MHz | 7 |  64 bytes |              |              |
+| Right next to each other | 1625 kHz | 2437 MHz | 7 |  192 bytes |              |              |
+| Right next to each other | 1625 kHz | 2437 MHz | 9 |  16 bytes |              |              |
+| Right next to each other | 1625 kHz | 2437 MHz | 9 |  64 bytes |              |              |
+| Right next to each other | 1625 kHz | 2437 MHz | 9 |  192 bytes |              |              |
+| Right next to each other | 1625 kHz | 2437 MHz | 11 |  16 bytes |              |              |
+| Right next to each other | 1625 kHz | 2437 MHz | 11 |  64 bytes |              |              |
+| Right next to each other | 1625 kHz | 2437 MHz | 11 |  192 bytes |              |              |
+
+| From nth floor to basement | 203.125 kHz | 2400 MHz | 7 |  16 bytes |              |              |
+| From nth floor to basement | 203.125 kHz | 2400 MHz | 7 |  64 bytes |              |              |
+| From nth floor to basement | 203.125 kHz | 2400 MHz | 7 |  192 bytes |              |              |
+| From nth floor to basement| 203.125 kHz | 2400 MHz | 9 |  16 bytes |              |              |
+| From nth floor to basement | 203.125 kHz | 2400 MHz | 9 |  64 bytes |              |              |
+| From nth floor to basement | 203.125 kHz | 2400 MHz | 9 |  192 bytes |              |              |
+| From nth floor to basement | 203.125 kHz | 2400 MHz | 11 |  16 bytes |              |              |
+| From nth floor to basement | 203.125 kHz | 2400 MHz | 11 |  64 bytes |              |              |
+| From nth floor to basement | 203.125 kHz | 2400 MHz | 11 |  192 bytes |              |              |
+| From nth floor to basement | 203.125 kHz | 2437 MHz | 7 |  16 bytes |              |              |
+| From nth floor to basement | 203.125 kHz | 2437 MHz | 7 |  64 bytes |              |              |
+| From nth floor to basement | 203.125 kHz | 2437 MHz | 7 |  192 bytes |              |              |
+| From nth floor to basement | 203.125 kHz | 2437 MHz | 9 |  16 bytes |              |              |
+| From nth floor to basement | 203.125 kHz | 2437 MHz | 9 |  64 bytes |              |              |
+| From nth floor to basement | 203.125 kHz | 2437 MHz | 9 |  192 bytes |              |              |
+| From nth floor to basement | 203.125 kHz | 2437 MHz | 11 |  16 bytes |              |              |
+| From nth floor to basement | 203.125 kHz | 2437 MHz | 11 |  64 bytes |              |              |
+| From nth floor to basement | 203.125 kHz | 2437 MHz | 11 |  192 bytes |              |              |
+| From nth floor to basement | 406.25 kHz | 2400 MHz | 7 |  16 bytes |              |              |
+| From nth floor to basement | 406.25 kHz | 2400 MHz | 7 |  64 bytes |              |              |
+| From nth floor to basement | 406.25 kHz | 2400 MHz | 7 |  192 bytes |              |              |
+| From nth floor to basement | 406.25 kHz | 2400 MHz | 9 |  16 bytes |              |              |
+| From nth floor to basement | 406.25 kHz | 2400 MHz | 9 |  64 bytes |              |              |
+| From nth floor to basement | 406.25 kHz | 2400 MHz | 9 |  192 bytes |              |              |
+| From nth floor to basement | 406.25 kHz | 2400 MHz | 11 |  16 bytes |              |              |
+| From nth floor to basement | 406.25 kHz | 2400 MHz | 11 |  64 bytes |              |              |
+| From nth floor to basement | 406.25 kHz | 2400 MHz | 11 |  192 bytes |              |              |
+| From nth floor to basement | 406.25 kHz | 2437 MHz | 7 |  16 bytes |              |              |
+| From nth floor to basement | 406.25 kHz | 2437 MHz | 7 |  64 bytes |              |              |
+| From nth floor to basement | 406.25 kHz | 2437 MHz | 7 |  192 bytes |              |              |
+| From nth floor to basement | 406.25 kHz | 2437 MHz | 9 |  16 bytes |              |              |
+| From nth floor to basement | 406.25 kHz | 2437 MHz | 9 |  64 bytes |              |              |
+| From nth floor to basement | 406.25 kHz | 2437 MHz | 9 |  192 bytes |              |              |
+| From nth floor to basement | 406.25 kHz | 2437 MHz | 11 |  16 bytes |              |              |
+| From nth floor to basement | 406.25 kHz | 2437 MHz | 11 |  64 bytes |              |              |
+| From nth floor to basement | 406.25 kHz | 2437 MHz | 11 |  192 bytes |              |              |
+| From nth floor to basement | 1625 kHz | 2400 MHz | 7 |  16 bytes |              |              |
+| From nth floor to basement | 1625 kHz | 2400 MHz | 7 |  64 bytes |              |              |
+| From nth floor to basement | 1625 kHz | 2400 MHz | 7 |  192 bytes |              |              |
+| From nth floor to basement | 1625 kHz | 2400 MHz | 9 |  16 bytes |              |              |
+| From nth floor to basement | 1625 kHz | 2400 MHz | 9 |  64 bytes |              |              |
+| From nth floor to basement | 1625 kHz | 2400 MHz | 9 |  192 bytes |              |              |
+| From nth floor to basement | 1625 kHz | 2400 MHz | 11 |  16 bytes |              |              |
+| From nth floor to basement | 1625 kHz | 2400 MHz | 11 |  64 bytes |              |              |
+| From nth floor to basement | 1625 kHz | 2400 MHz | 11 |  192 bytes |              |              |
+| From nth floor to basement | 1625 kHz | 2437 MHz | 7 |  16 bytes |              |              |
+| From nth floor to basement | 1625 kHz | 2437 MHz | 7 |  64 bytes |              |              |
+| From nth floor to basement | 1625 kHz | 2437 MHz | 7 |  192 bytes |              |              |
+| From nth floor to basement | 1625 kHz | 2437 MHz | 9 |  16 bytes |              |              |
+| From nth floor to basement | 1625 kHz | 2437 MHz | 9 |  64 bytes |              |              |
+| From nth floor to basement | 1625 kHz | 2437 MHz | 9 |  192 bytes |              |              |
+| From nth floor to basement | 1625 kHz | 2437 MHz | 11 |  16 bytes |              |              |
+| From nth floor to basement | 1625 kHz | 2437 MHz | 11 |  64 bytes |              |              |
+| From nth floor to basement | 1625 kHz | 2437 MHz | 11 |  192 bytes |              |              |
+
+
 
 
 
