@@ -138,6 +138,8 @@ Header, header CRC and payload CRC are optional.
 
 ## Noise floor
 
+Absolute noise floor (in dBm) is expressed by $N = 10*log_{10}(K*T*B*1000)$, where k is Boltzmanns constant, T is the temperature in kelvin, and B is channel bandwidth. [1](https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/2R0000001OJa/2BF2MTeiqIwkmxkcjjDZzalPUGlJ76lLdqiv.30prH8)
+
 Look up "thermal noise"
 
 ## Path loss
