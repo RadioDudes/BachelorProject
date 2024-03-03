@@ -1,31 +1,29 @@
 #include "T3S3.h"
 
-T3S3 t3s3;
 char message[] = "Hello, World!";
 
-
 void setup() {
-    t3s3.initialize();
-    t3s3.transmitMode();
+    initialize();
+    transmitMode();
 }
 
 void loop() {
-    t3s3.readSerial();
+    readSerial();
 
-    if (transmissionState == RADIOLIB_ERR_NONE) {
+    int state = transmitMessage(message);
+
+    if (state == RADIOLIB_ERR_NONE) {
         Serial.println(F("transmission finished!"));
 
         u8g2->clearBuffer();
         u8g2->drawStr(0, 12, "Transmitting: OK!");
-        u8g2->drawStr(0, 30, ("TX:" + String(counter)).c_str());
+        u8g2->drawStr(0, 30, ("TX:" + String(sendCounter)).c_str());
         u8g2->sendBuffer();
     
-    } else {
+    } else if (state != 1) {
       Serial.print(F("failed, code "));
-      Serial.println(transmissionState);
+      Serial.println(state);
     }
 
     delay(2);
-
-    int state = t3s3.transmitMessage(message);
 }
