@@ -7,6 +7,7 @@
 #include <SD.h>
 #include <FS.h>
 #include <U8g2lib.h>
+#include "queue.h"
 
 SPIClass SDSPI(HSPI);
 
@@ -16,6 +17,7 @@ SPIClass SDSPI(HSPI);
 #define RECEIVE_MODE 1
 #define TRANSMIT_MODE 2
 #define NOT_FINISHED_TRANSMITTING 1;
+#define QUEUE_IS_EMPTY 2;
 
 
 int sendCounter = 0;
@@ -24,11 +26,12 @@ int mode = INACTIVE;
 volatile bool receivedFlag = false;
 volatile bool enableInterrupt = false;
 volatile bool transmittedFlag = false;
+volatile bool stopFlag = true;
 SX1280 radio = new Module(RADIO_CS_PIN, RADIO_DIO1_PIN, RADIO_RST_PIN, RADIO_BUSY_PIN);
-HWCDC serial = Serial;
 fs::SDFS sd = SD;
 DISPLAY_MODEL *u8g2 = new U8G2_SSD1306_128X64_NONAME_F_HW_I2C(U8G2_R0, U8X8_PIN_NONE);
 Ticker ledTicker;
+struct queue *messageQueue = createQueue();
 
 void setFlag(void) {
     if (mode == RECEIVE_MODE && enableInterrupt) {
@@ -189,6 +192,14 @@ void transmitMode() {
     enableInterrupt = true;
 }
 
+void startTransmit() {
+  stopFlag = false;
+}
+
+void stopTransmit() {
+  stopFlag = true;
+}
+
 int transmitMessage(char *message) {
     if (!transmittedFlag) {
         return NOT_FINISHED_TRANSMITTING;
@@ -201,6 +212,17 @@ int transmitMessage(char *message) {
     int state = radio.startTransmit(message);
     enableInterrupt = true;
     return state;
+}
+
+int transmitNextInQueue() {
+  if (!transmittedFlag) {
+        return NOT_FINISHED_TRANSMITTING;
+  }
+  char message[255];
+  if (!dequeue(messageQueue, message, 255)) {
+    return QUEUE_IS_EMPTY;
+  }
+  return transmitMessage(message);
 }
 
 void receiveMode() {
@@ -260,6 +282,18 @@ void receiveFailure(int state) {
     }
 }
 
+bool addMessage(char *message, int amount) {
+  Serial.print(F("Adding "));
+  Serial.print(amount);
+  Serial.print(F(" messages of size "));
+  Serial.println(strlen(message));
+  bool result = true;
+  for (int i = 0; i < amount; i++) {
+    result = result && enqueue(messageQueue, message, strlen(message));
+  }
+  return result;
+}
+
 void execCommand(char *message) {
     char *next = strtok(message, " ");
 
@@ -316,7 +350,7 @@ void execCommand(char *message) {
     } else
     if (strcmp(next, "spreadingfactor") == 0 || strcmp(next, "sf") == 0) 
     {
-      next = strtok(message, " ");
+      next = strtok(NULL, " ");
       if (next == NULL) {
           Serial.println(F("No spreading factor specified"));
           return;
@@ -344,7 +378,7 @@ void execCommand(char *message) {
       receiveCounter = 0;
       sendCounter = 0;
     } else
-    if (strcmp(next, "download")) 
+    if (strcmp(next, "download") == 0) 
     {
       next = strtok(NULL, " ");
       File file = SD.open(next);
@@ -393,19 +427,53 @@ void execCommand(char *message) {
     } else
     if (strcmp(next, "start") == 0) 
     {
-
+      startTransmit();
     } else
     if (strcmp(next, "stop") == 0) 
     {
-
+      stopTransmit();
     } else
     if (strcmp(next, "send") == 0) 
     {
+      char *message = "Hello, World!";
+      next = strtok(NULL, " ");
+
+      if (next == NULL) {
+          Serial.println(F("No message amount specified"));
+          return;
+      }
+
+      int amount = atoi(next);
+      if (amount == 0) {
+          Serial.println(F("No messages sent"));
+          return;
+      }
+
+      next = strtok(NULL, "");
+      if (next != NULL) {
+        message = next;
+      }
+
+      if (!addMessage(next, amount)) {
+        Serial.println(F("Not all messages were put in queue"));
+      } else {
+        Serial.println(F("All messages were queued"));
+      }
 
     } else
     if (strcmp(next, "receive") == 0) 
     {
 
+    } else
+    if (strcmp(next, "remaining") == 0)
+    {
+      int s = size(messageQueue);
+      if (s == -1) {
+        Serial.println(F("Queue is null"));
+        return;
+      }
+      Serial.print(s);
+      Serial.println(F(" remaining messages in queue"));
     } else {
       Serial.print(F("Did not understand command: "));
       Serial.println(message);
@@ -413,20 +481,23 @@ void execCommand(char *message) {
 }
 
 void readSerial() {
-    while (serial.available() > 0) {
-        static char message[MAX_MESSAGE_LENGTH];
-        static unsigned int message_pos = 0;
+    while (Serial.available() > 0) {
+      static char serialMessage[MAX_MESSAGE_LENGTH];
+      static unsigned int message_pos = 0;
 
-        char inByte = Serial.read();
+      char inByte = Serial.read();
 
-        if (inByte != '\n' && (message_pos < MAX_MESSAGE_LENGTH - 1)) {
-            //Add the incoming byte to our message
-            message[message_pos] = inByte;
-            message_pos++;
-        } else {
-            execCommand(message);
-        }
-        message_pos = 0;
+      if (inByte != '\n' && (message_pos < MAX_MESSAGE_LENGTH - 1)) {
+          //Add the incoming byte to our message
+          serialMessage[message_pos] = inByte;
+          message_pos++;
+      } else {
+          serialMessage[message_pos] = '\0';
+          Serial.print(F("Message is: "));
+          Serial.println(serialMessage);
+          execCommand(serialMessage);
+          message_pos = 0;
+      }
     }
 }
     
