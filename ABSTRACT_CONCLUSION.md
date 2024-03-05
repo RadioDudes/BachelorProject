@@ -9,9 +9,9 @@ This means that performing file transfer over LoRa is feasible, and also useful 
 
 ## Second draft
 
-This paper evaluates the feasability of using LoRa on the 2.4gHz ISM band for file transfer. LoRa, a spread spectrum modulation, is most often used as the physical layer for LoRaWAN, in cases where small amounts of data are transferred from accross a wide area to a central server. Due to the low data rate, file transfer is very rarely, if ever, performed over LoRa.
-We implement a simple protocol for file transfer between 2 LoRa transceivers. The protocol ensures that the complete file is transmitted, even in the face of lost frames. Using this protocol we successfully perform file transfer of a file 50kb large, over a distance of 4km over a period of 20 minutes. 
-This shows that LoRa point-to-point file transfer, although slow, is feasible. It is suited for use cases where ...
+This paper evaluates the feasability of using LoRa on the 2.4gHz ISM band for file transfer. LoRa, a spread spectrum modulation, is most often used as the physical layer for LoRaWAN, in cases where small amounts of data are transferred from accross a wide area to a central server. It operates at a low data rate, which is exchanged for a long operating range. This low data rate is suitable for sensor data, but not file transfer.
+We implement a simple protocol for file transfer between 2 LoRa transceivers. The protocol ensures that the complete file is transmitted, even in the face of lost frames. Using this protocol we successfully perform file transfer of a file 50kb large, over a distance of 4km over a period of 25 minutes. 
+This shows that LoRa point-to-point file transfer, although slow, is possible over long distances. The solution provided lays the foundation for further development of file transfer over LoRa, and can also be fitted to work on LoRaWAN networks.
 
 
 ## Notes on abstract
@@ -26,4 +26,8 @@ significance of findings
 https://writing.wisc.edu/handbook/assignments/writing-an-abstract-for-your-research-paper/
 
 
-# Cnoclusion
+# Conclusion
+
+In this paper we implement a simple file transfer protocol for performing point-to-point transfer using LoRa technology. The protocol is adapted specifically to the challenges and attributes of the LoRa physical layer. 
+Using this solution, we perform file transfer over multiple distances, and of files of different sizes. Most notably, we are able to transfer a 50kb file over a distance of 4km over a period of 25 minutes. This shows that LoRa could be used for transferring small files on rare occasions. ... TODO
+
