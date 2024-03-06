@@ -135,6 +135,10 @@ Uses a star of stars topology. End nodes communicate with gateways, who in turn 
 
 ### ADR scheme
 
+The ADR scheme adapts the transmission power and spreading factor. The spreading factor can be adjusted by the end-node sending packets with the ADR-flag enabled. The gateway uses these received packets to calculate an optimal data rate. The gateway then sends a downlink packet, with a command to adjust the spreading factor.
+The end-node adjusts its own spreading factor in the other direction to (from lower to higher), in case that the gateway does not listen on the spreading factor that the end-node is sending on. It sends some packets and after a certain amount asks for an acknowledgement. If it receives no acknowledgement, it then increases the spreading factor...
+[1](https://lora-developers.semtech.com/documentation/tech-papers-and-guides/understanding-adr/)
+
 ## Doppler effect
 
 ## Doppler rate
