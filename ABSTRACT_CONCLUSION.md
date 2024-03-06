@@ -28,6 +28,21 @@ https://writing.wisc.edu/handbook/assignments/writing-an-abstract-for-your-resea
 
 # Conclusion
 
-In this paper we implement a simple file transfer protocol for performing point-to-point transfer using LoRa technology. The protocol is adapted specifically to the challenges and attributes of the LoRa physical layer. 
-Using this solution, we perform file transfer over multiple distances, and of files of different sizes. Most notably, we are able to transfer a 50kb file over a distance of 4km over a period of 25 minutes. This shows that LoRa could be used for transferring small files on rare occasions. ... TODO
+In this paper we show that file transfer over the LoRa physical layer is feasible. 
+To show this, a simple file transfer protocol was implemented specifically with LoRa in mind. The implementation makes sure to divide files into small chunks that can be transferred in LoRa frames, and keeps track of what data has and hasn't been transferred. It thus assures that the full file is transferred eventually.
+Furthermore, the protocol adapts itself to maximize the data rate, by automatically adjusting on bandwidth, spreading factor and coding rate.
+Using this simple file transfer protocol, point-to-point file transfer is performed at various distances and on files of various sizes. Most notably, file transfer is achieved over a distance of 4km with a file of 50kb. This takes a grand total of 25 minutes, and shows that file transfer is indeed feasible over long distances on the LoRa physical layer. 
+Despite the success of file transfer, it is still a very slow process, and LoRa is thus not the first choice of a physical layer for file transfer. It does however make sense, when files are only transferred on rare occasions. 
+The typical use case of LoRa is as the physical layer for LoRaWAN, a low power, high range, wide area network. Further research should look into how file transfer could be fitted to work with LoRaWAN, which is widely used for IoT purposes. 
+
+## Notes on conclusion
+
+Answer research question
+Summarize research in paper
+Future recommendations
+Emphasize own contributions
+
+https://www.scribbr.com/dissertation/write-conclusion/
+
+
 
