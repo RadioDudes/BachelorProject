@@ -28,6 +28,8 @@ https://writing.wisc.edu/handbook/assignments/writing-an-abstract-for-your-resea
 
 # Conclusion
 
+## First draft
+
 In this paper we show that file transfer over the LoRa physical layer is feasible. 
 To show this, a simple file transfer protocol was implemented specifically with LoRa in mind. The implementation makes sure to divide files into small chunks that can be transferred in LoRa frames, and keeps track of what data has and hasn't been transferred. It thus assures that the full file is transferred eventually.
 Furthermore, the protocol adapts itself to maximize the data rate, by automatically adjusting on bandwidth, spreading factor and coding rate.
