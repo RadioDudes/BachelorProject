@@ -128,6 +128,13 @@ Header, header CRC and payload CRC are optional.
 
 ## LoRaWAN
 
+### Link layer
+
+Uses a star of stars topology. End nodes communicate with gateways, who in turn communicate with the application server. Most traffic is expected to be uplink (from end-nodes to application server). A gateway communicates with multiple end-nodes at different spreading factors and frequency channels, possible using an ADR scheme.
+[1](https://lora-alliance.org/resource_hub/lorawan-104-specification-package/)
+
+### ADR scheme
+
 ## Doppler effect
 
 ## Doppler rate
