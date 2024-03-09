@@ -33,6 +33,14 @@ DISPLAY_MODEL *u8g2 = new U8G2_SSD1306_128X64_NONAME_F_HW_I2C(U8G2_R0, U8X8_PIN_
 Ticker ledTicker;
 struct queue *messageQueue = createQueue();
 
+// For file transfer protocol
+// Assumption is that only one file is being transferred at a time
+
+char *filename;
+int16_t packetAmount;
+
+// ----------------.
+
 void setFlag(void) {
     if (mode == RECEIVE_MODE && enableInterrupt) {
         receivedFlag = true;
@@ -232,16 +240,17 @@ void receiveMode() {
     enableInterrupt = true;
 }
 
-void handleReceivedMessage(void (*sucessCallback)(String), void (*failureCallback)(int)) {
+void handleReceivedMessage(void (*sucessCallback)(char *), void (*failureCallback)(int)) {
     enableInterrupt = false;
     receivedFlag = false;
     receiveCounter++;
-    
-    String str;
-    int state = radio.readData(str);
+
+    size_t receivedPacketSize = radio.getPacketLength();
+    uint8_t message[receivedPacketSize];
+    int state = radio.readData(message, receivedPacketSize);
 
     if (state == RADIOLIB_ERR_NONE) {
-        (*sucessCallback)(str);
+        (*sucessCallback)((char *) message);
     } else {
         (*failureCallback)(state);
     }
@@ -250,7 +259,27 @@ void handleReceivedMessage(void (*sucessCallback)(String), void (*failureCallbac
     enableInterrupt = true;
 }
 
-void receiveBasicMessage(String message) {
+bool appendToFile(char *message, char *path) {
+  File file = SD.open(path, FILE_WRITE);
+
+  if (!file) {
+      Serial.print("Could not open ");
+      Serial.println(path);
+      return false;
+    }
+
+    if (!file.print(message)) {
+      Serial.print("Could not write to file ");
+      Serial.println(path);
+      return false;
+    }
+
+    file.close();
+    return true;
+}
+
+// Receives message and prints it on screen as well as serial
+void receiveBasicMessage(char *message) {
     Serial.println(F("[SX1280] Received packet!"));
     Serial.println(message);
     Serial.println(receiveCounter);
@@ -270,6 +299,77 @@ void receiveBasicMessage(String message) {
     u8g2->sendBuffer();
 }
 
+// Receives and appends to file /out.log
+void receiveAndAppendToFile(char *message) {
+  receiveBasicMessage(message);
+  
+  if (appendToFile(message, "/out.log")) {
+    Serial.println("Wrote to /out.log");
+  }
+
+}
+
+// Register that a certain packet number has been received
+void registerPacketNumber(int16_t number) {
+  Serial.print("Registered packet number ");
+  Serial.println(number);
+}
+
+// Following methods implement a simple protocol for file transfer
+
+//      16 bits
+// +---------------+---------+
+// | packet number | content |
+// +---------------+---------+
+
+void receiveContent(char *message) {
+  registerPacketNumber(((int16_t *) message)[0]);
+  message += 2;
+  Serial.print("Received content ");
+  Serial.println(message);
+  appendToFile(message, filename);
+}
+
+//      1 bit          7 bits          16 bits
+// +--------------+---------------+---------------+-----------+
+// | payload type | other flags ? | packet amount | file name |
+// +--------------+---------------+---------------+-----------+
+
+void receiveMetadata(char *message) {
+  char payloadType = message[0];
+  message++;
+  packetAmount = ((int16_t *) message)[0];
+  Serial.print("Packet amount set to ");
+  Serial.println(packetAmount);
+  message += 2;
+  filename = message;
+  Serial.print("Filename set to ");
+  Serial.print(filename);
+}
+
+//      1 bit          7 bits
+// +--------------+---------------+-------------+
+// | payload type | other flags ? | payload ... |
+// +--------------+---------------+-------------+
+// 0 = metadata
+// 1 = file content
+
+void payloadType(char *message) {
+  if (message[0] >> 7 == 0) {
+    Serial.println("The packet is a metadata packet");
+    receiveMetadata(message);
+  } else {
+    Serial.println("The packet is a content packet");
+    receiveContent(message++);
+  }
+}
+
+void receiveFileProtocolMessage(char *message) {
+  Serial.print("Received message: ");
+  Serial.println(message);
+  payloadType(message);
+}
+
 void receiveFailure(int state) {
     if (state == RADIOLIB_ERR_CRC_MISMATCH) {
     // packet was received, but is malformed
@@ -281,6 +381,7 @@ void receiveFailure(int state) {
     Serial.println(state);
     }
 }
+
 
 bool addMessage(char *message, int amount) {
   Serial.print(F("Adding "));
