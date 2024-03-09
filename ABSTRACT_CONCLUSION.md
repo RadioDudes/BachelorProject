@@ -13,6 +13,12 @@ This paper evaluates the feasability of using LoRa on the 2.4gHz ISM band for fi
 We implement a simple protocol for file transfer between 2 LoRa transceivers. The protocol ensures that the complete file is transmitted, even in the face of lost frames. Using this protocol we successfully perform file transfer of a file 50kb large, over a distance of 4km over a period of 25 minutes. 
 This shows that LoRa point-to-point file transfer, although slow, is possible over long distances. The solution provided lays the foundation for further development of file transfer over LoRa, and can also be fitted to work on LoRaWAN networks.
 
+### Third draft
+
+LoRa is a spread spectrum modulation that sacrifices data rate in exchange for range, low power usage and robustness in high noise environments. It is most often used as the physical layer for LoRaWAN, in cases where small amounts of data are transferred from accross a wide area to a central server. The low data rate means that Lora is perfectly suited for these small amounts of sensor data, but when it comes to larger chunks of data, e.g. files, transmission is a more tricky affair.
+In this paper, we evaluate the feasability of using LoRa on the 2.4GHz ISM band for file transfer. We implement a simple protocol for file transfer between 2 LoRa transceivers. The protocol ensures that the complete file is transmitted, even in the face of lost frames. Using this protocol, we successfully perform file transfer of a 50kB file, over a distance of 4km, which takes 25 minutes. 
+This shows that LoRa point-to-point file transfer, although slow, is possible over long distances. The solution provided lays the foundation for further development of file transfer over LoRa, and can also be fitted to work on LoRaWAN networks.
+
 
 ## Notes on abstract
 
