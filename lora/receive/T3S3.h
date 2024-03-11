@@ -37,9 +37,10 @@ struct queue *messageQueue = createQueue();
 // Assumption is that only one file is being transferred at a time
 
 char *filename;
-int16_t packetAmount;
+uint16_t packetAmount;
+uint16_t timeout = 400; // Timeout in ms
 
-// ----------------.
+// ---------------------------------------------------------- //
 
 void setFlag(void) {
     if (mode == RECEIVE_MODE && enableInterrupt) {
@@ -192,6 +193,12 @@ void initialize() {
     radio.setDio1Action(setFlag);
 }
 
+
+// --------------------------------------------- //
+//              TRANSMITTING CODE                //
+// --------------------------------------------- //
+
+
 void transmitMode() {
     enableInterrupt = false;
     receivedFlag = false;
@@ -233,6 +240,35 @@ int transmitNextInQueue() {
   return transmitMessage(message);
 }
 
+bool addMessage(char *message, int amount) {
+  Serial.print(F("Adding "));
+  Serial.print(amount);
+  Serial.print(F(" messages of size "));
+  Serial.println(strlen(message));
+  bool result = true;
+  for (int i = 0; i < amount; i++) {
+    result = result && enqueue(messageQueue, message, strlen(message));
+  }
+  return result;
+}
+
+bool ACKContent(uint16_t packetNumber) {
+  uint8_t message[3];
+  message[0] = (uint8_t) 0x10000000;
+  message[1] = (uint8_t) (packetNumber >> 8);
+  message[2] = (uint8_t) (packetNumber & 0x00FF);
+  return addMessage(message, 1);
+}
+
+bool ACKMetadata() {
+  return addMessage((uint8_t) 0x11000000, 1);
+}
+
+// --------------------------------------------- //
+//                RECEIVING CODE                 //
+// --------------------------------------------- //
+
+
 void receiveMode() {
     enableInterrupt = false;
     mode = RECEIVE_MODE;
@@ -240,7 +276,7 @@ void receiveMode() {
     enableInterrupt = true;
 }
 
-void handleReceivedMessage(void (*sucessCallback)(char *), void (*failureCallback)(int)) {
+void handleReceivedMessage(void (*sucessCallback)(uint8_t *, size_t), void (*failureCallback)(int)) {
     enableInterrupt = false;
     receivedFlag = false;
     receiveCounter++;
@@ -250,7 +286,7 @@ void handleReceivedMessage(void (*sucessCallback)(char *), void (*failureCallbac
     int state = radio.readData(message, receivedPacketSize);
 
     if (state == RADIOLIB_ERR_NONE) {
-        (*sucessCallback)((char *) message);
+        (*sucessCallback)(message, receivedPacketSize);
     } else {
         (*failureCallback)(state);
     }
@@ -259,8 +295,8 @@ void handleReceivedMessage(void (*sucessCallback)(char *), void (*failureCallbac
     enableInterrupt = true;
 }
 
-bool appendToFile(char *message, char *path) {
-  File file = SD.open(path, FILE_WRITE);
+bool appendToFile(uint8_t *message, size_t size, char *path) {
+  File file = SD.open(path, FILE_APPEND);
 
   if (!file) {
       Serial.print("Could not open ");
@@ -268,7 +304,7 @@ bool appendToFile(char *message, char *path) {
       return false;
     }
 
-    if (!file.print(message)) {
+    if (!file.write(message, size)) {
       Serial.print("Could not write to file ");
       Serial.println(path);
       return false;
@@ -279,9 +315,9 @@ bool appendToFile(char *message, char *path) {
 }
 
 // Receives message and prints it on screen as well as serial
-void receiveBasicMessage(char *message) {
+void receiveBasicMessage(uint8_t *message, size_t size) {
     Serial.println(F("[SX1280] Received packet!"));
-    Serial.println(message);
+    Serial.println((char *)message);
     Serial.println(receiveCounter);
     Serial.println(radio.getRSSI());
     Serial.println(radio.getSNR());
@@ -290,7 +326,7 @@ void receiveBasicMessage(char *message) {
     u8g2->clearBuffer();
     char buf[256];
     u8g2->drawStr(0, 12, "Received OK!");
-    snprintf(buf, sizeof(buf), "%s", message);
+    snprintf(buf, sizeof(buf), "%s", (char *)message);
     u8g2->drawStr(0, 26, buf);
     snprintf(buf, sizeof(buf), "RSSI:%.2f", radio.getRSSI());
     u8g2->drawStr(0, 40, buf);
@@ -300,17 +336,17 @@ void receiveBasicMessage(char *message) {
 }
 
 // Receives and appends to file /out.log
-void receiveAndAppendToFile(char *message) {
-  receiveBasicMessage(message);
+void receiveAndAppendToFile(uint8_t *message, size_t size) {
+  receiveBasicMessage(message, size);
   
-  if (appendToFile(message, "/out.log")) {
+  if (appendToFile(message, size, "/out.log")) {
     Serial.println("Wrote to /out.log");
   }
 
 }
 
 // Register that a certain packet number has been received
-void registerPacketNumber(int16_t number) {
+void registerPacketNumber(uint16_t number) {
   Serial.print("Registered packet number ");
   Serial.println(number);
 }
@@ -322,52 +358,63 @@ void registerPacketNumber(int16_t number) {
 // | packet number | content |
 // +---------------+---------+
 
-void receiveContent(char *message) {
-  registerPacketNumber(((int16_t *) message)[0]);
+void receiveContent(uint8_t *message, size_t size) {
+  uint16_t packetNumber = ((uint16_t *) message)[0];
+  registerPacketNumber(packetNumber);
   message += 2;
   Serial.print("Received content ");
-  Serial.println(message);
-  appendToFile(message, filename);
+  Serial.println((char *)message);
+  appendToFile(message, size, filename);
+  ACKContent(packetNumber);
 }
 
-//      1 bit          7 bits          16 bits
-// +--------------+---------------+---------------+-----------+
-// | payload type | other flags ? | packet amount | file name |
-// +--------------+---------------+---------------+-----------+
+//      2 bit         6 bits         16 bits
+// +--------------+-------------+---------------+-----------+
+// | payload type | file number | packet amount | file name |
+// +--------------+-------------+---------------+-----------+
 
-void receiveMetadata(char *message) {
+void receiveMetadata(uint8_t *message, size_t size) {
   char payloadType = message[0];
   message++;
-  packetAmount = ((int16_t *) message)[0];
+  packetAmount = ((uint16_t *) message)[0];
   Serial.print("Packet amount set to ");
   Serial.println(packetAmount);
   message += 2;
-  filename = message;
+  filename = (char *) message;
   Serial.print("Filename set to ");
   Serial.print(filename);
-}
+  if (!ACKMetadata()) {
 
-//      1 bit          7 bits
-// +--------------+---------------+-------------+
-// | payload type | other flags ? | payload ... |
-// +--------------+---------------+-------------+
-// 0 = metadata
-// 1 = file content
-
-void payloadType(char *message) {
-  if (message[0] >> 7 == 0) {
-    Serial.println("The packet is a metadata packet");
-    receiveMetadata(message);
-  } else {
-    Serial.println("The packet is a content packet");
-    receiveContent(message++);
   }
 }
 
-void receiveFileProtocolMessage(char *message) {
+//     2 bits          6 bits
+// +--------------+-------------+---------+
+// | payload type | file number | payload |
+// +--------------+-------------+---------+
+// 00 = file data
+// 01 = file meta data
+// 10 = ACK file data
+// 11 = ACK file meta data
+
+void payloadType(uint8_t *message, size_t size) {
+  if (message[0] >> 6 == 0) {
+    Serial.println("The packet is a content packet");
+    receiveContent(message, size);
+  } else if (message[0] >> 6 == 1 ){
+    Serial.println("The packet is a metadata packet");
+    receiveMetadata(message++, size);
+  } else if (message[0] >> 6 == 2) {
+    Serial.println("The packet is a content ACK packet");
+  } else {
+    Serial.println("The packet is a content ACK packet");
+  }
+}
+
+void receiveFileProtocolMessage(uint8_t *message, size_t size) {
   Serial.print("Received message: ");
-  Serial.println(message);
-  payloadType(message);
+  Serial.println((char *) message);
+  payloadType(message, size);
 }
 
 void receiveFailure(int state) {
@@ -383,17 +430,10 @@ void receiveFailure(int state) {
 }
 
 
-bool addMessage(char *message, int amount) {
-  Serial.print(F("Adding "));
-  Serial.print(amount);
-  Serial.print(F(" messages of size "));
-  Serial.println(strlen(message));
-  bool result = true;
-  for (int i = 0; i < amount; i++) {
-    result = result && enqueue(messageQueue, message, strlen(message));
-  }
-  return result;
-}
+// --------------------------------------------- //
+//               SERIAL COMMANDS                 //
+// --------------------------------------------- //
+
 
 void execCommand(char *message) {
     char *next = strtok(message, " ");

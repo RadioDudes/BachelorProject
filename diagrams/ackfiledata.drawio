@@ -1,0 +1,16 @@
+<mxfile host="app.diagrams.net" modified="2024-03-11T13:37:44.363Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0" etag="EgduGo232C26P1JTglQz" version="24.0.0" type="device">
+  <diagram name="Side-1" id="UtUE6usGgRoNjTVIGV_d">
+    <mxGraphModel dx="750" dy="429" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2Zn6BPDYe05IoYwh--fQ-1" value="Packet number" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="120" y="160" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="2Zn6BPDYe05IoYwh--fQ-7" value="&lt;div&gt;16 bits&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="170" y="200" width="60" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
