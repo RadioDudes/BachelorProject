@@ -1,6 +1,7 @@
 struct queue_node {
-  char *content;
+  uint8_t *content;
   struct queue_node *next;
+  size_t length;
 };
 
 struct queue {
@@ -17,14 +18,15 @@ queue *createQueue() {
   return q;
 }
 
-bool enqueue(struct queue *q, char *message, size_t message_size) {
-  if (q == NULL || q->size > 250 || message_size > 255) {
+bool enqueue(struct queue *q, uint8_t *message, size_t message_size) {
+  if (q == NULL || q->size > 10000 || message_size > 255) {
     return false;
   }
   struct queue_node *new_node = (struct queue_node*) malloc(sizeof(struct queue_node));
-  new_node->content = (char *) malloc(message_size+1);
-  strcpy(new_node->content, message);
+  new_node->content = (uint8_t *) malloc(message_size);
+  memcpy(new_node->content, message, message_size);
   new_node->next = NULL;
+  new_node->length = message_size;
   q->size++;
   if (q->head == NULL) {
     q->head = new_node;
@@ -36,16 +38,16 @@ bool enqueue(struct queue *q, char *message, size_t message_size) {
   return true;
 }
 
-bool dequeue(struct queue *q, char *buffer, size_t buffer_size) {
+size_t dequeue(struct queue *q, uint8_t *buffer) {
   struct queue_node *old;
   if (q == NULL || q->head == NULL) {
-      return false;
+      return -1;
   }
   old = q->head;
   if (buffer != NULL) {
-    strncpy(buffer, old->content, buffer_size-1);
-    buffer[buffer_size-1] = '\0';
+    memcpy(buffer, old->content, old->length);
   }
+  size_t length = old->length;
   q->head = q->head->next;
   if (q->head == NULL) {
       q->tail = NULL;
@@ -53,7 +55,7 @@ bool dequeue(struct queue *q, char *buffer, size_t buffer_size) {
   free(old->content);
   free(old);
   q->size--;
-  return true;
+  return length;
   // Code reused from the course 'Operating Systems and C'
 }
 
