@@ -244,14 +244,21 @@ int transmitNextInQueue() {
   return transmitMessage(message, length);
 }
 
-bool addMessage(char *message, int amount) {
+bool addMessage(uint8_t *message, size_t len) {
+  Serial.print("Adding a message of size ");
+  Serial.println(len);
+  return enqueue(messageQueue, message, len);
+}
+
+bool addMessageN(uint8_t *message, size_t len, int amount) {
   Serial.print(F("Adding "));
   Serial.print(amount);
   Serial.print(F(" messages of size "));
-  Serial.println(strlen(message));
+  Serial.println(len);
   bool result = true;
-  for (int i = 0; i < amount; i++) {
-    result = result && enqueue(messageQueue, message, strlen(message));
+  while (amount > 0) {
+    result = result && addMessage(message, len);
+    amount--;
   }
   return result;
 }
@@ -261,11 +268,13 @@ bool ACKContent(uint16_t packetNumber) {
   message[0] = (uint8_t) 0x10000000;
   message[1] = (uint8_t) (packetNumber >> 8);
   message[2] = (uint8_t) (packetNumber & 0x00FF);
-  return addMessage(message, 1);
+  return addMessage(message, 3);
 }
 
 bool ACKMetadata() {
-  return addMessage((uint8_t) 0x11000000, 1);
+  uint8_t message[1];
+  message[0] = (uint8_t) 0x11000000;
+  return addMessage(message, 1);
 }
 
 // --------------------------------------------- //
@@ -437,21 +446,6 @@ void receiveFailure(int state) {
 // --------------------------------------------- //
 //               SERIAL COMMANDS                 //
 // --------------------------------------------- //
-
-bool addMessage(uint8_t *message, size_t len) {
-  Serial.print("Adding a message of size ");
-  Serial.println(len);
-  return enqueue(messageQueue, message, len);
-}
-
-bool addMessageN(uint8_t *message, size_t len, int amount) {
-  bool result = true;
-  while (amount > 0) {
-    result = result && addMessage(message, len);
-    amount--;
-  }
-  return result;
-}
 
 void execCommand(char *message) {
     char *next = strtok(message, " ");
