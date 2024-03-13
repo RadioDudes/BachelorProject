@@ -535,6 +535,9 @@ bool receiveMessage() {
   }
 }
 
+// --------------------------------------------- //
+//           FILE TRANSFER PROTOCOL              //
+// --------------------------------------------- //
 
 void transferFile() {
   file = SD.open(filename);
@@ -789,24 +792,25 @@ void execCommand(char *message) {
       Serial.println(message);
     }
   }
+}
 
-  void readSerial() {
-    while (Serial.available() > 0) {
-      static char serialMessage[MAX_MESSAGE_LENGTH];
-      static unsigned int message_pos = 0;
+void readSerial() {
+  while (Serial.available() > 0) {
+    static char serialMessage[MAX_MESSAGE_LENGTH];
+    static unsigned int message_pos = 0;
 
-      char inByte = Serial.read();
+    char inByte = Serial.read();
 
-      if (inByte != '\n' && (message_pos < MAX_MESSAGE_LENGTH - 1)) {
-        //Add the incoming byte to our message
-        serialMessage[message_pos] = inByte;
-        message_pos++;
-      } else {
-        serialMessage[message_pos] = '\0';
-        Serial.print(F("Message is: "));
-        Serial.println(serialMessage);
-        execCommand(serialMessage);
-        message_pos = 0;
-      }
+    if (inByte != '\n' && (message_pos < MAX_MESSAGE_LENGTH - 1)) {
+      //Add the incoming byte to our message
+      serialMessage[message_pos] = inByte;
+      message_pos++;
+    } else {
+      serialMessage[message_pos] = '\0';
+      Serial.print(F("Message is: "));
+      Serial.println(serialMessage);
+      execCommand(serialMessage);
+      message_pos = 0;
     }
   }
+}
