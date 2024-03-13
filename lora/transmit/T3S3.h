@@ -794,6 +794,7 @@ void execCommand(char *message) {
   }
 }
 
+// taken from https://www.programmingelectronics.com/serial-read/
 void readSerial() {
   while (Serial.available() > 0) {
     static char serialMessage[MAX_MESSAGE_LENGTH];
