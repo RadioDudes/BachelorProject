@@ -13,6 +13,7 @@ SPIClass SDSPI(HSPI);
 
 #define DISPLAY_MODEL U8G2_SSD1306_128X64_NONAME_F_HW_I2C
 #define MAX_MESSAGE_LENGTH 500
+#define MAX_PACKET_AMOUNT 65536
 #define INACTIVE 0
 #define RECEIVE_MODE 1
 #define TRANSMIT_MODE 2
@@ -27,11 +28,14 @@ volatile bool receivedFlag = false;
 volatile bool enableInterrupt = false;
 volatile bool transmittedFlag = false;
 volatile bool stopFlag = true;
+volatile bool metadataReceived = false;
+
 SX1280 radio = new Module(RADIO_CS_PIN, RADIO_DIO1_PIN, RADIO_RST_PIN, RADIO_BUSY_PIN);
 fs::SDFS sd = SD;
 DISPLAY_MODEL *u8g2 = new U8G2_SSD1306_128X64_NONAME_F_HW_I2C(U8G2_R0, U8X8_PIN_NONE);
 Ticker ledTicker;
 struct queue *messageQueue = createQueue();
+struct bitmap *bm = newBitmap(MAX_PACKET_AMOUNT);
 
 // For file transfer protocol
 // Assumption is that only one file is being transferred at a time
@@ -277,6 +281,37 @@ bool ACKMetadata() {
   return addMessage(message, 1);
 }
 
+void transferFile() {
+  File file = SD.open(filename);
+
+  if (!file) {
+      Serial.print("Could not open file ");
+      Serial.println(filename);
+      return;
+  }
+  Serial.print("Sending file: ");
+  Serial.println(filename);
+
+  int packetCount = 0;
+  while (file.available()) {
+    if (packetCount >= MAX_PACKET_AMOUNT) {
+      Serial.println("Packet amount exceded!");
+      break;
+    }
+
+    uint8_t buffer[30];
+    size_t readBytes = file.read(buffer, 30);
+
+    if (!addMessage(buffer, readBytes)) {
+      Serial.println("Could not add file chunk to queue");
+    } else {
+      Serial.println("Added chunk to queue.");
+    }
+    packetCount++;
+  }
+  file.close();
+}
+
 // --------------------------------------------- //
 //                RECEIVING CODE                 //
 // --------------------------------------------- //
@@ -387,8 +422,6 @@ void receiveContent(uint8_t *message, size_t size) {
 // +--------------+-------------+---------------+-----------+
 
 void receiveMetadata(uint8_t *message, size_t size) {
-  char payloadType = message[0];
-  message++;
   packetAmount = ((uint16_t *) message)[0];
   Serial.print("Packet amount set to ");
   Serial.println(packetAmount);
@@ -399,6 +432,23 @@ void receiveMetadata(uint8_t *message, size_t size) {
   if (!ACKMetadata()) {
 
   }
+}
+
+void receiveACKContent(uint8_t *message, size_t size) {
+  uint16_t index = (uint16_t *) message[0];
+  if (flipBit(bm, index)) {
+    Serial.print("Packet ");
+    Serial.print(index);
+    Serial.println(" has been ACKed.");
+  }
+  else {
+    Serial.print("Error ocurreded trying to ACK packet ");
+    Serial.println(index);
+  }
+}
+
+void receiveACKMetadata(uint8_t *message, size_t size) {
+
 }
 
 //     2 bits          6 bits
@@ -413,14 +463,16 @@ void receiveMetadata(uint8_t *message, size_t size) {
 void payloadType(uint8_t *message, size_t size) {
   if (message[0] >> 6 == 0) {
     Serial.println("The packet is a content packet");
-    receiveContent(message, size);
+    receiveContent(message + 1, size);
   } else if (message[0] >> 6 == 1 ){
     Serial.println("The packet is a metadata packet");
-    receiveMetadata(message++, size);
+    receiveMetadata(message + 1, size);
   } else if (message[0] >> 6 == 2) {
     Serial.println("The packet is a content ACK packet");
+    receiveACKContent(message + 1, size);
   } else {
-    Serial.println("The packet is a content ACK packet");
+    Serial.println("The packet is a metadata ACK packet");
+    receiveACKMetadata(message + 1, size);
   }
 }
 
@@ -570,35 +622,8 @@ void execCommand(char *message) {
     } else
     if (strcmp(next, "sendfile") == 0) {
       next = strtok(NULL, " ");
-      File file = SD.open(next);
-
-      if (!file) {
-          Serial.print("Could not open file ");
-          Serial.println(next);
-          return;
-      }
-      Serial.print("Sending file: ");
-      Serial.println(next);
-
-      int packetCount = 0;
-      int MAX_PACKET_AMOUNT = 65535;
-      while (file.available()) {
-        if (packetCount >= MAX_PACKET_AMOUNT) {
-          Serial.println("Packet amount exceded!");
-          break;
-        }
-
-        uint8_t buffer[30];
-        size_t readBytes = file.read(buffer, 30);
-
-        if (!addMessage(buffer, readBytes)) {
-          Serial.println("Could not add file chunk to queue");
-        } else {
-          Serial.println("Added chunk to queue.");
-        }
-        packetCount++;
-      }
-      file.close();
+      filename = next;
+      transferFile();
     } else
     if (strcmp(next, "delete") == 0 || strcmp(next, "rm") == 0) 
     {
