@@ -13,11 +13,11 @@ SPIClass SDSPI(HSPI);
 
 #define DISPLAY_MODEL U8G2_SSD1306_128X64_NONAME_F_HW_I2C
 #define MAX_MESSAGE_LENGTH 500
-#define INACTIVE 0
-#define RECEIVE_MODE 1
-#define TRANSMIT_MODE 2
-#define NOT_FINISHED_TRANSMITTING 1;
-#define QUEUE_IS_EMPTY 2;
+const int INACTIVE = 0;
+const int RECEIVE_MODE = 1;
+const int TRANSMIT_MODE = 2;
+const int NOT_FINISHED_TRANSMITTING = 1;
+const int QUEUE_IS_EMPTY = 2;
 
 #define MAX_PACKET_AMOUNT 65536
 #define PACKET_SIZE 30
@@ -28,7 +28,7 @@ int mode = INACTIVE;
 
 volatile bool receivedFlag = false;
 volatile bool enableInterrupt = false;
-volatile bool transmittedFlag = false;
+volatile bool transmittedFlag = true;
 volatile bool stopFlag = true;
 
 volatile bool metadataReceived = false;
@@ -270,7 +270,7 @@ bool addMessageN(uint8_t *message, size_t len, int amount) {
 
 bool ACKContent(uint16_t packetNumber) {
   uint8_t message[3];
-  message[0] = (uint8_t)0x10000000;
+  message[0] = (uint8_t)0b10000000;
   message[1] = (uint8_t)(packetNumber >> 8);
   message[2] = (uint8_t)(packetNumber & 0x00FF);
   return addMessage(message, 3);
@@ -278,7 +278,7 @@ bool ACKContent(uint16_t packetNumber) {
 
 bool ACKMetadata() {
   uint8_t message[1];
-  message[0] = (uint8_t)0x11000000;
+  message[0] = (uint8_t)0b11000000;
   return addMessage(message, 1);
 }
 
@@ -443,7 +443,11 @@ void receiveContent(uint8_t *message, size_t size) {
   Serial.print("Received content ");
   Serial.println((char *)message);
   appendToFile(message, size, filename);
-  ACKContent(packetNumber);
+  if (!ACKContent(packetNumber)) {
+    Serial.println("Something went wrong when adding ACKConent to queue");
+    return;
+  }
+  transmitMode();
 }
 
 //      2 bit         6 bits         16 bits
@@ -452,6 +456,8 @@ void receiveContent(uint8_t *message, size_t size) {
 // +--------------+-------------+---------------+-----------+
 
 void receiveMetadata(uint8_t *message, size_t size) {
+  char payloadType = message[0];
+  message++;
   packetAmount = ((uint16_t *)message)[0];
   Serial.print("Packet amount set to ");
   Serial.println(packetAmount);
@@ -460,7 +466,10 @@ void receiveMetadata(uint8_t *message, size_t size) {
   Serial.print("Filename set to ");
   Serial.print(filename);
   if (!ACKMetadata()) {
+    Serial.println("Something went wrong when adding ACKMetadata to queue");
+    return;
   }
+  transmitMode();
 }
 
 //     2 bits          6 bits
@@ -473,7 +482,7 @@ void receiveMetadata(uint8_t *message, size_t size) {
 // 11 = ACK file meta data
 
 void payloadType(uint8_t *message, size_t size) {
-  if (message[0] >> 6 == 0) {
+  if (message[0] >> 6 == 0b00) {
     Serial.println("The packet is a content packet");
     receiveContent(message + 1, size - 1);
   } else if (message[0] >> 6 == 1) {
@@ -611,10 +620,17 @@ void transferFile() {
 
 void execCommand(char *message) {
   char *next = strtok(message, " ");
+  char *next = strtok(message, " ");
 
   if (strcmp(next, "frequency") == 0 || strcmp(next, "freq") == 0) {
     next = strtok(NULL, " ");
+  if (strcmp(next, "frequency") == 0 || strcmp(next, "freq") == 0) {
+    next = strtok(NULL, " ");
 
+    if (next == NULL) {
+      Serial.println(F("No frequency specified"));
+      return;
+    }
     if (next == NULL) {
       Serial.println(F("No frequency specified"));
       return;
