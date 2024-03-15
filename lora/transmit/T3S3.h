@@ -621,7 +621,6 @@ void transferFile() {
 
 void execCommand(char *message) {
   char *next = strtok(message, " ");
-  char *next = strtok(message, " ");
 
   if (strcmp(next, "frequency") == 0 || strcmp(next, "freq") == 0) {
     next = strtok(NULL, " ");
