@@ -3,10 +3,9 @@ struct bitmap {
   uint16_t size;
 }
 
-struct bitmap *
-newBitmap(uint16_t size) {
-  struct bitmap *bm = (struct bitmap *)malloc(sizeof(struct bitmap));
-  bm->map = (uint8_t *)calloc(size);
+struct bitmap *newBitmap(uint16_t size) {
+  struct bitmap *bm = (struct bitmap *) malloc(sizeof(struct bitmap));
+  bm->map = (uint8_t *) calloc(size);
   bm->size = size;
   return bm;
 };
