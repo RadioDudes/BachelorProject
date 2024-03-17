@@ -9,11 +9,20 @@ void setup() {
 void loop() {
     readSerial();
 
+    checkTimeout();
+
+    if (timeoutFlag) {
+      // something
+    }
+
     if (mode == RECEIVE_MODE) {
       if (receivedFlag) {
         // handleReceivedMessage(receiveBasicMessage, receiveFailure);
         // handleReceivedMessage(receiveAndAppendToFile, receiveFailure); // Receive and add received message to /out.log
         handleReceivedMessage(receiveFileProtocolMessage, receiveFailure); // Receive file transfer protocol message
+        if (mode == RECEIVE_MODE) {
+          receiveMode();
+        }
       }
     }
     

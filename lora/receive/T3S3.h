@@ -27,6 +27,9 @@ volatile bool receivedFlag = false;
 volatile bool enableInterrupt = false;
 volatile bool transmittedFlag = true;
 volatile bool stopFlag = true;
+volatile bool timeoutFlag = false;
+volatile bool doTimeout = false;
+unsigned long startTime;
 SX1280 radio = new Module(RADIO_CS_PIN, RADIO_DIO1_PIN, RADIO_RST_PIN, RADIO_BUSY_PIN);
 fs::SDFS sd = SD;
 DISPLAY_MODEL *u8g2 = new U8G2_SSD1306_128X64_NONAME_F_HW_I2C(U8G2_R0, U8X8_PIN_NONE);
@@ -36,11 +39,23 @@ struct queue *messageQueue = createQueue();
 // For file transfer protocol
 // Assumption is that only one file is being transferred at a time
 
-char *filename;
+char filename[100];
 uint16_t packetAmount;
-uint16_t timeout = 400;  // Timeout in ms
+uint16_t lastReceivedPacket = 0;
 
 // ---------------------------------------------------------- //
+
+void startTimeout() {
+  doTimeout = true;
+  startTime = millis();
+}
+
+void checkTimeout() {
+  if (doTimeout && (millis() - startTime > 1000)) {
+    timeoutFlag = true;
+    doTimeout = false;
+  }
+}
 
 void setFlag(void) {
   if (mode == RECEIVE_MODE && enableInterrupt) {
@@ -192,6 +207,16 @@ void initialize() {
   radio.setDio1Action(setFlag);
 }
 
+void printAsHex(uint8_t *message, size_t size) {
+  Serial.print("Message as hex: ");
+  for (int i = 0; i < size; i++) {
+    char s[3];
+    sprintf(s, "%x", message[i]);
+    Serial.print(s);
+  }
+  Serial.println("");
+}
+
 
 // --------------------------------------------- //
 //              TRANSMITTING CODE                //
@@ -220,11 +245,7 @@ int transmitMessage(uint8_t *message, size_t len) {
   }
   enableInterrupt = false;
   transmittedFlag = false;
-  Serial.print(F("[SX1280] Sending message "));
-  char readMessage[255];
-  memcpy(readMessage, message, len);
-  readMessage[len] = '\0';
-  Serial.println(readMessage);
+  printAsHex(message, len);
   sendCounter++;
   int state = radio.startTransmit(message, len);
   enableInterrupt = true;
@@ -303,8 +324,8 @@ void handleReceivedMessage(void (*sucessCallback)(uint8_t *, size_t), void (*fai
     (*failureCallback)(state);
   }
 
-  radio.startReceive();
-  enableInterrupt = true;
+  //radio.startReceive();
+  //enableInterrupt = true;
 }
 
 bool appendToFile(uint8_t *message, size_t size, char *path) {
@@ -370,16 +391,26 @@ void registerPacketNumber(uint16_t number) {
 // +---------------+---------+
 
 void receiveContent(uint8_t *message, size_t size) {
-  uint16_t packetNumber = ((uint16_t *)message)[0];
-  registerPacketNumber(packetNumber);
-  message += 2;
-  Serial.print("Received content ");
-  Serial.println((char *)message);
-  appendToFile(message, size, filename);
+  uint16_t packetNumber =  message[0] << 8 | message[1];
+  Serial.print("Packet number is ");
+  Serial.println(packetNumber);
+  
+  //if (lastReceivedPacket + 1 == packetNumber) {
+  //  Serial.println("Ignoring duplicate packet");
+  //} else {
+    lastReceivedPacket++;
+    message += 2;
+    size -= 2;
+    Serial.print("Received content ");
+    Serial.println((char *)message);
+    appendToFile(message, size, filename);
+  //}
+
   if (!ACKContent(packetNumber)) {
     Serial.println("Something went wrong when adding ACKConent to queue");
     return;
   }
+  
   transmitMode();
 }
 
@@ -389,15 +420,13 @@ void receiveContent(uint8_t *message, size_t size) {
 // +--------------+-------------+---------------+-----------+
 
 void receiveMetadata(uint8_t *message, size_t size) {
-  char payloadType = message[0];
-  message++;
-  packetAmount = ((uint16_t *)message)[0];
+  packetAmount = message[0] << 8 | message[1];
   Serial.print("Packet amount set to ");
   Serial.println(packetAmount);
   message += 2;
-  filename = (char *)message;
+  strcpy(filename, (char *) message);
   Serial.print("Filename set to ");
-  Serial.print(filename);
+  Serial.println(filename);
   if (!ACKMetadata()) {
     Serial.println("Something went wrong when adding ACKMetadata to queue");
     return;
@@ -417,10 +446,10 @@ void receiveMetadata(uint8_t *message, size_t size) {
 void payloadType(uint8_t *message, size_t size) {
   if (message[0] >> 6 == 0b00) {
     Serial.println("The packet is a content packet");
-    receiveContent(message, size);
+    receiveContent(message + 1, size - 1);
   } else if (message[0] >> 6 == 0b01) {
     Serial.println("The packet is a metadata packet");
-    receiveMetadata(message++, size);
+    receiveMetadata(message + 1, size - 1);
   } else if (message[0] >> 6 == 0b10) {
     Serial.println("The packet is a content ACK packet");
   } else { // 0b11
@@ -429,8 +458,7 @@ void payloadType(uint8_t *message, size_t size) {
 }
 
 void receiveFileProtocolMessage(uint8_t *message, size_t size) {
-  Serial.print("Received message: ");
-  Serial.println((char *)message);
+  printAsHex(message, size);
   payloadType(message, size);
 }
 
