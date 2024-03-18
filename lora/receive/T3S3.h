@@ -8,6 +8,7 @@
 #include <FS.h>
 #include <U8g2lib.h>
 #include "queue.h"
+#include "logging.h"
 
 SPIClass SDSPI(HSPI);
 
@@ -21,7 +22,7 @@ const int QUEUE_IS_EMPTY = 2;
 
 #define MAX_PACKET_AMOUNT 65536
 #define PACKET_SIZE 30
-#define FILNAME_SIZE 100
+#define FILENAME_SIZE 100
 
 int sendCounter = 0;
 int receiveCounter = 0;
@@ -46,7 +47,7 @@ File file;
 // For file transfer protocol
 // Assumption is that only one file is being transferred at a time
 
-char filename[FILNAME_SIZE];
+char filename[FILENAME_SIZE];
 uint16_t packetAmount;
 uint16_t lastReceivedPacket = 0;
 
@@ -214,15 +215,6 @@ void initialize() {
   radio.setDio1Action(setFlag);
 }
 
-void printAsHex(uint8_t *message, size_t size) {
-  Serial.print("Message as hex: ");
-  for (int i = 0; i < size; i++) {
-    char s[3];
-    sprintf(s, "%x", message[i]);
-    Serial.print(s);
-  }
-  Serial.println("");
-}
 
 // --------------------------------------------- //
 //              TRANSMITTING CODE                //
@@ -251,11 +243,7 @@ int transmitMessage(uint8_t *message, size_t len) {
   }
   enableInterrupt = false;
   transmittedFlag = false;
-  printAsHex(message, len);
-  char readMessage[255];
-  memcpy(readMessage, message, len);
-  readMessage[len] = '\0';
-  Serial.println(readMessage);
+  printTransmitPacket(message, len);
   sendCounter++;
   int state = radio.startTransmit(message, len);
   enableInterrupt = true;
@@ -400,17 +388,16 @@ void handleReceivedMessage(void (*sucessCallback)(uint8_t *, size_t), void (*fai
 }
 
 bool appendToFile(uint8_t *message, size_t size, char *path) {
+  printInfo(String("Opening file ") + String(path));
   File file = SD.open(path, FILE_APPEND);
 
   if (!file) {
-    Serial.print("Could not open ");
-    Serial.println(path);
+    printError(String("Could not open file ") + String(path));
     return false;
   }
 
   if (!file.write(message, size)) {
-    Serial.print("Could not write to file ");
-    Serial.println(path);
+    printError(String("Could not write to file ") + String(path));
     return false;
   }
 
@@ -448,11 +435,6 @@ void receiveAndAppendToFile(uint8_t *message, size_t size) {
   }
 }
 
-// Register that a certain packet number has been received
-void registerPacketNumber(uint16_t number) {
-  Serial.print("Registered packet number ");
-  Serial.println(number);
-}
 
 // Following methods implement a simple protocol for file transfer
 
@@ -463,11 +445,10 @@ void registerPacketNumber(uint16_t number) {
 
 void receiveContent(uint8_t *message, size_t size) {
   uint16_t packetNumber = ((uint16_t *)message)[0];
-  Serial.print("Packet number is ");
-  Serial.println(packetNumber);
+  printPacketNumber(packetNumber);
 
   if (packetNumber + 1 == lastReceivedPacket) {
-    Serial.println("Packet already received");
+    printInfo("Packet already received");
     return;
   }
 
@@ -475,13 +456,12 @@ void receiveContent(uint8_t *message, size_t size) {
   message += 2;
   size -= 2;
 
-  Serial.print("Received content ");
-  Serial.println((char *)message);
+  printPacketContent(message, size);
 
   appendToFile(message, size, filename);
 
   if (!ACKContent(packetNumber)) {
-    Serial.println("Something went wrong when adding ACKConent to queue");
+    printError("Something went wrong when adding ACKConent to queue");
     return;
   }
   transmitMode();
@@ -493,17 +473,16 @@ void receiveContent(uint8_t *message, size_t size) {
 // +--------------+-------------+---------------+-----------+
 
 void receiveMetadata(uint8_t *message, size_t size) {
-  char payloadType = message[0];
-  message++;
-  packetAmount = ((uint16_t *)message)[0];
-  Serial.print("Packet amount set to ");
-  Serial.println(packetAmount);
+  uint8_t first = message[0];
+  uint8_t second = message[1];
+  packetAmount = (first << 8) + second;
+  printPacketAmount(packetAmount);
   message += 2;
-  strcpy(filename, (char *)message);
-  Serial.print("Filename set to ");
-  Serial.println(filename);
+  size -= 2;
+  strncpy(filename, (char *)message, FILENAME_SIZE);
+  printFilename(filename);
   if (!ACKMetadata()) {
-    Serial.println("Something went wrong when adding ACKMetadata to queue");
+    printError("Something went wrong when adding ACKMetadata to queue");
     return;
   }
   transmitMode();
@@ -519,35 +498,31 @@ void receiveMetadata(uint8_t *message, size_t size) {
 // 11 = ACK file meta data
 
 void payloadType(uint8_t *message, size_t size) {
-  if (message[0] >> 6 == 0b00) {
-    Serial.println("The packet is a content packet");
+  int type = message[0] >> 6;
+  printContentType(type);
+  if (type == 0) {
     receiveContent(message + 1, size - 1);
-  } else if (message[0] >> 6 == 0b01) {
-    Serial.println("The packet is a metadata packet");
+  } else if (type == 1) {
     receiveMetadata(message + 1, size - 1);
-  } else if (message[0] >> 6 == 0b10) {
-    Serial.println("The packet is a content ACK packet");
+  } else if (type == 2) {
     packetReceived = true;
   } else {  // 0b11
-    Serial.println("The packet is a metadata ACK packet");
     metadataReceived = true;
   }
 }
 
 void receiveFileProtocolMessage(uint8_t *message, size_t size) {
-  printAsHex(message, size);
+  printReceivedPacket(message, size);
   payloadType(message, size);
 }
 
 void receiveFailure(int state) {
   if (state == RADIOLIB_ERR_CRC_MISMATCH) {
     // packet was received, but is malformed
-    Serial.println(F("[SX1280] CRC error!"));
-
+    printError("SX1280 CRC Error");
   } else {
     // some other error occurred
-    Serial.print(F("[SX1280] Failed, code "));
-    Serial.println(state);
+    printErrorCode(state);
   }
 }
 
@@ -760,7 +735,7 @@ void execCommand(char *message) {
     file.close();
   } else if (strcmp(next, "sendfile") == 0) {
     next = strtok(NULL, " ");
-    strncpy(filename, next, FILNAME_SIZE);
+    strncpy(filename, next, FILENAME_SIZE);
     transferFile();
   } else if (strcmp(next, "delete") == 0 || strcmp(next, "rm") == 0) {
     next = strtok(NULL, " ");

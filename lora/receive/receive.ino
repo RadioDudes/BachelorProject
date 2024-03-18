@@ -21,7 +21,7 @@ void loop() {
       int state = transmitNextInQueue();
    
       if (state == RADIOLIB_ERR_NONE) {
-        Serial.println(F("transmission finished!"));
+        printInfo("Transmitted packet");
 
         u8g2->clearBuffer();
         u8g2->drawStr(0, 12, "Transmitting: OK!");
@@ -30,8 +30,7 @@ void loop() {
       } else if (state == QUEUE_IS_EMPTY) {
         receiveMode();
       } else if (state != NOT_FINISHED_TRANSMITTING) {
-        Serial.print(F("failed, code "));
-        Serial.println(state);
+        printErrorCode(state);
       }
     }
 
