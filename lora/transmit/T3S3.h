@@ -552,7 +552,10 @@ void receiveFailure(int state) {
 }
 
 bool receiveMessage() {
-  while (!receivedFlag && millis() - startTime < 1000) {
+  while (!receivedFlag) {
+    if (millis() - startTime > 1000) {
+      return false;
+    }
   }
 
   enableInterrupt = false;
