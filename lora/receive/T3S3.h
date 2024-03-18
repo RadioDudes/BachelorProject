@@ -19,28 +19,50 @@ const int TRANSMIT_MODE = 2;
 const int NOT_FINISHED_TRANSMITTING = 1;
 const int QUEUE_IS_EMPTY = 2;
 
+#define MAX_PACKET_AMOUNT 65536
+#define PACKET_SIZE 30
+#define FILNAME_SIZE 100
 
 int sendCounter = 0;
 int receiveCounter = 0;
 int mode = INACTIVE;
+
 volatile bool receivedFlag = false;
 volatile bool enableInterrupt = false;
 volatile bool transmittedFlag = true;
 volatile bool stopFlag = true;
+volatile bool metadataReceived = false;
+volatile bool packetReceived = false;
+volatile bool timeoutFlag = false;
+volatile bool doTimeout = false;
+unsigned long startTime;
 SX1280 radio = new Module(RADIO_CS_PIN, RADIO_DIO1_PIN, RADIO_RST_PIN, RADIO_BUSY_PIN);
 fs::SDFS sd = SD;
 DISPLAY_MODEL *u8g2 = new U8G2_SSD1306_128X64_NONAME_F_HW_I2C(U8G2_R0, U8X8_PIN_NONE);
 Ticker ledTicker;
 struct queue *messageQueue = createQueue();
+File file;
 
 // For file transfer protocol
 // Assumption is that only one file is being transferred at a time
 
-char *filename;
+char filename[FILNAME_SIZE];
 uint16_t packetAmount;
-uint16_t timeout = 400;  // Timeout in ms
+uint16_t lastReceivedPacket = 0;
 
 // ---------------------------------------------------------- //
+
+void startTimeout() {
+  doTimeout = true;
+  startTime = millis();
+}
+
+void checkTimeout() {
+  if (doTimeout && (millis() - startTime > 1000)) {
+    timeoutFlag = true;
+    doTimeout = false;
+  }
+}
 
 void setFlag(void) {
   if (mode == RECEIVE_MODE && enableInterrupt) {
@@ -192,6 +214,15 @@ void initialize() {
   radio.setDio1Action(setFlag);
 }
 
+void printAsHex(uint8_t *message, size_t size) {
+  Serial.print("Message as hex: ");
+  for (int i = 0; i < size; i++) {
+    char s[3];
+    sprintf(s, "%x", message[i]);
+    Serial.print(s);
+  }
+  Serial.println("");
+}
 
 // --------------------------------------------- //
 //              TRANSMITTING CODE                //
@@ -220,7 +251,7 @@ int transmitMessage(uint8_t *message, size_t len) {
   }
   enableInterrupt = false;
   transmittedFlag = false;
-  Serial.print(F("[SX1280] Sending message "));
+  printAsHex(message, len);
   char readMessage[255];
   memcpy(readMessage, message, len);
   readMessage[len] = '\0';
@@ -276,6 +307,67 @@ bool ACKMetadata() {
   return addMessage(message, 1);
 }
 
+bool sendMessage(uint8_t *message, size_t messageSize) {
+  if (!addMessage(message, messageSize)) {
+    return false;
+  }
+  int state = transmitNextInQueue();
+
+  if (state == RADIOLIB_ERR_NONE) {
+    Serial.println(F("transmission finished!"));
+
+    u8g2->clearBuffer();
+    u8g2->drawStr(0, 12, "Transmitting: OK!");
+    u8g2->drawStr(0, 30, ("TX:" + String(sendCounter)).c_str());
+    u8g2->sendBuffer();
+
+  } else if (state != 1 && state != 2) {
+    Serial.print(F("failed, code "));
+    Serial.println(state);
+    return false;
+  }
+  return true;
+}
+
+bool sendMetadata() {
+  unsigned long packetAmount = (file.size() + PACKET_SIZE - 1) / PACKET_SIZE;
+  if (packetAmount > MAX_PACKET_AMOUNT) {
+    Serial.print("File of size ");
+    Serial.print(file.size());
+    Serial.println(" is too big!");
+    return false;
+  }
+  uint8_t first = packetAmount >> 8;
+  uint8_t second = packetAmount & 0xFF;
+
+  size_t messageSize = strlen(filename) + 4;
+  uint8_t *message = (uint8_t *)malloc(messageSize);
+  message[0] = 0b01000000;
+  message[1] = first;
+  message[2] = second;
+  strcpy((char *)message + 3, filename);
+
+  Serial.print("Sending metadata with filename: ");
+  Serial.println((char *)message + 3);
+  Serial.print("Packet amount is ");
+  Serial.print(packetAmount);
+  Serial.print(", first is ");
+  Serial.print(first);
+  Serial.print(" and second is ");
+  Serial.println(second);
+
+  for (int i = 0; i < 3; i++) {
+    char messageChar[50];
+    sprintf(messageChar, "Hex: Part %d of message is %X", i, message[i]);
+    Serial.println(messageChar);
+  }
+
+  if (!sendMessage(message, messageSize)) {
+    return false;
+  }
+  return true;
+}
+
 // --------------------------------------------- //
 //                RECEIVING CODE                 //
 // --------------------------------------------- //
@@ -303,8 +395,8 @@ void handleReceivedMessage(void (*sucessCallback)(uint8_t *, size_t), void (*fai
     (*failureCallback)(state);
   }
 
-  radio.startReceive();
-  enableInterrupt = true;
+  //radio.startReceive();
+  //enableInterrupt = true;
 }
 
 bool appendToFile(uint8_t *message, size_t size, char *path) {
@@ -371,11 +463,23 @@ void registerPacketNumber(uint16_t number) {
 
 void receiveContent(uint8_t *message, size_t size) {
   uint16_t packetNumber = ((uint16_t *)message)[0];
-  registerPacketNumber(packetNumber);
+  Serial.print("Packet number is ");
+  Serial.println(packetNumber);
+
+  if (packetNumber + 1 == lastReceivedPacket) {
+    Serial.println("Packet already received");
+    return;
+  }
+
+  lastReceivedPacket = packetNumber + 1;
   message += 2;
+  size -= 2;
+
   Serial.print("Received content ");
   Serial.println((char *)message);
+
   appendToFile(message, size, filename);
+
   if (!ACKContent(packetNumber)) {
     Serial.println("Something went wrong when adding ACKConent to queue");
     return;
@@ -395,9 +499,9 @@ void receiveMetadata(uint8_t *message, size_t size) {
   Serial.print("Packet amount set to ");
   Serial.println(packetAmount);
   message += 2;
-  filename = (char *)message;
+  strcpy(filename, (char *)message);
   Serial.print("Filename set to ");
-  Serial.print(filename);
+  Serial.println(filename);
   if (!ACKMetadata()) {
     Serial.println("Something went wrong when adding ACKMetadata to queue");
     return;
@@ -417,20 +521,21 @@ void receiveMetadata(uint8_t *message, size_t size) {
 void payloadType(uint8_t *message, size_t size) {
   if (message[0] >> 6 == 0b00) {
     Serial.println("The packet is a content packet");
-    receiveContent(message, size);
+    receiveContent(message + 1, size - 1);
   } else if (message[0] >> 6 == 0b01) {
     Serial.println("The packet is a metadata packet");
-    receiveMetadata(message++, size);
+    receiveMetadata(message + 1, size - 1);
   } else if (message[0] >> 6 == 0b10) {
     Serial.println("The packet is a content ACK packet");
-  } else { // 0b11
-    Serial.println("The packet is a content ACK packet");
+    packetReceived = true;
+  } else {  // 0b11
+    Serial.println("The packet is a metadata ACK packet");
+    metadataReceived = true;
   }
 }
 
 void receiveFileProtocolMessage(uint8_t *message, size_t size) {
-  Serial.print("Received message: ");
-  Serial.println((char *)message);
+  printAsHex(message, size);
   payloadType(message, size);
 }
 
@@ -446,6 +551,105 @@ void receiveFailure(int state) {
   }
 }
 
+bool receiveMessage() {
+  while (!receivedFlag && millis() - startTime < 1000) {
+  }
+
+  enableInterrupt = false;
+  receivedFlag = false;
+  receiveCounter++;
+
+  size_t receivedPacketSize = radio.getPacketLength();
+  uint8_t message[receivedPacketSize];
+  int state = radio.readData(message, receivedPacketSize);
+
+  if (state == RADIOLIB_ERR_NONE) {
+    receiveFileProtocolMessage(message, receivedPacketSize);
+    return true;
+  } else {
+    receiveFailure(state);
+    return false;
+  }
+}
+
+// --------------------------------------------- //
+//           FILE TRANSFER PROTOCOL              //
+// --------------------------------------------- //
+
+void transferFile() {
+  file = SD.open(filename);
+
+  if (!file) {
+    Serial.print("Could not open file ");
+    Serial.println(filename);
+    return;
+  }
+  Serial.print("Sending file: ");
+  Serial.println(filename);
+  // SENDING METADATA
+  while (!metadataReceived) {
+    if (!sendMetadata()) {
+      Serial.println("Could not send file metadata. Stopping file transfer.");
+      file.close();
+      return;
+    }
+    while (!transmittedFlag) {
+    }
+    Serial.println("Metadata sent!");
+    startTime = millis();
+    receiveMode();
+    if (!receiveMessage()) {
+      Serial.println("Error receiving metadata ACK. Trying to send again.");
+    }
+    transmitMode();
+  }
+  metadataReceived = false;
+
+  Serial.println("Metadata acknowledged!");
+
+  // SENDING PACKET
+  int packetCount = 0;
+  while (file.available()) {
+    if (packetCount >= MAX_PACKET_AMOUNT) {
+      Serial.println("Packet amount exceded!");
+      break;
+    }
+
+    uint8_t buffer[PACKET_SIZE + 3];
+    buffer[0] = 0;
+    buffer[1] = packetCount >> 8;
+    buffer[2] = packetCount & 0xFF;
+    size_t readBytes = file.read(buffer + 3, PACKET_SIZE);
+
+    while (!packetReceived) {
+      if (!sendMessage(buffer, readBytes + 3)) {
+        Serial.print("Error sending packet number ");
+        Serial.print(packetCount);
+        Serial.println(". Stopping file transfer.");
+        file.close();
+      } else {
+        Serial.print("Sent packet number ");
+        Serial.print(packetCount);
+        Serial.print(" with length ");
+        Serial.print(readBytes + 3);
+        Serial.print(" and content: ");
+        Serial.println((char *)buffer + 3);
+      }
+      while (!transmittedFlag) {
+      }
+      receiveMode();
+      startTime = millis();
+      if (!receiveMessage()) {
+        Serial.println("Error receiving content ACK. Trying to send again.");
+      }
+      transmitMode();
+    }
+
+    packetReceived = false;
+    packetCount++;
+  }
+  file.close();
+}
 
 // --------------------------------------------- //
 //               SERIAL COMMANDS                 //
@@ -468,7 +672,6 @@ void execCommand(char *message) {
       Serial.println(F(" is an invalid frequency"));
       return;
     }
-
     if (radio.setFrequency(freq) == RADIOLIB_ERR_INVALID_FREQUENCY) {
       Serial.print(F("Frequency "));
       Serial.print(freq);
@@ -484,14 +687,12 @@ void execCommand(char *message) {
       Serial.println(F("No bandwidth specified"));
       return;
     }
-
     float bw = atof(next);
     if (bw == 0) {
       Serial.print(next);
       Serial.println(F(" is an invalid bandwidth"));
       return;
     }
-
     if (radio.setBandwidth(bw) == RADIOLIB_ERR_INVALID_BANDWIDTH) {
       Serial.print(F("Bandwidth "));
       Serial.print(bw);
@@ -514,14 +715,12 @@ void execCommand(char *message) {
       Serial.println(F(" is an invalid spreading factor"));
       return;
     }
-
     if (radio.setSpreadingFactor(sf) == RADIOLIB_ERR_INVALID_SPREADING_FACTOR) {
       Serial.print(F("Spreading factor "));
       Serial.print(sf);
       Serial.println(F(" is invalid for this module!"));
       return;
     }
-
     Serial.print(F("Changed spreading factor to "));
     Serial.println(next);
   } else if (strcmp(next, "reset") == 0) {
@@ -530,7 +729,6 @@ void execCommand(char *message) {
   } else if (strcmp(next, "download") == 0) {
     next = strtok(NULL, " ");
     File file = SD.open(next);
-
     if (!file) {
       Serial.print("Filename by the name of ");
       Serial.print(next);
@@ -544,16 +742,13 @@ void execCommand(char *message) {
     file.close();
   } else if (strcmp(next, "upload") == 0) {
     next = strtok(NULL, " ");
-
     File file = SD.open(next, FILE_WRITE);
     if (!file) {
       Serial.print("Could not open file ");
       Serial.println(next);
       return;
     }
-
     next = strtok(NULL, "");
-
     if (!file.print(next)) {
       Serial.println("Could not write to file.");
       return;
@@ -562,35 +757,8 @@ void execCommand(char *message) {
     file.close();
   } else if (strcmp(next, "sendfile") == 0) {
     next = strtok(NULL, " ");
-    File file = SD.open(next);
-
-    if (!file) {
-      Serial.print("Could not open file ");
-      Serial.println(next);
-      return;
-    }
-    Serial.print("Sending file: ");
-    Serial.println(next);
-
-    int packetCount = 0;
-    int MAX_PACKET_AMOUNT = 65535;
-    while (file.available()) {
-      if (packetCount >= MAX_PACKET_AMOUNT) {
-        Serial.println("Packet amount exceded!");
-        break;
-      }
-
-      uint8_t buffer[30];
-      size_t readBytes = file.read(buffer, 30);
-
-      if (!addMessage(buffer, readBytes)) {
-        Serial.println("Could not add file chunk to queue");
-      } else {
-        Serial.println("Added chunk to queue.");
-      }
-      packetCount++;
-    }
-    file.close();
+    strncpy(filename, next, FILNAME_SIZE);
+    transferFile();
   } else if (strcmp(next, "delete") == 0 || strcmp(next, "rm") == 0) {
     next = strtok(NULL, " ");
 
@@ -628,7 +796,6 @@ void execCommand(char *message) {
     } else {
       Serial.println(F("All messages were queued"));
     }
-
   } else if (strcmp(next, "receive") == 0) {
 
   } else if (strcmp(next, "remaining") == 0) {
@@ -645,6 +812,7 @@ void execCommand(char *message) {
   }
 }
 
+// taken from https://www.programmingelectronics.com/serial-read/
 void readSerial() {
   while (Serial.available() > 0) {
     static char serialMessage[MAX_MESSAGE_LENGTH];

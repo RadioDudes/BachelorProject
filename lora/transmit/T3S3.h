@@ -21,6 +21,7 @@ const int QUEUE_IS_EMPTY = 2;
 
 #define MAX_PACKET_AMOUNT 65536
 #define PACKET_SIZE 30
+#define FILNAME_SIZE 100
 
 int sendCounter = 0;
 int receiveCounter = 0;
@@ -30,10 +31,11 @@ volatile bool receivedFlag = false;
 volatile bool enableInterrupt = false;
 volatile bool transmittedFlag = true;
 volatile bool stopFlag = true;
-
 volatile bool metadataReceived = false;
 volatile bool packetReceived = false;
-
+volatile bool timeoutFlag = false;
+volatile bool doTimeout = false;
+unsigned long startTime;
 SX1280 radio = new Module(RADIO_CS_PIN, RADIO_DIO1_PIN, RADIO_RST_PIN, RADIO_BUSY_PIN);
 fs::SDFS sd = SD;
 DISPLAY_MODEL *u8g2 = new U8G2_SSD1306_128X64_NONAME_F_HW_I2C(U8G2_R0, U8X8_PIN_NONE);
@@ -44,11 +46,23 @@ File file;
 // For file transfer protocol
 // Assumption is that only one file is being transferred at a time
 
-char *filename;
+char filename[FILNAME_SIZE];
 uint16_t packetAmount;
-uint16_t timeout = 400;  // Timeout in ms
+uint16_t lastReceivedPacket = 0;
 
 // ---------------------------------------------------------- //
+
+void startTimeout() {
+  doTimeout = true;
+  startTime = millis();
+}
+
+void checkTimeout() {
+  if (doTimeout && (millis() - startTime > 1000)) {
+    timeoutFlag = true;
+    doTimeout = false;
+  }
+}
 
 void setFlag(void) {
   if (mode == RECEIVE_MODE && enableInterrupt) {
@@ -200,6 +214,15 @@ void initialize() {
   radio.setDio1Action(setFlag);
 }
 
+void printAsHex(uint8_t *message, size_t size) {
+  Serial.print("Message as hex: ");
+  for (int i = 0; i < size; i++) {
+    char s[3];
+    sprintf(s, "%x", message[i]);
+    Serial.print(s);
+  }
+  Serial.println("");
+}
 
 // --------------------------------------------- //
 //              TRANSMITTING CODE                //
@@ -228,7 +251,7 @@ int transmitMessage(uint8_t *message, size_t len) {
   }
   enableInterrupt = false;
   transmittedFlag = false;
-  Serial.print(F("[SX1280] Sending message "));
+  printAsHex(message, len);
   char readMessage[255];
   memcpy(readMessage, message, len);
   readMessage[len] = '\0';
@@ -252,6 +275,8 @@ int transmitNextInQueue() {
 }
 
 bool addMessage(uint8_t *message, size_t len) {
+  Serial.print("Adding a message of size ");
+  Serial.println(len);
   return enqueue(messageQueue, message, len);
 }
 
@@ -370,8 +395,8 @@ void handleReceivedMessage(void (*sucessCallback)(uint8_t *, size_t), void (*fai
     (*failureCallback)(state);
   }
 
-  radio.startReceive();
-  enableInterrupt = true;
+  //radio.startReceive();
+  //enableInterrupt = true;
 }
 
 bool appendToFile(uint8_t *message, size_t size, char *path) {
@@ -438,11 +463,23 @@ void registerPacketNumber(uint16_t number) {
 
 void receiveContent(uint8_t *message, size_t size) {
   uint16_t packetNumber = ((uint16_t *)message)[0];
-  registerPacketNumber(packetNumber);
+  Serial.print("Packet number is ");
+  Serial.println(packetNumber);
+
+  if (packetNumber + 1 == lastReceivedPacket) {
+    Serial.println("Packet already received");
+    return;
+  }
+
+  lastReceivedPacket = packetNumber + 1;
   message += 2;
+  size -= 2;
+
   Serial.print("Received content ");
   Serial.println((char *)message);
+
   appendToFile(message, size, filename);
+
   if (!ACKContent(packetNumber)) {
     Serial.println("Something went wrong when adding ACKConent to queue");
     return;
@@ -462,9 +499,9 @@ void receiveMetadata(uint8_t *message, size_t size) {
   Serial.print("Packet amount set to ");
   Serial.println(packetAmount);
   message += 2;
-  filename = (char *)message;
+  strcpy(filename, (char *)message);
   Serial.print("Filename set to ");
-  Serial.print(filename);
+  Serial.println(filename);
   if (!ACKMetadata()) {
     Serial.println("Something went wrong when adding ACKMetadata to queue");
     return;
@@ -485,21 +522,20 @@ void payloadType(uint8_t *message, size_t size) {
   if (message[0] >> 6 == 0b00) {
     Serial.println("The packet is a content packet");
     receiveContent(message + 1, size - 1);
-  } else if (message[0] >> 6 == 1) {
+  } else if (message[0] >> 6 == 0b01) {
     Serial.println("The packet is a metadata packet");
     receiveMetadata(message + 1, size - 1);
-  } else if (message[0] >> 6 == 2) {
+  } else if (message[0] >> 6 == 0b10) {
     Serial.println("The packet is a content ACK packet");
     packetReceived = true;
-  } else {
+  } else {  // 0b11
     Serial.println("The packet is a metadata ACK packet");
     metadataReceived = true;
   }
 }
 
 void receiveFileProtocolMessage(uint8_t *message, size_t size) {
-  Serial.print("Received message: ");
-  Serial.println((char *)message);
+  printAsHex(message, size);
   payloadType(message, size);
 }
 
@@ -516,8 +552,9 @@ void receiveFailure(int state) {
 }
 
 bool receiveMessage() {
-  while (!receivedFlag) {
+  while (!receivedFlag && millis() - startTime < 1000) {
   }
+
   enableInterrupt = false;
   receivedFlag = false;
   receiveCounter++;
@@ -549,8 +586,6 @@ void transferFile() {
   }
   Serial.print("Sending file: ");
   Serial.println(filename);
-
-
   // SENDING METADATA
   while (!metadataReceived) {
     if (!sendMetadata()) {
@@ -561,6 +596,7 @@ void transferFile() {
     while (!transmittedFlag) {
     }
     Serial.println("Metadata sent!");
+    startTime = millis();
     receiveMode();
     if (!receiveMessage()) {
       Serial.println("Error receiving metadata ACK. Trying to send again.");
@@ -602,6 +638,7 @@ void transferFile() {
       while (!transmittedFlag) {
       }
       receiveMode();
+      startTime = millis();
       if (!receiveMessage()) {
         Serial.println("Error receiving content ACK. Trying to send again.");
       }
@@ -614,7 +651,6 @@ void transferFile() {
   file.close();
 }
 
-
 // --------------------------------------------- //
 //               SERIAL COMMANDS                 //
 // --------------------------------------------- //
@@ -624,172 +660,155 @@ void execCommand(char *message) {
 
   if (strcmp(next, "frequency") == 0 || strcmp(next, "freq") == 0) {
     next = strtok(NULL, " ");
-    if (strcmp(next, "frequency") == 0 || strcmp(next, "freq") == 0) {
-      next = strtok(NULL, " ");
 
-      if (next == NULL) {
-        Serial.println(F("No frequency specified"));
-        return;
-      }
-      if (next == NULL) {
-        Serial.println(F("No frequency specified"));
-        return;
-      }
-
-      float freq = atof(next);
-      if (freq == 0) {
-        Serial.print(next);
-        Serial.println(F(" is an invalid frequency"));
-        return;
-      }
-
-      if (radio.setFrequency(freq) == RADIOLIB_ERR_INVALID_FREQUENCY) {
-        Serial.print(F("Frequency "));
-        Serial.print(freq);
-        Serial.println(F(" is invalid for this module!"));
-        return;
-      }
-
-      Serial.print(F("Changed frequency to "));
-      Serial.println(next);
-    } else if (strcmp(next, "bandwidth") == 0 || strcmp(next, "bw") == 0) {
-      next = strtok(NULL, " ");
-      if (next == NULL) {
-        Serial.println(F("No bandwidth specified"));
-        return;
-      }
-
-      float bw = atof(next);
-      if (bw == 0) {
-        Serial.print(next);
-        Serial.println(F(" is an invalid bandwidth"));
-        return;
-      }
-
-      if (radio.setBandwidth(bw) == RADIOLIB_ERR_INVALID_BANDWIDTH) {
-        Serial.print(F("Bandwidth "));
-        Serial.print(bw);
-        Serial.println(F(" is invalid for this module!"));
-        return;
-      }
-
-      Serial.print(F("Changed bandwidth to "));
-      Serial.println(next);
-    } else if (strcmp(next, "spreadingfactor") == 0 || strcmp(next, "sf") == 0) {
-      next = strtok(NULL, " ");
-      if (next == NULL) {
-        Serial.println(F("No spreading factor specified"));
-        return;
-      }
-
-      uint8_t sf = atoi(next);
-      if (sf = 0) {
-        Serial.print(next);
-        Serial.println(F(" is an invalid spreading factor"));
-        return;
-      }
-
-      if (radio.setSpreadingFactor(sf) == RADIOLIB_ERR_INVALID_SPREADING_FACTOR) {
-        Serial.print(F("Spreading factor "));
-        Serial.print(sf);
-        Serial.println(F(" is invalid for this module!"));
-        return;
-      }
-
-      Serial.print(F("Changed spreading factor to "));
-      Serial.println(next);
-    } else if (strcmp(next, "reset") == 0) {
-      receiveCounter = 0;
-      sendCounter = 0;
-    } else if (strcmp(next, "download") == 0) {
-      next = strtok(NULL, " ");
-      File file = SD.open(next);
-
-      if (!file) {
-        Serial.print("Filename by the name of ");
-        Serial.print(next);
-        Serial.println(" was not found.");
-        return;
-      }
-
-      while (file.available()) {
-        Serial.write(file.read());
-      }
-      file.close();
-    } else if (strcmp(next, "upload") == 0) {
-      next = strtok(NULL, " ");
-
-      File file = SD.open(next, FILE_WRITE);
-      if (!file) {
-        Serial.print("Could not open file ");
-        Serial.println(next);
-        return;
-      }
-
-      next = strtok(NULL, "");
-
-      if (!file.print(next)) {
-        Serial.println("Could not write to file.");
-        return;
-      }
-
-      file.close();
-    } else if (strcmp(next, "sendfile") == 0) {
-      next = strtok(NULL, " ");
-      filename = next;
-      transferFile();
-    } else if (strcmp(next, "delete") == 0 || strcmp(next, "rm") == 0) {
-      next = strtok(NULL, " ");
-
-      if (!SD.remove(next)) {
-        Serial.print("Could not remove file by the name of ");
-        Serial.println(next);
-        return;
-      }
-    } else if (strcmp(next, "start") == 0) {
-      startTransmit();
-    } else if (strcmp(next, "stop") == 0) {
-      stopTransmit();
-    } else if (strcmp(next, "send") == 0) {
-      char *message = "Hello, World!";
-      next = strtok(NULL, " ");
-
-      if (next == NULL) {
-        Serial.println(F("No message amount specified"));
-        return;
-      }
-
-      int amount = atoi(next);
-      if (amount == 0) {
-        Serial.println(F("No messages sent"));
-        return;
-      }
-
-      next = strtok(NULL, "");
-      if (next != NULL) {
-        message = next;
-      }
-
-      if (!addMessageN((uint8_t *)message, strlen(message), amount)) {
-        Serial.println(F("Not all messages were put in queue"));
-      } else {
-        Serial.println(F("All messages were queued"));
-      }
-
-    } else if (strcmp(next, "receive") == 0) {
-
-    } else if (strcmp(next, "remaining") == 0) {
-      int s = size(messageQueue);
-      if (s == -1) {
-        Serial.println(F("Queue is null"));
-        return;
-      }
-      Serial.print(s);
-      Serial.println(F(" remaining messages in queue"));
-    } else {
-      Serial.print(F("Did not understand command: "));
-      Serial.println(message);
+    if (next == NULL) {
+      Serial.println(F("No frequency specified"));
+      return;
     }
+
+    float freq = atof(next);
+    if (freq == 0) {
+      Serial.print(next);
+      Serial.println(F(" is an invalid frequency"));
+      return;
+    }
+    if (radio.setFrequency(freq) == RADIOLIB_ERR_INVALID_FREQUENCY) {
+      Serial.print(F("Frequency "));
+      Serial.print(freq);
+      Serial.println(F(" is invalid for this module!"));
+      return;
+    }
+
+    Serial.print(F("Changed frequency to "));
+    Serial.println(next);
+  } else if (strcmp(next, "bandwidth") == 0 || strcmp(next, "bw") == 0) {
+    next = strtok(NULL, " ");
+    if (next == NULL) {
+      Serial.println(F("No bandwidth specified"));
+      return;
+    }
+    float bw = atof(next);
+    if (bw == 0) {
+      Serial.print(next);
+      Serial.println(F(" is an invalid bandwidth"));
+      return;
+    }
+    if (radio.setBandwidth(bw) == RADIOLIB_ERR_INVALID_BANDWIDTH) {
+      Serial.print(F("Bandwidth "));
+      Serial.print(bw);
+      Serial.println(F(" is invalid for this module!"));
+      return;
+    }
+
+    Serial.print(F("Changed bandwidth to "));
+    Serial.println(next);
+  } else if (strcmp(next, "spreadingfactor") == 0 || strcmp(next, "sf") == 0) {
+    next = strtok(NULL, " ");
+    if (next == NULL) {
+      Serial.println(F("No spreading factor specified"));
+      return;
+    }
+
+    uint8_t sf = atoi(next);
+    if (sf = 0) {
+      Serial.print(next);
+      Serial.println(F(" is an invalid spreading factor"));
+      return;
+    }
+    if (radio.setSpreadingFactor(sf) == RADIOLIB_ERR_INVALID_SPREADING_FACTOR) {
+      Serial.print(F("Spreading factor "));
+      Serial.print(sf);
+      Serial.println(F(" is invalid for this module!"));
+      return;
+    }
+    Serial.print(F("Changed spreading factor to "));
+    Serial.println(next);
+  } else if (strcmp(next, "reset") == 0) {
+    receiveCounter = 0;
+    sendCounter = 0;
+  } else if (strcmp(next, "download") == 0) {
+    next = strtok(NULL, " ");
+    File file = SD.open(next);
+    if (!file) {
+      Serial.print("Filename by the name of ");
+      Serial.print(next);
+      Serial.println(" was not found.");
+      return;
+    }
+
+    while (file.available()) {
+      Serial.write(file.read());
+    }
+    file.close();
+  } else if (strcmp(next, "upload") == 0) {
+    next = strtok(NULL, " ");
+    File file = SD.open(next, FILE_WRITE);
+    if (!file) {
+      Serial.print("Could not open file ");
+      Serial.println(next);
+      return;
+    }
+    next = strtok(NULL, "");
+    if (!file.print(next)) {
+      Serial.println("Could not write to file.");
+      return;
+    }
+
+    file.close();
+  } else if (strcmp(next, "sendfile") == 0) {
+    next = strtok(NULL, " ");
+    strncpy(filename, next, FILNAME_SIZE);
+    transferFile();
+  } else if (strcmp(next, "delete") == 0 || strcmp(next, "rm") == 0) {
+    next = strtok(NULL, " ");
+
+    if (!SD.remove(next)) {
+      Serial.print("Could not remove file by the name of ");
+      Serial.println(next);
+      return;
+    }
+  } else if (strcmp(next, "start") == 0) {
+    startTransmit();
+  } else if (strcmp(next, "stop") == 0) {
+    stopTransmit();
+  } else if (strcmp(next, "send") == 0) {
+    char *message = "Hello, World!";
+    next = strtok(NULL, " ");
+
+    if (next == NULL) {
+      Serial.println(F("No message amount specified"));
+      return;
+    }
+
+    int amount = atoi(next);
+    if (amount == 0) {
+      Serial.println(F("No messages sent"));
+      return;
+    }
+
+    next = strtok(NULL, "");
+    if (next != NULL) {
+      message = next;
+    }
+
+    if (!addMessageN((uint8_t *)message, strlen(message), amount)) {
+      Serial.println(F("Not all messages were put in queue"));
+    } else {
+      Serial.println(F("All messages were queued"));
+    }
+  } else if (strcmp(next, "receive") == 0) {
+
+  } else if (strcmp(next, "remaining") == 0) {
+    int s = size(messageQueue);
+    if (s == -1) {
+      Serial.println(F("Queue is null"));
+      return;
+    }
+    Serial.print(s);
+    Serial.println(F(" remaining messages in queue"));
+  } else {
+    Serial.print(F("Did not understand command: "));
+    Serial.println(message);
   }
 }
 
