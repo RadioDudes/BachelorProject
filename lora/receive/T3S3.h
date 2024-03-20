@@ -183,31 +183,31 @@ void initialize() {
 #endif
 
   if (radio.setOutputPower(3) == RADIOLIB_ERR_INVALID_OUTPUT_POWER) {
-    Serial.println(F("Selected output power is invalid for this module!"));
+    printError("Selected output power is invalid for this module!");
     while (true)
       ;
   }
 
   if (radio.setFrequency(2400.0) == RADIOLIB_ERR_INVALID_FREQUENCY) {
-    Serial.println(F("Selected frequency is invalid for this module!"));
+    printError("Selected frequency is invalid for this module!");
     while (true)
       ;
   }
 
   if (radio.setBandwidth(203.125) == RADIOLIB_ERR_INVALID_BANDWIDTH) {
-    Serial.println(F("Selected bandwidth is invalid for this module!"));
+    printError("Selected bandwidth is invalid for this module!");
     while (true)
       ;
   }
 
   if (radio.setSpreadingFactor(10) == RADIOLIB_ERR_INVALID_SPREADING_FACTOR) {
-    Serial.println(F("Selected spreading factor is invalid for this module!"));
+    printError("Selected spreading factor is invalid for this module!");
     while (true)
       ;
   }
 
   if (radio.setCodingRate(6) == RADIOLIB_ERR_INVALID_CODING_RATE) {
-    Serial.println(F("Selected coding rate is invalid for this module!"));
+    printError("Selected coding rate is invalid for this module!");
     while (true)
       ;
   }
@@ -263,16 +263,12 @@ int transmitNextInQueue() {
 }
 
 bool addMessage(uint8_t *message, size_t len) {
-  Serial.print("Adding a message of size ");
-  Serial.println(len);
+  printAddMessage(len);
   return enqueue(messageQueue, message, len);
 }
 
 bool addMessageN(uint8_t *message, size_t len, int amount) {
-  Serial.print(F("Adding "));
-  Serial.print(amount);
-  Serial.print(F(" messages of size "));
-  Serial.println(len);
+  printAddNMessages(amount, len);
   bool result = true;
   while (amount > 0) {
     result = result && addMessage(message, len);
@@ -444,7 +440,9 @@ void receiveAndAppendToFile(uint8_t *message, size_t size) {
 // +---------------+---------+
 
 void receiveContent(uint8_t *message, size_t size) {
-  uint16_t packetNumber = ((uint16_t *)message)[0];
+  uint8_t first = message[0];
+  uint8_t second = message[1];
+  packetNumber = (first << 8) + second;
   printPacketNumber(packetNumber);
 
   if (packetNumber + 1 == lastReceivedPacket) {
@@ -524,6 +522,7 @@ void receiveFailure(int state) {
     // some other error occurred
     printErrorCode(state);
   }
+  receiveMode();
 }
 
 bool receiveMessage() {

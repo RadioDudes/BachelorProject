@@ -54,6 +54,7 @@ void printFilename(String filename) {
 void printPacketContent(uint8_t *content, size_t size) {
   Serial.print("| PAKCET CONTENT | ");
   printAsHex(content, size);
+  Serial.println();
 }
 
 void printInfo(String info) {
@@ -70,4 +71,27 @@ void printErrorCode(int code) {
   Serial.print("| ERROR            | ");
   Serial.print("SX1280 error with code ");
   Serial.println(code);
+}
+
+void printAddMessage(size_t size) {
+  Serial.print("| INFO             | Adding a message of size ");
+  Serial.println(size);
+}
+
+void printAddNMessages(int amount, size_t size) {
+  Serial.print("| INFO             | Adding ");
+  Serial.print(amount);
+  Serial.print("messages of size ");
+  Serial.println(size);
+}
+
+void printSendingFile(char *filename) {
+  Serial.print("| INFO             | Sending file ");
+  Serial.println(filename);
+}
+
+void printErrorOpeningFile(char *filename) {
+  Serial.print("| ERROR            | ");
+  Serial.print("Could not open file ");
+  Serial.println(filename);
 }
