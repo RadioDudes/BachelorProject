@@ -109,9 +109,13 @@ void execCommand(char *message)
   }
   else if (strcmp(next, "send") == 0)
   {
+    transmitMode();
     next = strtok(NULL, " ");
-    strncpy(filename, next, FILENAME_SIZE);
-    transferFile();
+    transferFile(next);
+  }
+  else if (strcmp(next, "receive") == 0)
+  {
+    receiveMode();
   }
   else if (strcmp(next, "delete") == 0 || strcmp(next, "rm") == 0)
   {

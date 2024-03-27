@@ -212,8 +212,9 @@ bool sendContents()
     return true;
 }
 
-void transferFile()
+void transferFile(char* name)
 {
+    strncpy(filename, name, FILENAME_SIZE);
     file = SD.open(filename);
 
     if (!file)

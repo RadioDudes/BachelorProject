@@ -17,6 +17,12 @@ SX1280 radio = new Module(RADIO_CS_PIN, RADIO_DIO1_PIN, RADIO_RST_PIN, RADIO_BUS
 // Max length of the file name
 #define FILENAME_SIZE 100
 
+// Modes for the device to switch between
+const int INACTIVE = 0;
+const int RECEIVE_MODE = 1;
+const int TRANSMIT_MODE = 2;
+int mode = INACTIVE;
+
 // Counters for amount of packets sent and received
 int sendCounter = 0;
 int receiveCounter = 0;
@@ -26,7 +32,9 @@ unsigned long timeoutTime = 500;
 // Size of each packet
 int packetSize = 30;
 
+// Interrupt-driven receive flag
 volatile bool receivedFlag = false;
+// Interrupt-driven transmit flag
 volatile bool transmittedFlag = true;
 
 // --------------------------------------------- //

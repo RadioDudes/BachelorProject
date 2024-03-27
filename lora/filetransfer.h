@@ -41,4 +41,4 @@ void receiveFileProtocolMessage();
 bool receiveACK();
 bool sendMetadata();
 bool sendContents();
-void transferFile();
+void transferFile(char* name);
