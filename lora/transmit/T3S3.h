@@ -7,7 +7,6 @@
 #include <SD.h>
 #include <FS.h>
 #include <U8g2lib.h>
-#include "queue.h"
 #include "logging.h"
 
 // API for communicating with the radio itself, from RadioLib (https://github.com/jgromes/RadioLib)
