@@ -130,6 +130,16 @@ void execCommand(char *message)
       return;
     }
   }
+  else if (strcmp(next, "packetsize") == 0)
+  {
+    next = strtok(NULL, " ");
+    setPacketSize(atoi(next));
+  }
+  else if (strcmp(next, "timeout") == 0)
+  {
+    next = strtok(NULL, " ");
+    setTimeout(atoi(next));
+  }
   else
   {
     Serial.print(F("Did not understand command: "));
