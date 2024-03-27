@@ -7,6 +7,7 @@ uint16_t packetAmount;
 
 uint16_t lastReceivedPacket = 0;
 
+uint16_t receivedPacketCount = UINT16_MAX;
 volatile bool metadataReceived = false;
 volatile bool packetReceived = false;
 
@@ -18,16 +19,17 @@ bool payloadType(uint8_t *message, size_t size)
 {
     int type = message[0] >> 6;
     printContentType(type);
-    if (type == 0)
+    if (type == 0b00)
     {
         receiveContent(message + 1, size - 1);
     }
-    else if (type == 1)
+    else if (type == 0b01)
     {
         receiveMetadata(message + 1, size - 1);
     }
     else if (type == 0b10)
     {
+        receivedPacketCount = (message[1] << 8) + message[2];
         packetReceived = true;
     }
     else if (type == 0b11)
@@ -184,7 +186,7 @@ bool sendContents()
         buffer[2] = packetCount & 0xFF;
         size_t readBytes = file.read(buffer + 3, packetSize);
 
-        while (!packetReceived)
+        while (!packetReceived || receivedPacketCount != packetCount)
         {
             printTransmitFilePacket(buffer, readBytes + 3, packetCount, buffer + 3, readBytes);
 
