@@ -1,3 +1,5 @@
+#pragma once
+
 #include "filetransfer.h"
 
 #define MAX_MESSAGE_LENGTH 500

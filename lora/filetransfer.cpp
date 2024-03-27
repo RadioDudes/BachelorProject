@@ -1,10 +1,14 @@
 #include "filetransfer.h"
-
 // For file transfer protocol
 // Assumption is that only one file is being transferred at a time
 File file;
 char filename[FILENAME_SIZE];
 uint16_t packetAmount;
+
+uint16_t lastReceivedPacket = 0;
+
+volatile bool metadataReceived = false;
+volatile bool packetReceived = false;
 
 // --------------------------------------------- //
 //         FILE TRANSFER - SHARED                //
@@ -40,8 +44,6 @@ bool payloadType(uint8_t *message, size_t size)
 // --------------------------------------------- //
 //         FILE TRANSFER - RECEIVER              //
 // --------------------------------------------- //
-
-uint16_t lastReceivedPacket = 0;
 
 bool ACKContent(uint16_t packetNumber)
 {
@@ -127,9 +129,6 @@ void receiveFileProtocolMessage()
 // --------------------------------------------- //
 //         FILE TRANSFER - TRANSMITTER           //
 // --------------------------------------------- //
-
-volatile bool metadataReceived = false;
-volatile bool packetReceived = false;
 
 bool receiveACK()
 {

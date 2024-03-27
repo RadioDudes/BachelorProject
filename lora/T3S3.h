@@ -1,3 +1,5 @@
+#pragma once
+
 #include <Arduino.h>
 #include <SPI.h>
 #include <Wire.h>
@@ -9,33 +11,33 @@
 #include <U8g2lib.h>
 #include "logging.h"
 
-// API for communicating with the radio itself, from RadioLib (https://github.com/jgromes/RadioLib)
-SX1280 radio = new Module(RADIO_CS_PIN, RADIO_DIO1_PIN, RADIO_RST_PIN, RADIO_BUSY_PIN);
-
 // Max amount of packets
 #define MAX_PACKET_AMOUNT 65536
 // Max length of the file name
 #define FILENAME_SIZE 100
 
+// API for communicating with the radio itself, from RadioLib (https://github.com/jgromes/RadioLib)
+extern SX1280 radio;
+
 // Modes for the device to switch between
-const int INACTIVE = 0;
-const int RECEIVE_MODE = 1;
-const int TRANSMIT_MODE = 2;
-int mode = INACTIVE;
+extern const int INACTIVE;
+extern const int RECEIVE_MODE;
+extern const int TRANSMIT_MODE;
+extern int mode;
 
 // Counters for amount of packets sent and received
-int sendCounter = 0;
-int receiveCounter = 0;
+extern int sendCounter;
+extern int receiveCounter;
 
 // Timeout defined in milliseconds
-unsigned long timeoutTime = 500;
+extern unsigned long timeoutTime;
 // Size of each packet
-int packetSize = 30;
+extern int packetSize;
 
 // Interrupt-driven receive flag
-volatile bool receivedFlag = false;
+extern volatile bool receivedFlag;
 // Interrupt-driven transmit flag
-volatile bool transmittedFlag = true;
+extern volatile bool transmittedFlag;
 
 // --------------------------------------------- //
 //              FUNCTIONALITY CODE               //

@@ -7,6 +7,29 @@ fs::SDFS sd = SD;
 DISPLAY_MODEL *u8g2 = new U8G2_SSD1306_128X64_NONAME_F_HW_I2C(U8G2_R0, U8X8_PIN_NONE);
 Ticker ledTicker;
 
+// API for communicating with the radio itself, from RadioLib (https://github.com/jgromes/RadioLib)
+SX1280 radio = new Module(RADIO_CS_PIN, RADIO_DIO1_PIN, RADIO_RST_PIN, RADIO_BUSY_PIN);
+
+// Modes for the device to switch between
+const int INACTIVE = 0;
+const int RECEIVE_MODE = 1;
+const int TRANSMIT_MODE = 2;
+int mode = INACTIVE;
+
+// Counters for amount of packets sent and received
+int sendCounter = 0;
+int receiveCounter = 0;
+
+// Timeout defined in milliseconds
+unsigned long timeoutTime = 500;
+// Size of each packet
+int packetSize = 30;
+
+// Interrupt-driven receive flag
+volatile bool receivedFlag = false;
+// Interrupt-driven transmit flag
+volatile bool transmittedFlag = true;
+
 // ---------------------------------------------------------- //
 
 void setSpreadingFactor(uint8_t sf)
