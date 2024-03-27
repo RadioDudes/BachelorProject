@@ -12,6 +12,7 @@ void printTransmitPacket(uint8_t *message, size_t size) {
   Serial.println("===============================");
   Serial.print("| MESSAGE AS HEX | ");
   printAsHex(message, size);
+  Serial.println();
 }
 
 void printReceivedPacket(uint8_t *message, size_t size) {
@@ -95,3 +96,79 @@ void printErrorOpeningFile(char *filename) {
   Serial.print("Could not open file ");
   Serial.println(filename);
 }
+
+void printTransmitFilePacket(uint8_t *message, size_t size, int packetNumber, uint8_t *content, size_t contentSize) {
+  Serial.println("===============================");
+  Serial.println("      TRANSMITTING PACKET      ");
+  Serial.println("===============================");
+  Serial.print("| PACKET AS HEX  | ");
+  printAsHex(message, size);
+  Serial.println();
+  Serial.print("| PACKET NUMBER  | ");
+  Serial.println(packetNumber);
+  Serial.print("| PACKET SIZE    | ");
+  Serial.println(size);
+  Serial.print("| CONTENT AS HEX | ");
+  printAsHex(content, contentSize);
+  Serial.println();
+}
+
+void printFileTransferTotalTime(unsigned long time) {
+  Serial.print("| INFO           | File transfer took ");
+  Serial.print(time);
+  Serial.println(" milliseconds");
+}
+
+void printInvalidFrequency(double freq) {
+  Serial.print("| ERROR          | Invalid frequency ");
+  Serial.println(freq);
+}
+
+void printInvalidBandwidth(double bw) {
+  Serial.print("| ERROR          | Invalid bandwidth ");
+  Serial.println(bw);
+}
+
+void printInvalidSpreadingFactor(uint8_t sf) {
+  Serial.print("| ERROR          | Invalid spreading factor ");
+  Serial.println(sf);
+}
+
+void printInvalidCodingRate(uint8_t cr) {
+  Serial.print("| ERROR          | Invalid coding rate ");
+  Serial.println(cr);
+}
+
+void printSetSpreadingFactor(uint8_t sf) {
+  Serial.print("| INFO           | Set spreading factor to ");
+  Serial.println(sf);
+}
+
+void printSetCodingRate(uint8_t cr) {
+  Serial.print("| INFO           | Set coding rate to ");
+  Serial.println(cr);
+}
+
+void printSetBandwidth(double bw) {
+  Serial.print("| INFO           | Set bandwidth to ");
+  Serial.println(bw);
+}
+
+void printSetFrequency(double freq) {
+  Serial.print("| INFO           | Set frequency to ");
+  Serial.println(freq);
+}
+
+void printSetTimeout(unsigned long timeout) {
+  Serial.print("| INFO           | Set timeout to ");
+  Serial.println(timeout);
+}
+
+void printSetPacketSize(int size) {
+  Serial.print("| INFO           | Set packet size to ");
+  Serial.println(size);
+}
+
+
+
+
