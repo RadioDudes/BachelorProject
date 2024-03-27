@@ -1,9 +1,6 @@
-#include "transmitter.h"
-#include "receiver.h"
+#include "filetransfer.h"
 
 #define MAX_MESSAGE_LENGTH 500
-Transmitter transmitter;
-Receiver receiver;
 
 // --------------------------------------------- //
 //               SERIAL COMMANDS                 //
@@ -114,7 +111,7 @@ void execCommand(char *message)
   {
     next = strtok(NULL, " ");
     strncpy(filename, next, FILENAME_SIZE);
-    transmitter.transferFile();
+    transferFile();
   }
   else if (strcmp(next, "delete") == 0 || strcmp(next, "rm") == 0)
   {
