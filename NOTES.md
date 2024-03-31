@@ -167,4 +167,13 @@ Look up "thermal noise"
 
 ## Cyclical redundancy check
 
+## Antenna
 
+### Dipole antenna
+
+### Monopole antenna
+
+### Isotropic antenna
+
+A 'perfect' antenna, that radiates in equal amounts in every direction. Doesn't exist in reality.
+Antenna gain is measured in relation to an isotropic antenna. The unit is 'dBi', 'i' for isotropic.
