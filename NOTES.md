@@ -169,11 +169,25 @@ Look up "thermal noise"
 
 ## Antenna
 
-### Dipole antenna
+### Radiation patterns
 
-### Monopole antenna
+Isotropic radiation, equal amounts in every direction.
+Omnidirectional radiation, isotropic along a single plane.
 
 ### Isotropic antenna
 
 A 'perfect' antenna, that radiates in equal amounts in every direction. Doesn't exist in reality.
 Antenna gain is measured in relation to an isotropic antenna. The unit is 'dBi', 'i' for isotropic.
+
+### Antenna gain
+
+'how much power is transmitted in the direction of peak radiation'.
+In comparison to isotropic antenna.
+[1](https://www.antenna-theory.com/basics/gain.php)
+
+### Our antenna
+
+We use a 4cm antenna, which has a gain of 2dBi. It is not meant for 2.4GHz, since the wavelength of 2.4 is 12.5cm, meaning that the antenna is roughly a third of the wavelength. This might affect gain.
+[1](https://www.graylogix.in/product/4cms-male-stub-antennastraight)
+
+## Link budget
