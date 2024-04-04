@@ -29,8 +29,12 @@ bool payloadType(uint8_t *message, size_t size)
     }
     else if (type == 0b10)
     {
+      if (size >= 3) {
         receivedPacketCount = (message[1] << 8) + message[2];
         packetReceived = true;
+      } else {
+        printError("Content packet too short!");
+      }
     }
     else if (type == 0b11)
     {
@@ -41,6 +45,7 @@ bool payloadType(uint8_t *message, size_t size)
         printError("Invalid packet received.");
         return false;
     }
+    return true;
 }
 
 // --------------------------------------------- //
@@ -73,7 +78,7 @@ void receiveContent(uint8_t *message, size_t size)
     message += 2;
     size -= 2;
 
-    if (packetNumber + 1 == lastReceivedPacket)
+    if ((packetNumber + 1) == lastReceivedPacket)
     {
         printInfo("Packet already received");
     }
@@ -84,14 +89,17 @@ void receiveContent(uint8_t *message, size_t size)
     }
 
     printPacketContent(message, size);
-
+    transmitMode();
     if (!ACKContent(packetNumber))
     {
         printError("Something went wrong when adding ACKConent to queue");
         receiveMode();
         return;
     }
-    transmitMode();
+    while (!transmittedFlag)
+    {
+    }
+    receiveMode();
 }
 
 void receiveMetadata(uint8_t *message, size_t size)
@@ -104,12 +112,16 @@ void receiveMetadata(uint8_t *message, size_t size)
     size -= 2;
     strncpy(filename, (char *)message, FILENAME_SIZE);
     printFilename(filename);
+    transmitMode();
     if (!ACKMetadata())
     {
         printError("Something went wrong when adding ACKMetadata to queue");
         return;
     }
-    transmitMode();
+    while (!transmittedFlag)
+    {
+    }
+    receiveMode();
 }
 
 void receiveFileProtocolMessage()
@@ -143,6 +155,7 @@ bool receiveACK()
         return false;
     }
 
+    printReceivedPacket(message, messageSize);
     return payloadType(message, messageSize);
 }
 
@@ -213,7 +226,7 @@ bool sendContents()
     return true;
 }
 
-void transferFile(char* name)
+void transferFile(char *name)
 {
     strncpy(filename, name, FILENAME_SIZE);
     file = SD.open(filename);

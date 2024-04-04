@@ -89,6 +89,7 @@ void execCommand(char *message)
       Serial.write(file.read());
     }
     file.close();
+    Serial.println();
   }
   else if (strcmp(next, "upload") == 0)
   {
