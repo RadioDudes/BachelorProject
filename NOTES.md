@@ -172,6 +172,7 @@ Look up "thermal noise"
 ### Radiation patterns
 
 Isotropic radiation, equal amounts in every direction.
+
 Omnidirectional radiation, isotropic along a single plane.
 
 ### Isotropic antenna
@@ -191,3 +192,8 @@ We use a 4cm antenna, which has a gain of 2dBi. It is not meant for 2.4GHz, sinc
 [1](https://www.graylogix.in/product/4cms-male-stub-antennastraight)
 
 ## Link budget
+
+### Friis transmission equation
+
+Used to calculate power received at antenna. Takes gain of antennas and free space loss into consideration.
+[1](https://www.antenna-theory.com/basics/friis.php)
