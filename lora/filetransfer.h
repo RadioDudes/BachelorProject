@@ -15,6 +15,9 @@
 // 11 = ACK file meta data
 bool payloadType(uint8_t *message, size_t size);
 
+void receiveFileProtocolMessage();
+
+
 // --------------------------------------------- //
 //         FILE TRANSFER - RECEIVER              //
 // --------------------------------------------- //
@@ -33,13 +36,12 @@ void receiveContent(uint8_t *message, size_t size);
 // +--------------+-------------+---------------+-----------+
 void receiveMetadata(uint8_t *message, size_t size);
 
-void receiveFileProtocolMessage();
 
 // --------------------------------------------- //
 //         FILE TRANSFER - TRANSMITTER           //
 // --------------------------------------------- //
 
-bool receiveACK();
+void receiveACK();
 bool sendMetadata();
 bool sendContents();
 void transferFile(char* name);

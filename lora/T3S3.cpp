@@ -295,6 +295,7 @@ void receiveMode()
 {
   mode = RECEIVE_MODE;
   radio.startReceive();
+  printInfo("RECEIVE MODE ACTIVATED");
 }
 
 bool appendToFile(uint8_t *message, size_t size, char *path)
@@ -320,16 +321,6 @@ bool appendToFile(uint8_t *message, size_t size, char *path)
 
 bool receiveMessage(uint8_t *buffer, size_t messageSize)
 {
-  unsigned long timeoutStartTime = millis();
-  while (!receivedFlag)
-  {
-    if (millis() - timeoutStartTime > timeoutTime)
-    {
-      printError("Timed out!");
-      return false;
-    }
-  }
-
   receivedFlag = false;
 
   int state = radio.readData(buffer, messageSize);

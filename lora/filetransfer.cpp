@@ -29,12 +29,16 @@ bool payloadType(uint8_t *message, size_t size)
     }
     else if (type == 0b10)
     {
-      if (size >= 3) {
-        receivedPacketCount = (message[1] << 8) + message[2];
-        packetReceived = true;
-      } else {
-        printError("Content packet too short!");
-      }
+        if (size >= 3)
+        {
+            receivedPacketCount = (message[1] << 8) + message[2];
+            packetReceived = true;
+        }
+        else
+        {
+            printError("Content packet too short!");
+            return false;
+        }
     }
     else if (type == 0b11)
     {
@@ -46,6 +50,22 @@ bool payloadType(uint8_t *message, size_t size)
         return false;
     }
     return true;
+}
+
+void receiveFileProtocolMessage()
+{
+    size_t messageSize = radio.getPacketLength();
+    uint8_t message[messageSize];
+    if (!receiveMessage(message, messageSize))
+    {
+        printError("Error receiving message.");
+        return;
+    }
+    printReceivedPacket(message, messageSize);
+    if (!payloadType(message, messageSize))
+    {
+        printError("Error getting payload type.");
+    }
 }
 
 // --------------------------------------------- //
@@ -124,39 +144,26 @@ void receiveMetadata(uint8_t *message, size_t size)
     receiveMode();
 }
 
-void receiveFileProtocolMessage()
-{
-    size_t messageSize = radio.getPacketLength();
-    uint8_t message[messageSize];
-    if (!receiveMessage(message, messageSize))
-    {
-        printError("Error receiving message.");
-        return;
-    }
-    printReceivedPacket(message, messageSize);
-    if (!payloadType(message, messageSize))
-    {
-        printError("Error getting payload type.");
-    }
-}
-
 // --------------------------------------------- //
 //         FILE TRANSFER - TRANSMITTER           //
 // --------------------------------------------- //
 
-bool receiveACK()
+void receiveACK()
 {
     receiveMode();
-    size_t messageSize = radio.getPacketLength();
-    uint8_t message[messageSize];
 
-    if (!receiveMessage(message, messageSize))
+    // Timeout implementation
+    unsigned long timeoutStartTime = millis();
+    while (!receivedFlag)
     {
-        return false;
+        if (millis() - timeoutStartTime > timeoutTime)
+        {
+            printError("Timed out!");
+            return;
+        }
     }
 
-    printReceivedPacket(message, messageSize);
-    return payloadType(message, messageSize);
+    receiveFileProtocolMessage();
 }
 
 bool sendMetadata()
@@ -211,11 +218,7 @@ bool sendContents()
             while (!transmittedFlag)
             {
             }
-
-            if (!receiveACK())
-            {
-                printInfo("Timeout or failure when receiving content ACK. Trying again.");
-            }
+            receiveACK();
             transmitMode();
         }
 
@@ -252,10 +255,7 @@ void transferFile(char *name)
         while (!transmittedFlag)
         {
         }
-        if (!receiveACK())
-        {
-            printInfo("Timeout or failure when receiving metadata ACK. Trying again.");
-        }
+        receiveACK();
         transmitMode();
     }
 
