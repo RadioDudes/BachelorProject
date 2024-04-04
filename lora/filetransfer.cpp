@@ -112,7 +112,7 @@ void receiveContent(uint8_t *message, size_t size)
     transmitMode();
     if (!ACKContent(packetNumber))
     {
-        printError("Something went wrong when adding ACKConent to queue");
+        printError("Something went wrong when sending ACKContent");
         receiveMode();
         return;
     }
@@ -124,18 +124,22 @@ void receiveContent(uint8_t *message, size_t size)
 
 void receiveMetadata(uint8_t *message, size_t size)
 {
+    // In order to reset for every new file sent, lastReceivedPacket is set to 0.
+    lastReceivedPacket = 0;
     uint8_t first = message[0];
     uint8_t second = message[1];
     packetAmount = (first << 8) + second;
+
     printPacketAmount(packetAmount);
     message += 2;
     size -= 2;
     strncpy(filename, (char *)message, FILENAME_SIZE);
     printFilename(filename);
+
     transmitMode();
     if (!ACKMetadata())
     {
-        printError("Something went wrong when adding ACKMetadata to queue");
+        printError("Something went wrong when sending ACKMetadata");
         return;
     }
     while (!transmittedFlag)
