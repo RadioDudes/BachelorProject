@@ -1,5 +1,17 @@
 #include "filetransfer.h"
 // For file transfer protocol
+
+// Max amount of packets
+#define MAX_PACKET_AMOUNT 65536
+// Max length of the file name
+#define FILENAME_SIZE 100
+
+// Timeout defined in milliseconds
+unsigned long timeoutTime = 500;
+
+// Size of each packet
+int packetSize = 30;
+
 // Assumption is that only one file is being transferred at a time
 File file;
 char filename[FILENAME_SIZE];
@@ -14,6 +26,18 @@ volatile bool packetReceived = false;
 // --------------------------------------------- //
 //         FILE TRANSFER - SHARED                //
 // --------------------------------------------- //
+
+void setTimeout(unsigned long time)
+{
+  timeoutTime = time;
+  printSetTimeout(time);
+}
+
+void setPacketSize(int size)
+{
+  packetSize = size;
+  printSetPacketSize(size);
+}
 
 bool payloadType(uint8_t *message, size_t size)
 {

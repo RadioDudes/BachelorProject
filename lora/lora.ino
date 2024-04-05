@@ -3,16 +3,14 @@
 void setup()
 {
   initialize();
+  receiveMode();
 }
 
 void loop()
 {
   readSerial();
-  if (mode == RECEIVE_MODE)
+  if (receivedFlag)
   {
-    if (receivedFlag)
-    {
-      receiveFileProtocolMessage();
-    }
+    receiveFileProtocolMessage();
   }
 }

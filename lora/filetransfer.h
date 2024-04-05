@@ -5,6 +5,9 @@
 //         FILE TRANSFER - SHARED                //
 // --------------------------------------------- //
 
+void setTimeout(unsigned long time);
+void setPacketSize(int size);
+
 //     2 bits          6 bits
 // +--------------+-------------+---------+
 // | payload type | file number | payload |

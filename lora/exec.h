@@ -112,9 +112,28 @@ void execCommand(char *message)
   }
   else if (strcmp(next, "send") == 0)
   {
-    transmitMode();
     next = strtok(NULL, " ");
+
+    sendCounter = 0;
+    receiveCounter = 0;
+
+    // Print to display
+    u8g2->clearBuffer();
+    u8g2->drawStr(0, 16, "Sending file");
+    u8g2->drawStr(0, 32, next);
+    u8g2->updateDisplayArea(0, 0, 16, 4);
+
+    transmitMode();
     transferFile(next);
+
+    u8g2->clearBuffer();
+    u8g2->drawStr(0, 16, "Finished file transfer!");
+    u8g2->updateDisplayArea(0, 0, 16, 4);
+    delay(3000);
+
+    u8g2->clearBuffer();
+    u8g2->drawStr(0, 16, "Waiting for command");
+    u8g2->updateDisplayArea(0, 0, 16, 4);
   }
   else if (strcmp(next, "receive") == 0)
   {

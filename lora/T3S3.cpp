@@ -1,7 +1,6 @@
 #include "T3S3.h"
 
 SPIClass SDSPI(HSPI);
-#define DISPLAY_MODEL U8G2_SSD1306_128X64_NONAME_F_HW_I2C
 
 fs::SDFS sd = SD;
 DISPLAY_MODEL *u8g2 = new U8G2_SSD1306_128X64_NONAME_F_HW_I2C(U8G2_R0, U8X8_PIN_NONE);
@@ -19,11 +18,6 @@ int mode = INACTIVE;
 // Counters for amount of packets sent and received
 int sendCounter = 0;
 int receiveCounter = 0;
-
-// Timeout defined in milliseconds
-unsigned long timeoutTime = 500;
-// Size of each packet
-int packetSize = 30;
 
 // Interrupt-driven receive flag
 volatile bool receivedFlag = false;
@@ -70,18 +64,6 @@ void setBandwidth(double bw)
     return;
   }
   printSetBandwidth(bw);
-}
-
-void setTimeout(unsigned long time)
-{
-  timeoutTime = time;
-  printSetTimeout(time);
-}
-
-void setPacketSize(int size)
-{
-  packetSize = size;
-  printSetPacketSize(size);
 }
 
 void setFlag(void)
@@ -265,6 +247,10 @@ void transmitMode()
   receivedFlag = false;
   mode = TRANSMIT_MODE;
   transmittedFlag = true;
+  u8g2->clearBuffer();
+  u8g2->drawStr(0, 48, "Transmit mode");
+  u8g2->drawStr(0, 64, ("Packet no. " + String(receiveCounter)).c_str());
+  u8g2->updateDisplayArea(0, 4, 16, 4);
 }
 
 bool transmitMessage(uint8_t *message, size_t len)
@@ -295,7 +281,10 @@ void receiveMode()
 {
   mode = RECEIVE_MODE;
   radio.startReceive();
-  printInfo("RECEIVE MODE ACTIVATED");
+  u8g2->clearBuffer();
+  u8g2->drawStr(0, 48, "Receive mode");
+  u8g2->drawStr(0, 64, ("Packet no. " + String(receiveCounter)).c_str());
+  u8g2->updateDisplayArea(0, 4, 16, 4);
 }
 
 bool appendToFile(uint8_t *message, size_t size, char *path)
