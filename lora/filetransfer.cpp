@@ -160,6 +160,11 @@ void receiveMetadata(uint8_t *message, size_t size)
     strncpy(filename, (char *)message, FILENAME_SIZE);
     printFilename(filename);
 
+    u8g2->clearBuffer();
+    u8g2->drawStr(0, 16, "Receiving file");
+    u8g2->drawStr(0, 32, filename);
+    u8g2->updateDisplayArea(0, 0, 16, 4);
+
     transmitMode();
     if (!ACKMetadata())
     {

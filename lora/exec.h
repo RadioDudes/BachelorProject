@@ -137,6 +137,8 @@ void execCommand(char *message)
   }
   else if (strcmp(next, "receive") == 0)
   {
+    sendCounter = 0;
+    receiveCounter = 0;
     receiveMode();
   }
   else if (strcmp(next, "delete") == 0 || strcmp(next, "rm") == 0)
