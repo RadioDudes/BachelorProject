@@ -313,5 +313,7 @@ void transferFile(char *name)
     printPacketLoss(packetLoss);
     printFileTransferTotalTime(fileTransferTime);
     printDataRate(bytesTransferred, fileTransferTime);
+    packetLoss = 0;
+    bytesTransferred = 0;
     file.close();
 }
