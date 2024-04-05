@@ -43,7 +43,7 @@ void initialize();
 // --------------------------------------------- //
 
 void transmitMode();
-bool transmitMessage(uint8_t *message, size_t len);
+bool transmitMessage(uint8_t *message, size_t len, bool printPacket = true);
 
 // --------------------------------------------- //
 //                RECEIVING CODE                 //

@@ -9,6 +9,11 @@
 // Timeout defined in milliseconds
 unsigned long timeoutTime = 500;
 
+// Amount of packets timed out/"lost"
+unsigned int packetLoss = 0;
+
+unsigned long bytesTransferred = 0;
+
 // Size of each packet
 int packetSize = 30;
 
@@ -29,14 +34,14 @@ volatile bool packetReceived = false;
 
 void setTimeout(unsigned long time)
 {
-  timeoutTime = time;
-  printSetTimeout(time);
+    timeoutTime = time;
+    printSetTimeout(time);
 }
 
 void setPacketSize(int size)
 {
-  packetSize = size;
-  printSetPacketSize(size);
+    packetSize = size;
+    printSetPacketSize(size);
 }
 
 bool payloadType(uint8_t *message, size_t size)
@@ -192,6 +197,7 @@ void receiveACK()
         if (millis() - timeoutStartTime > timeoutTime)
         {
             printError("Timed out!");
+            packetLoss++;
             return;
         }
     }
@@ -243,7 +249,7 @@ bool sendContents()
         {
             printTransmitFilePacket(buffer, readBytes + 3, packetCount, buffer + 3, readBytes);
 
-            if (!transmitMessage(buffer, readBytes + 3))
+            if (!transmitMessage(buffer, readBytes + 3, false))
             {
                 return false;
             }
@@ -254,7 +260,8 @@ bool sendContents()
             receiveACK();
             transmitMode();
         }
-
+        
+        bytesTransferred += readBytes + 3;
         printInfo("Packet sent and ACK received!");
         packetReceived = false;
         packetCount++;
@@ -303,6 +310,8 @@ void transferFile(char *name)
     }
 
     unsigned long fileTransferTime = millis() - fileTransferTimerStartingTime;
+    printPacketLoss(packetLoss);
     printFileTransferTotalTime(fileTransferTime);
+    printDataRate(bytesTransferred, fileTransferTime);
     file.close();
 }

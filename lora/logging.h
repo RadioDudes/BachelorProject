@@ -37,6 +37,10 @@ void printTransmitFilePacket(uint8_t *message, size_t size, int packetNumber, ui
 
 void printFileTransferTotalTime(unsigned long time);
 
+void printPacketLoss(unsigned int packetLoss);
+
+void printDataRate(unsigned long bytesTransferred, unsigned long fileTransferTime);
+
 void printInvalidFrequency(double freq);
 
 void printInvalidBandwidth(double bw);

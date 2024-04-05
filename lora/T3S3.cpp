@@ -253,7 +253,7 @@ void transmitMode()
   u8g2->updateDisplayArea(0, 4, 16, 4);
 }
 
-bool transmitMessage(uint8_t *message, size_t len)
+bool transmitMessage(uint8_t *message, size_t len, bool printPacket)
 {
   if (!transmittedFlag)
   {
@@ -261,7 +261,9 @@ bool transmitMessage(uint8_t *message, size_t len)
   }
 
   transmittedFlag = false;
-  printTransmitPacket(message, len);
+  if (printPacket) {
+    printTransmitPacket(message, len);
+  }
   sendCounter++;
   int state = radio.startTransmit(message, len);
 

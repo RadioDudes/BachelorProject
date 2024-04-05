@@ -121,6 +121,20 @@ void printFileTransferTotalTime(unsigned long time) {
   Serial.println(" milliseconds");
 }
 
+void printPacketLoss(unsigned int packetLoss) {
+  Serial.print("| INFO           | ");
+  Serial.print(packetLoss);
+  Serial.println(" packets lost");
+}
+
+void printDataRate(unsigned long bytesTransferred, unsigned long fileTransferTime) {
+  Serial.print("| INFO           | Transferred ");
+  Serial.print(bytesTransferred);
+  Serial.print(" bytes, giving a data rate of ");
+  Serial.print(bytesTransferred / (fileTransferTime / 1000.0));
+  Serial.println(" bytes per second");
+}
+
 void printInvalidFrequency(double freq) {
   Serial.print("| ERROR          | Invalid frequency ");
   Serial.println(freq);
