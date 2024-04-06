@@ -28,14 +28,16 @@ void printReceivedPacket(uint8_t *message, size_t size) {
 
 void printContentType(int type) {
   Serial.print("| CONTENT TYPE   | ");
-  if (type == 0) {
+  if (type == 0b000) {
     Serial.println("Data");
-  } else if (type == 1) {
+  } else if (type == 0b001) {
     Serial.println("Metadata");
-  } else if (type == 2) {
+  } else if (type == 0b010) {
     Serial.println("ACK data");
-  } else if (type == 3) {
+  } else if (type == 0b011) {
     Serial.println("ACK metadata");
+  } else if (type == 0b100) {
+    Serial.println("End of file");
   }
 }
 

@@ -11,8 +11,7 @@ unsigned long timeoutTime = 500;
 
 // Amount of packets timed out/"lost"
 unsigned int packetLoss = 0;
-
-unsigned long bytesTransferred = 0;
+unsigned long fileTransferTimerStartingTime;
 
 // Size of each packet
 int packetSize = 30;
@@ -22,11 +21,15 @@ File file;
 char filename[FILENAME_SIZE];
 uint16_t packetAmount;
 
-uint16_t lastReceivedPacket = 0;
-
+uint16_t lastReceivedPacket = UINT16_MAX;
 uint16_t receivedPacketCount = UINT16_MAX;
+
+// Booleans for transmitter to know when packets have been ACKed
+volatile bool metadataAcked = false;
+volatile bool packetAcked = false;
+
+// Boolean for receiver to know if metadata has been received
 volatile bool metadataReceived = false;
-volatile bool packetReceived = false;
 
 // --------------------------------------------- //
 //         FILE TRANSFER - SHARED                //
@@ -46,22 +49,30 @@ void setPacketSize(int size)
 
 bool payloadType(uint8_t *message, size_t size)
 {
-    int type = message[0] >> 6;
+    int type = message[0] >> 5;
     printContentType(type);
-    if (type == 0b00)
+    if (type == 0b000)
     {
-        receiveContent(message + 1, size - 1);
+        if (metadataReceived)
+        {
+            receiveContent(message + 1, size - 1);
+        }
+        else
+        {
+            printError("Packet received before metadata!");
+            return false;
+        }
     }
-    else if (type == 0b01)
+    else if (type == 0b001)
     {
         receiveMetadata(message + 1, size - 1);
     }
-    else if (type == 0b10)
+    else if (type == 0b010)
     {
         if (size >= 3)
         {
             receivedPacketCount = (message[1] << 8) + message[2];
-            packetReceived = true;
+            packetAcked = true;
         }
         else
         {
@@ -69,9 +80,14 @@ bool payloadType(uint8_t *message, size_t size)
             return false;
         }
     }
-    else if (type == 0b11)
+    else if (type == 0b011)
     {
-        metadataReceived = true;
+        metadataAcked = true;
+    }
+    else if (type == 0b100)
+    {
+        lastReceivedPacket = (message[1] << 8) + message[2];
+        receiveFileEnd();
     }
     else
     {
@@ -101,10 +117,28 @@ void receiveFileProtocolMessage()
 //         FILE TRANSFER - RECEIVER              //
 // --------------------------------------------- //
 
+void receiveFileEnd()
+{
+    u8g2->clearBuffer();
+    u8g2->drawStr(0, 16, "Finished file transfer!");
+    u8g2->updateDisplayArea(0, 0, 16, 4);
+
+    unsigned long fileTransferTime = millis() - fileTransferTimerStartingTime;
+    printPacketLoss(receiveCounter - (lastReceivedPacket + 1));
+    printFileTransferTotalTime(fileTransferTime);
+    printDataRate(bytesReceived, fileTransferTime);
+
+    sendCounter = 0;
+    receiveCounter = 0;
+    metadataReceived = false;
+    packetLoss = 0;
+    bytesTransferred = 0;
+}
+
 bool ACKContent(uint16_t packetNumber)
 {
     uint8_t message[3];
-    message[0] = (uint8_t)0b10000000;
+    message[0] = (uint8_t)0b01000000;
     message[1] = (uint8_t)(packetNumber >> 8);
     message[2] = (uint8_t)(packetNumber & 0x00FF);
     return transmitMessage(message, 3);
@@ -113,7 +147,7 @@ bool ACKContent(uint16_t packetNumber)
 bool ACKMetadata()
 {
     uint8_t message[1];
-    message[0] = (uint8_t)0b11000000;
+    message[0] = (uint8_t)0b01100000;
     return transmitMessage(message, 1);
 }
 
@@ -127,13 +161,13 @@ void receiveContent(uint8_t *message, size_t size)
     message += 2;
     size -= 2;
 
-    if ((packetNumber + 1) == lastReceivedPacket)
+    if (packetNumber == lastReceivedPacket)
     {
         printInfo("Packet already received");
     }
     else
     {
-        lastReceivedPacket = packetNumber + 1;
+        lastReceivedPacket = packetNumber;
         appendToFile(message, size, filename);
     }
 
@@ -155,6 +189,9 @@ void receiveMetadata(uint8_t *message, size_t size)
 {
     // In order to reset for every new file sent, lastReceivedPacket is set to 0.
     lastReceivedPacket = 0;
+    metadataReceived = true;
+    fileTransferTimerStartingTime = millis();
+
     uint8_t first = message[0];
     uint8_t second = message[1];
     packetAmount = (first << 8) + second;
@@ -220,7 +257,7 @@ bool sendMetadata()
 
     size_t messageSize = strlen(filename) + 4;
     uint8_t message[messageSize];
-    message[0] = 0b01000000;
+    message[0] = 0b00100000;
     message[1] = first;
     message[2] = second;
     strcpy((char *)message + 3, filename);
@@ -228,9 +265,18 @@ bool sendMetadata()
     return transmitMessage(message, messageSize);
 }
 
+bool sendEOF(int packetCount)
+{
+    uint8_t message[4];
+    message[0] = 0b10000000;
+    message[1] = packetCount >> 8;
+    message[2] = packetCount & 0xFF;
+    return transmitMessage(message, 3);
+}
+
 bool sendContents()
 {
-    int packetCount = 0;
+    int packetCount = 1;
     while (file.available())
     {
         if (packetCount >= MAX_PACKET_AMOUNT)
@@ -245,7 +291,7 @@ bool sendContents()
         buffer[2] = packetCount & 0xFF;
         size_t readBytes = file.read(buffer + 3, packetSize);
 
-        while (!packetReceived || receivedPacketCount != packetCount)
+        while (!packetAcked || receivedPacketCount != packetCount)
         {
             printTransmitFilePacket(buffer, readBytes + 3, packetCount, buffer + 3, readBytes);
 
@@ -260,11 +306,13 @@ bool sendContents()
             receiveACK();
             transmitMode();
         }
-        
-        bytesTransferred += readBytes + 3;
+
         printInfo("Packet sent and ACK received!");
-        packetReceived = false;
+        packetAcked = false;
         packetCount++;
+    }
+    if (!sendEOF(packetCount)) {
+        printError("Error sending end of file!");
     }
     return true;
 }
@@ -283,7 +331,7 @@ void transferFile(char *name)
 
     // SENDING METADATA
     unsigned long fileTransferTimerStartingTime;
-    while (!metadataReceived)
+    while (!metadataAcked)
     {
         if (!sendMetadata())
         {
@@ -300,7 +348,7 @@ void transferFile(char *name)
     }
 
     printInfo("Metadata sent and ACK received!");
-    metadataReceived = false;
+    metadataAcked = false;
 
     // SENDING PACKET
     if (!sendContents())

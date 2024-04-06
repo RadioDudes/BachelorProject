@@ -18,6 +18,9 @@ int mode = INACTIVE;
 // Counters for amount of packets sent and received
 int sendCounter = 0;
 int receiveCounter = 0;
+// Counters for amount of bytes sent and received
+unsigned long bytesTransferred = 0;
+unsigned long bytesReceived = 0;
 
 // Interrupt-driven receive flag
 volatile bool receivedFlag = false;
@@ -264,14 +267,16 @@ bool transmitMessage(uint8_t *message, size_t len, bool printPacket)
   if (printPacket) {
     printTransmitPacket(message, len);
   }
-  sendCounter++;
+
   int state = radio.startTransmit(message, len);
 
   if (state != RADIOLIB_ERR_NONE)
   {
     return false;
   }
-
+  
+  sendCounter++;
+  bytesTransferred += len;
   return true;
 }
 
@@ -319,6 +324,7 @@ bool receiveMessage(uint8_t *buffer, size_t messageSize)
   if (state == RADIOLIB_ERR_NONE)
   {
     receiveCounter++;
+    bytesReceived += messageSize;
     return true;
   }
   else

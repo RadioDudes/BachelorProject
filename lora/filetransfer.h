@@ -8,23 +8,24 @@
 void setTimeout(unsigned long time);
 void setPacketSize(int size);
 
-//     2 bits          6 bits
+//     3 bits          5 bits
 // +--------------+-------------+---------+
 // | payload type | file number | payload |
 // +--------------+-------------+---------+
-// 00 = file data
-// 01 = file meta data
-// 10 = ACK file data
-// 11 = ACK file meta data
+// 000 = file data
+// 001 = file meta data
+// 010 = ACK file data
+// 011 = ACK file meta data
+// 100 = EOF
 bool payloadType(uint8_t *message, size_t size);
 
 void receiveFileProtocolMessage();
-
 
 // --------------------------------------------- //
 //         FILE TRANSFER - RECEIVER              //
 // --------------------------------------------- //
 
+void receiveFileEnd();
 bool ACKContent(uint16_t packetNumber);
 bool ACKMetadata();
 //      16 bits
@@ -44,7 +45,9 @@ void receiveMetadata(uint8_t *message, size_t size);
 //         FILE TRANSFER - TRANSMITTER           //
 // --------------------------------------------- //
 
+
 void receiveACK();
 bool sendMetadata();
+bool sendEOF(int packetCount);
 bool sendContents();
 void transferFile(char* name);
