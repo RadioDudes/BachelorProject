@@ -193,6 +193,22 @@ We use a 4cm antenna, which has a gain of 2dBi. It is not meant for 2.4GHz, sinc
 
 ## Link budget
 
+|          | 2 T3S3's with stub antennas, 4km distance |
+| -------- | --------------------------- |
+| $P_{tx}$ |       20dbm              |
+| $G_{tx}$ |       2dbi         |
+| $L_{tx}$ |       0db?         |
+| $L_{fs}$ |                     |
+| $L_{m}$  |        0db?         |
+| $G_{rx}$ |        2dbi          |
+| $L_{rx}$ |        0db?          |
+| $P_{rx}$ |                     |
+
+
+### Free space path loss
+
+$FSPL = (\frac{4πd}{λ})^2$
+
 ### Friis transmission equation
 
 Used to calculate power received at antenna. Takes gain of antennas and free space loss into consideration.
