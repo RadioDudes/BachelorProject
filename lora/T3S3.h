@@ -8,16 +8,14 @@
 #include <RadioLib.h>
 #include <SD.h>
 #include <FS.h>
-#include <U8g2lib.h>
+#include "display.h"
 #include "logging.h"
-
-#define DISPLAY_MODEL U8G2_SSD1306_128X64_NONAME_F_HW_I2C
 
 // API for communicating with the radio itself, from RadioLib (https://github.com/jgromes/RadioLib)
 extern SX1280 radio;
 
-// Screen display itself
-extern DISPLAY_MODEL *u8g2;
+// Boolean for enabling/disabling debug info (screen and serial prints)
+extern bool enableDebug;
 
 // Counters for amount of packets sent and received
 extern int sendCounter;
@@ -25,20 +23,23 @@ extern int receiveCounter;
 extern unsigned long bytesTransferred;
 extern unsigned long bytesReceived;
 
-
 // Interrupt-driven receive flag
 extern volatile bool receivedFlag;
 // Interrupt-driven transmit flag
 extern volatile bool transmittedFlag;
 
+extern int packetSize;
+
 // --------------------------------------------- //
 //              FUNCTIONALITY CODE               //
 // --------------------------------------------- //
 
+void setPacketSize(int size);
 void setSpreadingFactor(uint8_t sf);
 void setCodingRate(uint8_t cr);
 void setFrequency(double freq);
 void setBandwidth(double bw);
+void toggleDebug();
 void initialize();
 
 // --------------------------------------------- //

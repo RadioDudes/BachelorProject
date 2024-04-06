@@ -3,60 +3,64 @@
 #include <stddef.h>
 #include <Arduino.h>
 
-void printAsHex(uint8_t *message, size_t size);
+namespace Logging
+{
+    void printAsHex(uint8_t *message, size_t size);
 
-void printTransmitPacket(uint8_t *message, size_t size);
+    void printTransmitPacket(uint8_t *message, size_t size);
 
-void printReceivedPacket(uint8_t *message, size_t size);
+    void printReceivedPacket(uint8_t *message, size_t size);
 
-void printContentType(int type);
+    void printContentType(int type);
 
-void printPacketAmount(uint16_t packetAmount);
+    void printPacketAmount(uint16_t packetAmount);
 
-void printPacketNumber(uint16_t packetNumber);
+    void printPacketNumber(uint16_t packetNumber);
 
-void printFilename(String filename);
+    void printFilename(String filename);
 
-void printPacketContent(uint8_t *content, size_t size);
+    void printPacketContent(uint8_t *content, size_t size);
 
-void printInfo(String info);
+    void printInfo(String info);
 
-void printError(String error);
+    void printError(String error);
 
-void printErrorCode(int code);
+    void printErrorCode(int code);
 
-void printAddMessage(size_t size);
+    void printAddMessage(size_t size);
 
-void printAddNMessages(int amount, size_t size);
+    void printAddNMessages(int amount, size_t size);
 
-void printSendingFile(char *filename);
+    void printSendingFile(char *filename);
 
-void printErrorOpeningFile(char *filename);
+    void printErrorOpeningFile(char *filename);
 
-void printTransmitFilePacket(uint8_t *message, size_t size, int packetNumber, uint8_t *content, size_t contentSize);
+    void printTransmitFilePacket(uint8_t *message, size_t size, int packetNumber, uint8_t *content, size_t contentSize);
 
-void printFileTransferTotalTime(unsigned long time);
+    void printFileTransferTotalTime(unsigned long time);
 
-void printPacketLoss(unsigned int packetLoss);
+    void printPacketLoss(unsigned int packetLoss);
 
-void printDataRate(unsigned long bytesTransferred, unsigned long fileTransferTime);
+    void printDataRate(unsigned long bytesTransferred, unsigned long fileTransferTime);
 
-void printInvalidFrequency(double freq);
+    void printInvalidFrequency(double freq);
 
-void printInvalidBandwidth(double bw);
+    void printInvalidBandwidth(double bw);
 
-void printInvalidSpreadingFactor(uint8_t sf);
+    void printInvalidSpreadingFactor(uint8_t sf);
 
-void printInvalidCodingRate(uint8_t cr);
+    void printInvalidCodingRate(uint8_t cr);
 
-void printSetSpreadingFactor(uint8_t sf);
+    void printSetSpreadingFactor(uint8_t sf);
 
-void printSetCodingRate(uint8_t cr);
+    void printSetCodingRate(uint8_t cr);
 
-void printSetBandwidth(double bw);
+    void printSetBandwidth(double bw);
 
-void printSetFrequency(double freq);
+    void printSetFrequency(double freq);
 
-void printSetTimeout(unsigned long timeout);
+    void printSetTimeout(unsigned long timeout);
 
-void printSetPacketSize(int size);
+    void printSetPacketSize(int size);
+
+}

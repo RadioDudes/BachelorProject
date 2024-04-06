@@ -1,6 +1,6 @@
 #include "logging.h"
 
-void printAsHex(uint8_t *message, size_t size) {
+void Logging::printAsHex(uint8_t *message, size_t size) {
   for (int i = 0; i < size; i++) {
     char s[3];
     sprintf(s, "%02x", message[i]);
@@ -8,25 +8,25 @@ void printAsHex(uint8_t *message, size_t size) {
   }
 }
 
-void printTransmitPacket(uint8_t *message, size_t size) {
+void Logging::printTransmitPacket(uint8_t *message, size_t size) {
   Serial.println("===============================");
   Serial.println("      TRANSMITTING PACKET      ");
   Serial.println("===============================");
   Serial.print("| MESSAGE AS HEX | ");
-  printAsHex(message, size);
+  Logging::printAsHex(message, size);
   Serial.println();
 }
 
-void printReceivedPacket(uint8_t *message, size_t size) {
+void Logging::printReceivedPacket(uint8_t *message, size_t size) {
   Serial.println("===============================");
   Serial.println("      RECEIVED NEW PACKET      ");
   Serial.println("===============================");
   Serial.print("| MESSAGE AS HEX | ");
-  printAsHex(message, size);
+  Logging::printAsHex(message, size);
   Serial.println();
 }
 
-void printContentType(int type) {
+void Logging::printContentType(int type) {
   Serial.print("| CONTENT TYPE   | ");
   if (type == 0b000) {
     Serial.println("Data");
@@ -41,95 +41,95 @@ void printContentType(int type) {
   }
 }
 
-void printPacketAmount(uint16_t packetAmount) {
+void Logging::printPacketAmount(uint16_t packetAmount) {
   Serial.print("| PACKET AMOUNT  | ");
   Serial.println(packetAmount);
 }
 
-void printPacketNumber(uint16_t packetNumber) {
+void Logging::printPacketNumber(uint16_t packetNumber) {
   Serial.print("| PACKET NUMBER  | ");
   Serial.println(packetNumber);
 }
 
-void printFilename(String filename) {
+void Logging::printFilename(String filename) {
   Serial.print("| FILENAME       | ");
   Serial.println(filename);
 }
 
-void printPacketContent(uint8_t *content, size_t size) {
+void Logging::printPacketContent(uint8_t *content, size_t size) {
   Serial.print("| PACKET CONTENT | ");
-  printAsHex(content, size);
+  Logging::printAsHex(content, size);
   Serial.println();
 }
 
-void printInfo(String info) {
+void Logging::printInfo(String info) {
   Serial.print("| INFO           | ");
   Serial.println(info);
 }
 
-void printError(String error) {
+void Logging::printError(String error) {
   Serial.print("| ERROR          | ");
   Serial.println(error);
 }
 
-void printErrorCode(int code) {
+void Logging::printErrorCode(int code) {
   Serial.print("| ERROR          | ");
   Serial.print("SX1280 error with code ");
   Serial.println(code);
 }
 
-void printAddMessage(size_t size) {
+void Logging::printAddMessage(size_t size) {
   Serial.print("| INFO           | Adding a message of size ");
   Serial.println(size);
 }
 
-void printAddNMessages(int amount, size_t size) {
+void Logging::printAddNMessages(int amount, size_t size) {
   Serial.print("| INFO           | Adding ");
   Serial.print(amount);
   Serial.print("messages of size ");
   Serial.println(size);
 }
 
-void printSendingFile(char *filename) {
+void Logging::printSendingFile(char *filename) {
   Serial.print("| INFO           | Sending file ");
   Serial.println(filename);
 }
 
-void printErrorOpeningFile(char *filename) {
+void Logging::printErrorOpeningFile(char *filename) {
   Serial.print("| ERROR          | ");
   Serial.print("Could not open file ");
   Serial.println(filename);
 }
 
-void printTransmitFilePacket(uint8_t *message, size_t size, int packetNumber, uint8_t *content, size_t contentSize) {
+void Logging::printTransmitFilePacket(uint8_t *message, size_t size, int packetNumber, uint8_t *content, size_t contentSize) {
   Serial.println("===============================");
   Serial.println("      TRANSMITTING PACKET      ");
   Serial.println("===============================");
   Serial.print("| PACKET AS HEX  | ");
-  printAsHex(message, size);
+  Logging::printAsHex(message, size);
   Serial.println();
   Serial.print("| PACKET NUMBER  | ");
   Serial.println(packetNumber);
   Serial.print("| PACKET SIZE    | ");
   Serial.println(size);
   Serial.print("| CONTENT AS HEX | ");
-  printAsHex(content, contentSize);
+  Logging::printAsHex(content, contentSize);
   Serial.println();
 }
 
-void printFileTransferTotalTime(unsigned long time) {
+void Logging::printFileTransferTotalTime(unsigned long time) {
   Serial.print("| INFO           | File transfer took ");
   Serial.print(time);
   Serial.println(" milliseconds");
 }
 
-void printPacketLoss(unsigned int packetLoss) {
+void Logging::printPacketLoss(unsigned int packetLoss) {
   Serial.print("| INFO           | ");
   Serial.print(packetLoss);
   Serial.println(" packets lost");
 }
 
-void printDataRate(unsigned long bytesTransferred, unsigned long fileTransferTime) {
+void Logging::printDataRate(unsigned long bytesTransferred, unsigned long fileTransferTime) {
   Serial.print("| INFO           | Transferred ");
   Serial.print(bytesTransferred);
   Serial.print(" bytes, giving a data rate of ");
@@ -137,52 +137,52 @@ void printDataRate(unsigned long bytesTransferred, unsigned long fileTransferTim
   Serial.println(" bytes per second");
 }
 
-void printInvalidFrequency(double freq) {
+void Logging::printInvalidFrequency(double freq) {
   Serial.print("| ERROR          | Invalid frequency ");
   Serial.println(freq);
 }
 
-void printInvalidBandwidth(double bw) {
+void Logging::printInvalidBandwidth(double bw) {
   Serial.print("| ERROR          | Invalid bandwidth ");
   Serial.println(bw);
 }
 
-void printInvalidSpreadingFactor(uint8_t sf) {
+void Logging::printInvalidSpreadingFactor(uint8_t sf) {
   Serial.print("| ERROR          | Invalid spreading factor ");
   Serial.println(sf);
 }
 
-void printInvalidCodingRate(uint8_t cr) {
+void Logging::printInvalidCodingRate(uint8_t cr) {
   Serial.print("| ERROR          | Invalid coding rate ");
   Serial.println(cr);
 }
 
-void printSetSpreadingFactor(uint8_t sf) {
+void Logging::printSetSpreadingFactor(uint8_t sf) {
   Serial.print("| INFO           | Set spreading factor to ");
   Serial.println(sf);
 }
 
-void printSetCodingRate(uint8_t cr) {
+void Logging::printSetCodingRate(uint8_t cr) {
   Serial.print("| INFO           | Set coding rate to ");
   Serial.println(cr);
 }
 
-void printSetBandwidth(double bw) {
+void Logging::printSetBandwidth(double bw) {
   Serial.print("| INFO           | Set bandwidth to ");
   Serial.println(bw);
 }
 
-void printSetFrequency(double freq) {
+void Logging::printSetFrequency(double freq) {
   Serial.print("| INFO           | Set frequency to ");
   Serial.println(freq);
 }
 
-void printSetTimeout(unsigned long timeout) {
+void Logging::printSetTimeout(unsigned long timeout) {
   Serial.print("| INFO           | Set timeout to ");
   Serial.println(timeout);
 }
 
-void printSetPacketSize(int size) {
+void Logging::printSetPacketSize(int size) {
   Serial.print("| INFO           | Set packet size to ");
   Serial.println(size);
 }
