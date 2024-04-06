@@ -198,16 +198,21 @@ We use a 4cm antenna, which has a gain of 2dBi. It is not meant for 2.4GHz, sinc
 | $P_{tx}$ |       20dbm              |
 | $G_{tx}$ |       2dbi         |
 | $L_{tx}$ |       0db?         |
-| $L_{fs}$ |                     |
+| $L_{fs}$ |       -112.1db          |
 | $L_{m}$  |        0db?         |
 | $G_{rx}$ |        2dbi          |
 | $L_{rx}$ |        0db?          |
-| $P_{rx}$ |                     |
+| $P_{rx}$ |        -88.1dbm          |
 
+### Receiver sensitivity
 
 ### Free space path loss
 
 $FSPL = (\frac{4πd}{λ})^2$
+
+or expressed in db, where the frequency is given as GHz, the distance in km:
+
+$FSPL = 20 log_{10}(d) + 20 log_{10}(f) + 92.45$
 
 ### Friis transmission equation
 
