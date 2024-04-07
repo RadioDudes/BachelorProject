@@ -224,5 +224,6 @@ Used to calculate power received at antenna. Takes gain of antennas and free spa
 
 ## Half duplex
 
-LoRa transceivers are half-duplex
+Half duplex transmission mode allows both parties to communicate with each other (as opposed to simplex), while not allowing communication to occur simultaneously (as opposed to full-duplex).
+LoRa transceivers are half-duplex.
 [1](https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/3n000000l9OZ/Kw7ZeYZuAZW3Q4A3R_IUjhYCQEJxkuLrUgl_GNNhuUo)
