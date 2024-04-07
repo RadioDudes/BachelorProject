@@ -193,18 +193,21 @@ We use a 4cm antenna, which has a gain of 2dBi. It is not meant for 2.4GHz, sinc
 
 ## Link budget
 
-|          | 2 T3S3's with stub antennas, 4km distance |
+|          | 2 T3S3's with stub antennas, 4km distance, transmitter with PA |
 | -------- | --------------------------- |
-| $P_{tx}$ |       20dbm              |
-| $G_{tx}$ |       2dbi         |
+| $P_{tx}$ |       20dBm              |
+| $G_{tx}$ |       2dBi         |
 | $L_{tx}$ |       0db?         |
-| $L_{fs}$ |       -112.1db          |
-| $L_{m}$  |        0db?         |
-| $G_{rx}$ |        2dbi          |
-| $L_{rx}$ |        0db?          |
-| $P_{rx}$ |        -88.1dbm          |
+| $L_{fs}$ |       -112.1dB          |
+| $L_{m}$  |        0dB?         |
+| $G_{rx}$ |        2dBi          |
+| $L_{rx}$ |        0dB?          |
+| $P_{rx}$ |        -88.1dBm          |
 
 ### Receiver sensitivity
+
+SX1280 receiver sensitivity goes down to -132dBm
+[1](https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/3n000000l9OZ/Kw7ZeYZuAZW3Q4A3R_IUjhYCQEJxkuLrUgl_GNNhuUo)
 
 ### Free space path loss
 
@@ -218,3 +221,8 @@ $FSPL = 20 log_{10}(d) + 20 log_{10}(f) + 92.45$
 
 Used to calculate power received at antenna. Takes gain of antennas and free space loss into consideration.
 [1](https://www.antenna-theory.com/basics/friis.php)
+
+## Half duplex
+
+LoRa transceivers are half-duplex
+[1](https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/3n000000l9OZ/Kw7ZeYZuAZW3Q4A3R_IUjhYCQEJxkuLrUgl_GNNhuUo)
