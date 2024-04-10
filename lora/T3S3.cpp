@@ -318,27 +318,15 @@ void receiveMode()
   }
 }
 
-bool appendToFile(uint8_t *message, size_t size, char *path)
+bool appendToFile(uint8_t *message, size_t size, char *path, File* file)
 {
-  if (enableDebug)
-    Logging::printInfo(String("Opening file ") + String(path));
-  File file = SD.open(path, FILE_APPEND);
-
-  if (!file)
-  {
-    if (enableDebug)
-      Logging::printError(String("Could not open file ") + String(path));
-    return false;
-  }
-
-  if (!file.write(message, size))
+  if (!file->write(message, size))
   {
     if (enableDebug)
       Logging::printError(String("Could not write to file ") + String(path));
     return false;
   }
 
-  file.close();
   return true;
 }
 

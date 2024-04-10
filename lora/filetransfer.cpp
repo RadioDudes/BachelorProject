@@ -135,6 +135,7 @@ void ACKProtocol::receiveFileProtocolMessage()
 void ACKProtocol::receiveFileEnd()
 {
     Display::displayInfoTop("Finished file transfer!");
+    file.close();
 
     unsigned long fileTransferTime = millis() - fileTransferTimerStartingTime;
     Logging::printPacketLoss(receiveCounter - (lastReceivedPacket + 1));
@@ -180,7 +181,7 @@ void ACKProtocol::receiveContent(uint8_t *message, size_t size)
     else
     {
         lastReceivedPacket = packetNumber;
-        appendToFile(message, size, filename);
+        appendToFile(message, size, filename, &file);
     }
 
     if (enableDebug)
@@ -215,6 +216,15 @@ void ACKProtocol::receiveMetadata(uint8_t *message, size_t size)
     message += 2;
     size -= 2;
     strncpy(filename, (char *)message, FILENAME_SIZE);
+
+    // Opens the file named and gets ready to append
+    file = SD.open(filename, FILE_APPEND);
+
+    if (!file)
+    {
+        if (enableDebug)
+            Logging::printError(String("Could not open file ") + String(filename));
+    }
 
     if (enableDebug)
     {

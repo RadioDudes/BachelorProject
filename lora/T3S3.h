@@ -54,5 +54,5 @@ bool transmitMessage(uint8_t *message, size_t len, bool printPacket = true);
 // --------------------------------------------- //
 
 void receiveMode();
-bool appendToFile(uint8_t *message, size_t size, char *path);
+bool appendToFile(uint8_t *message, size_t size, char *path, File* file);
 bool receiveMessage(uint8_t *buffer, size_t messageSize);
