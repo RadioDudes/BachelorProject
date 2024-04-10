@@ -22,6 +22,9 @@ extern DISPLAY_MODEL *u8g2;
 // Counters for amount of packets sent and received
 extern int sendCounter;
 extern int receiveCounter;
+extern unsigned long bytesTransferred;
+extern unsigned long bytesReceived;
+
 
 // Interrupt-driven receive flag
 extern volatile bool receivedFlag;
