@@ -1,7 +1,7 @@
 #pragma once
 #include "T3S3.h"
 
-namespace ACKProtocol
+namespace RawProtocol
 {
     // --------------------------------------------- //
     //         FILE TRANSFER - SHARED                //
@@ -18,7 +18,6 @@ namespace ACKProtocol
     // 100 = EOF
     bool payloadType(uint8_t *message, size_t size);
     void receiveFileProtocolMessage();
-    void setTimeout(unsigned long time);
     void resetVars();
 
     // --------------------------------------------- //
@@ -26,8 +25,6 @@ namespace ACKProtocol
     // --------------------------------------------- //
 
     void receiveFileEnd();
-    bool ACKContent(uint16_t packetNumber);
-    bool ACKMetadata();
     //      16 bits
     // +---------------+---------+
     // | packet number | content |
@@ -43,7 +40,6 @@ namespace ACKProtocol
     //         FILE TRANSFER - TRANSMITTER           //
     // --------------------------------------------- //
 
-    void receiveACK();
     bool sendMetadata();
     bool sendEOF(int packetCount);
     bool sendContents();

@@ -3,17 +3,13 @@
 SPIClass SDSPI(HSPI);
 
 fs::SDFS sd = SD;
-DISPLAY_MODEL *u8g2 = new U8G2_SSD1306_128X64_NONAME_F_HW_I2C(U8G2_R0, U8X8_PIN_NONE);
 Ticker ledTicker;
 
 // API for communicating with the radio itself, from RadioLib (https://github.com/jgromes/RadioLib)
 SX1280 radio = new Module(RADIO_CS_PIN, RADIO_DIO1_PIN, RADIO_RST_PIN, RADIO_BUSY_PIN);
 
-// Modes for the device to switch between
-const int INACTIVE = 0;
-const int RECEIVE_MODE = 1;
-const int TRANSMIT_MODE = 2;
-int mode = INACTIVE;
+// Boolean for enabling/disabling debug info (screen and serial prints)
+bool enableDebug = true;
 
 // Counters for amount of packets sent and received
 int sendCounter = 0;
@@ -27,46 +23,67 @@ volatile bool receivedFlag = false;
 // Interrupt-driven transmit flag
 volatile bool transmittedFlag = true;
 
+// Modes for the device to switch between
+const int INACTIVE = 0;
+const int RECEIVE_MODE = 1;
+const int TRANSMIT_MODE = 2;
+int mode = INACTIVE;
+
+// Size of each packet
+int packetSize = 30;
+
 // ---------------------------------------------------------- //
+
+void setPacketSize(int size)
+{
+    packetSize = size;
+    Logging::printSetPacketSize(size);
+}
 
 void setSpreadingFactor(uint8_t sf)
 {
   if (radio.setSpreadingFactor(sf) == RADIOLIB_ERR_INVALID_SPREADING_FACTOR)
   {
-    printInvalidSpreadingFactor(sf);
+    Logging::printInvalidSpreadingFactor(sf);
     return;
   }
-  printSetSpreadingFactor(sf);
+  Logging::printSetSpreadingFactor(sf);
 }
 
 void setCodingRate(uint8_t cr)
 {
   if (radio.setCodingRate(cr) == RADIOLIB_ERR_INVALID_CODING_RATE)
   {
-    printInvalidCodingRate(cr);
+    Logging::printInvalidCodingRate(cr);
     return;
   }
-  printSetCodingRate(cr);
+  Logging::printSetCodingRate(cr);
 }
 
 void setFrequency(double freq)
 {
   if (radio.setFrequency(freq) == RADIOLIB_ERR_INVALID_FREQUENCY)
   {
-    printInvalidFrequency(freq);
+    Logging::printInvalidFrequency(freq);
     return;
   }
-  printSetFrequency(freq);
+  Logging::printSetFrequency(freq);
 }
 
 void setBandwidth(double bw)
 {
   if (radio.setBandwidth(bw) == RADIOLIB_ERR_INVALID_BANDWIDTH)
   {
-    printInvalidBandwidth(bw);
+    Logging::printInvalidBandwidth(bw);
     return;
   }
-  printSetBandwidth(bw);
+  Logging::printSetBandwidth(bw);
+}
+
+void toggleDebug()
+{
+  enableDebug = !enableDebug;
+  enableDebug ? Logging::printInfo("Debug mode enabled") : Logging::printInfo("Debug mode disabled");
 }
 
 void setFlag(void)
@@ -205,35 +222,35 @@ void initialize()
 
   if (radio.setOutputPower(3) == RADIOLIB_ERR_INVALID_OUTPUT_POWER)
   {
-    printError("Selected output power is invalid for this module!");
+    Logging::printError("Selected output power is invalid for this module!");
     while (true)
       ;
   }
 
   if (radio.setFrequency(2400.0) == RADIOLIB_ERR_INVALID_FREQUENCY)
   {
-    printError("Selected frequency is invalid for this module!");
+    Logging::printError("Selected frequency is invalid for this module!");
     while (true)
       ;
   }
 
   if (radio.setBandwidth(203.125) == RADIOLIB_ERR_INVALID_BANDWIDTH)
   {
-    printError("Selected bandwidth is invalid for this module!");
+    Logging::printError("Selected bandwidth is invalid for this module!");
     while (true)
       ;
   }
 
   if (radio.setSpreadingFactor(10) == RADIOLIB_ERR_INVALID_SPREADING_FACTOR)
   {
-    printError("Selected spreading factor is invalid for this module!");
+    Logging::printError("Selected spreading factor is invalid for this module!");
     while (true)
       ;
   }
 
   if (radio.setCodingRate(6) == RADIOLIB_ERR_INVALID_CODING_RATE)
   {
-    printError("Selected coding rate is invalid for this module!");
+    Logging::printError("Selected coding rate is invalid for this module!");
     while (true)
       ;
   }
@@ -250,10 +267,13 @@ void transmitMode()
   receivedFlag = false;
   mode = TRANSMIT_MODE;
   transmittedFlag = true;
-  u8g2->clearBuffer();
-  u8g2->drawStr(0, 48, "Transmit mode");
-  u8g2->drawStr(0, 64, ("Packet no. " + String(receiveCounter)).c_str());
-  u8g2->updateDisplayArea(0, 4, 16, 4);
+
+  if (enableDebug)
+  {
+    char buffer[40];
+    sprintf(buffer, "Transmitted packet %d", receiveCounter);
+    Display::displayInfoBot(buffer);
+  }
 }
 
 bool transmitMessage(uint8_t *message, size_t len, bool printPacket)
@@ -264,8 +284,9 @@ bool transmitMessage(uint8_t *message, size_t len, bool printPacket)
   }
 
   transmittedFlag = false;
-  if (printPacket) {
-    printTransmitPacket(message, len);
+  if (printPacket && enableDebug)
+  {
+    Logging::printTransmitPacket(message, len);
   }
 
   int state = radio.startTransmit(message, len);
@@ -274,7 +295,7 @@ bool transmitMessage(uint8_t *message, size_t len, bool printPacket)
   {
     return false;
   }
-  
+
   sendCounter++;
   bytesTransferred += len;
   return true;
@@ -288,30 +309,24 @@ void receiveMode()
 {
   mode = RECEIVE_MODE;
   radio.startReceive();
-  u8g2->clearBuffer();
-  u8g2->drawStr(0, 48, "Receive mode");
-  u8g2->drawStr(0, 64, ("Packet no. " + String(receiveCounter)).c_str());
-  u8g2->updateDisplayArea(0, 4, 16, 4);
+
+  if (enableDebug)
+  {
+    char buffer[40];
+    sprintf(buffer, "Received packet %d", receiveCounter);
+    Display::displayInfoBot(buffer);
+  }
 }
 
-bool appendToFile(uint8_t *message, size_t size, char *path)
+bool appendToFile(uint8_t *message, size_t size, char *path, File* file)
 {
-  printInfo(String("Opening file ") + String(path));
-  File file = SD.open(path, FILE_APPEND);
-
-  if (!file)
+  if (!file->write(message, size))
   {
-    printError(String("Could not open file ") + String(path));
+    if (enableDebug)
+      Logging::printError(String("Could not write to file ") + String(path));
     return false;
   }
 
-  if (!file.write(message, size))
-  {
-    printError(String("Could not write to file ") + String(path));
-    return false;
-  }
-
-  file.close();
   return true;
 }
 

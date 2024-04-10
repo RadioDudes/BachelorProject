@@ -11,6 +11,11 @@ void loop()
   readSerial();
   if (receivedFlag)
   {
-    receiveFileProtocolMessage();
+    if (useRawProtocol) {
+      RawProtocol::receiveFileProtocolMessage();
+    }
+    else {
+      ACKProtocol::receiveFileProtocolMessage();
+    }
   }
 }

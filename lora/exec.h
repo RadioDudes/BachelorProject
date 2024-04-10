@@ -1,12 +1,15 @@
 #pragma once
 
 #include "filetransfer.h"
+#include "filetransfer-raw.h"
 
 #define MAX_MESSAGE_LENGTH 500
 
 // --------------------------------------------- //
 //               SERIAL COMMANDS                 //
 // --------------------------------------------- //
+
+volatile bool useRawProtocol = false;
 
 void execCommand(char *message)
 {
@@ -118,22 +121,33 @@ void execCommand(char *message)
     receiveCounter = 0;
 
     // Print to display
-    u8g2->clearBuffer();
-    u8g2->drawStr(0, 16, "Sending file");
-    u8g2->drawStr(0, 32, next);
-    u8g2->updateDisplayArea(0, 0, 16, 4);
+    char buffer[sizeof(next) + 20] = "Sending file ";
+    strcat(buffer, next);
+    Display::displayInfoTop(buffer);
 
     transmitMode();
-    transferFile(next);
+    if (useRawProtocol)
+    {
+      RawProtocol::transferFile(next);
+    }
+    else
+    {
+      ACKProtocol::transferFile(next);
+    }
 
-    u8g2->clearBuffer();
-    u8g2->drawStr(0, 16, "Finished file transfer!");
-    u8g2->updateDisplayArea(0, 0, 16, 4);
-    delay(3000);
-
-    u8g2->clearBuffer();
-    u8g2->drawStr(0, 16, "Waiting for command");
-    u8g2->updateDisplayArea(0, 0, 16, 4);
+    Display::displayInfoTop("Finished sending file");
+  }
+  else if (strcmp(next, "raw") == 0)
+  {
+    useRawProtocol = !useRawProtocol;
+    if (useRawProtocol)
+    {
+      Logging::printInfo("Now using raw protocol!");
+    }
+    else
+    {
+      Logging::printInfo("Now using ACK protocol!");
+    }
   }
   else if (strcmp(next, "receive") == 0)
   {
@@ -160,7 +174,11 @@ void execCommand(char *message)
   else if (strcmp(next, "timeout") == 0)
   {
     next = strtok(NULL, " ");
-    setTimeout(atoi(next));
+    ACKProtocol::setTimeout(atoi(next));
+  }
+  else if (strcmp(next, "debug") == 0)
+  {
+    toggleDebug();
   }
   else
   {

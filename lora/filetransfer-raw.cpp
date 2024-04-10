@@ -1,7 +1,7 @@
-#include "filetransfer.h"
+#include "filetransfer-raw.h"
 // For file transfer protocol
 
-namespace ACKProtocol
+namespace RawProtocol
 {
 // Max amount of packets
 #define MAX_PACKET_AMOUNT 65536
@@ -35,7 +35,7 @@ namespace ACKProtocol
 //         FILE TRANSFER - SHARED                //
 // --------------------------------------------- //
 
-void ACKProtocol::resetVars()
+void RawProtocol::resetVars()
 {
     metadataAcked = false;
     packetAcked = false;
@@ -49,13 +49,7 @@ void ACKProtocol::resetVars()
     packetLoss = 0;
 }
 
-void ACKProtocol::setTimeout(unsigned long time)
-{
-    timeoutTime = time;
-    Logging::printSetTimeout(time);
-}
-
-bool ACKProtocol::payloadType(uint8_t *message, size_t size)
+bool RawProtocol::payloadType(uint8_t *message, size_t size)
 {
     int type = message[0] >> 5;
     if (enableDebug)
@@ -109,7 +103,7 @@ bool ACKProtocol::payloadType(uint8_t *message, size_t size)
     return true;
 }
 
-void ACKProtocol::receiveFileProtocolMessage()
+void RawProtocol::receiveFileProtocolMessage()
 {
     size_t messageSize = radio.getPacketLength();
     uint8_t message[messageSize];
@@ -132,7 +126,7 @@ void ACKProtocol::receiveFileProtocolMessage()
 //         FILE TRANSFER - RECEIVER              //
 // --------------------------------------------- //
 
-void ACKProtocol::receiveFileEnd()
+void RawProtocol::receiveFileEnd()
 {
     Display::displayInfoTop("Finished file transfer!");
     file.close();
@@ -146,23 +140,7 @@ void ACKProtocol::receiveFileEnd()
     receiveMode();
 }
 
-bool ACKProtocol::ACKContent(uint16_t packetNumber)
-{
-    uint8_t message[3];
-    message[0] = (uint8_t)0b01000000;
-    message[1] = (uint8_t)(packetNumber >> 8);
-    message[2] = (uint8_t)(packetNumber & 0x00FF);
-    return transmitMessage(message, 3);
-}
-
-bool ACKProtocol::ACKMetadata()
-{
-    uint8_t message[1];
-    message[0] = (uint8_t)0b01100000;
-    return transmitMessage(message, 1);
-}
-
-void ACKProtocol::receiveContent(uint8_t *message, size_t size)
+void RawProtocol::receiveContent(uint8_t *message, size_t size)
 {
     uint8_t first = message[0];
     uint8_t second = message[1];
@@ -186,33 +164,13 @@ void ACKProtocol::receiveContent(uint8_t *message, size_t size)
 
     if (enableDebug)
         Logging::printPacketContent(message, size);
-    transmitMode();
-    if (!ACKContent(packetNumber))
-    {
-        if (enableDebug)
-            Logging::printError("Something went wrong when sending ACKContent");
-        receiveMode();
-        return;
-    }
-    while (!transmittedFlag)
-    {
-    }
     receiveMode();
 }
 
-void ACKProtocol::receiveMetadata(uint8_t *message, size_t size)
+void RawProtocol::receiveMetadata(uint8_t *message, size_t size)
 {
-    // In order to reset for every new file sent, lastReceivedPacket is set to 0.
-    lastReceivedPacket = 0;
     metadataReceived = true;
     fileTransferTimerStartingTime = millis();
-
-    uint8_t first = message[0];
-    uint8_t second = message[1];
-    packetAmount = (first << 8) + second;
-
-    if (enableDebug)
-        Logging::printPacketAmount(packetAmount);
     message += 2;
     size -= 2;
     strncpy(filename, (char *)message, FILENAME_SIZE);
@@ -228,22 +186,16 @@ void ACKProtocol::receiveMetadata(uint8_t *message, size_t size)
 
     if (enableDebug)
     {
+        uint8_t first = message[0];
+        uint8_t second = message[1];
+        packetAmount = (first << 8) + second;
+        Logging::printPacketAmount(packetAmount);
         Logging::printFilename(filename);
         char buffer[sizeof(filename) + 20] = "Receiving file ";
         strcat(buffer, filename);
         Display::displayInfoTop(buffer);
     }
 
-    transmitMode();
-    if (!ACKMetadata())
-    {
-        if (enableDebug)
-            Logging::printError("Something went wrong when sending ACKMetadata");
-        return;
-    }
-    while (!transmittedFlag)
-    {
-    }
     receiveMode();
 }
 
@@ -251,27 +203,7 @@ void ACKProtocol::receiveMetadata(uint8_t *message, size_t size)
 //         FILE TRANSFER - TRANSMITTER           //
 // --------------------------------------------- //
 
-void ACKProtocol::receiveACK()
-{
-    receiveMode();
-
-    // Timeout implementation
-    unsigned long timeoutStartTime = millis();
-    while (!receivedFlag)
-    {
-        if (millis() - timeoutStartTime > timeoutTime)
-        {
-            if (enableDebug)
-                Logging::printError("Timed out!");
-            packetLoss++;
-            return;
-        }
-    }
-
-    receiveFileProtocolMessage();
-}
-
-bool ACKProtocol::sendMetadata()
+bool RawProtocol::sendMetadata()
 {
     unsigned long packetAmount = (file.size() + packetSize - 1) / packetSize;
     if (packetAmount > MAX_PACKET_AMOUNT)
@@ -297,7 +229,7 @@ bool ACKProtocol::sendMetadata()
     return transmitMessage(message, messageSize);
 }
 
-bool ACKProtocol::sendEOF(int packetCount)
+bool RawProtocol::sendEOF(int packetCount)
 {
     uint8_t message[4];
     message[0] = 0b10000000;
@@ -306,7 +238,7 @@ bool ACKProtocol::sendEOF(int packetCount)
     return transmitMessage(message, 3);
 }
 
-bool ACKProtocol::sendContents()
+bool RawProtocol::sendContents()
 {
     int packetCount = 1;
     while (file.available())
@@ -323,25 +255,21 @@ bool ACKProtocol::sendContents()
         buffer[2] = packetCount & 0xFF;
         size_t readBytes = file.read(buffer + 3, packetSize);
 
-        while (!packetAcked || receivedPacketCount != packetCount)
+        if (enableDebug)
+            Logging::printTransmitFilePacket(buffer, readBytes + 3, packetCount, buffer + 3, readBytes);
+
+        if (!transmitMessage(buffer, readBytes + 3, false))
         {
-            if (enableDebug)
-                Logging::printTransmitFilePacket(buffer, readBytes + 3, packetCount, buffer + 3, readBytes);
-
-            if (!transmitMessage(buffer, readBytes + 3, false))
-            {
-                return false;
-            }
-
-            while (!transmittedFlag)
-            {
-            }
-            receiveACK();
-            transmitMode();
+            return false;
         }
 
+        while (!transmittedFlag)
+        {
+        }
+        transmitMode();
+
         if (enableDebug)
-            Logging::printInfo("Packet sent and ACK received!");
+            Logging::printInfo("Packet sent!");
         packetAcked = false;
         packetCount++;
     }
@@ -352,7 +280,7 @@ bool ACKProtocol::sendContents()
     return true;
 }
 
-void ACKProtocol::transferFile(char *name)
+void RawProtocol::transferFile(char *name)
 {
     strncpy(filename, name, FILENAME_SIZE);
     file = SD.open(filename);
@@ -367,22 +295,18 @@ void ACKProtocol::transferFile(char *name)
 
     // SENDING METADATA
     unsigned long fileTransferTimerStartingTime;
-    while (!metadataAcked)
+    if (!sendMetadata())
     {
-        if (!sendMetadata())
-        {
-            if (enableDebug)
-                Logging::printError("Error sending file metadata. Stopping file transfer.");
-            file.close();
-            return;
-        }
-        fileTransferTimerStartingTime = millis();
-        while (!transmittedFlag)
-        {
-        }
-        receiveACK();
-        transmitMode();
+        if (enableDebug)
+            Logging::printError("Error sending file metadata. Stopping file transfer.");
+        file.close();
+        return;
     }
+    fileTransferTimerStartingTime = millis();
+    while (!transmittedFlag)
+    {
+    }
+    transmitMode();
 
     if (enableDebug)
         Logging::printInfo("Metadata sent and ACK received!");
