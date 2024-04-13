@@ -227,3 +227,24 @@ Used to calculate power received at antenna. Takes gain of antennas and free spa
 Half duplex transmission mode allows both parties to communicate with each other (as opposed to simplex), while not allowing communication to occur simultaneously (as opposed to full-duplex).
 LoRa transceivers are half-duplex.
 [1](https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/3n000000l9OZ/Kw7ZeYZuAZW3Q4A3R_IUjhYCQEJxkuLrUgl_GNNhuUo)
+
+## Theoretical data rate
+
+Coding rate of 4/6
+
+|         Parameters       | Data Rate | Data Rate, including coding rate | PHYPayload data rate | File data rate |
+| ------------------------ | --------- | -------------------------------- | ----------------- | ----------------- |
+| 203 kHz, SF12, 20 bytes |  |
+| 203 kHz, SF12, 50 bytes |       2dBi         |
+| 406 kHz, SF10, 50 bytes |       0db?         |
+| 406 kHz, SF10, 100 bytes |       -112.1dB          |
+| 406 kHz, SF8, 50 bytes  |        0dB?         |
+| 406 kHz, SF8, 100 bytes  |        0dB?         |
+| 812 kHz, SF7, 100 bytes  |        0dB?         |
+| 812 kHz, SF7, 200 bytes  |        0dB?         |
+| 1625 kHz, SF5, 100 bytes |        0dB?          |
+| 1625 kHz, SF5, 250 bytes |        -88.1dBm          |
+
+The amount of bits per symbol is represented by the spreading factor.
+
+LoRa preamble is 12.25 symbols [1](https://www.thethingsnetwork.org/docs/lorawan/lora-phy-format/)
