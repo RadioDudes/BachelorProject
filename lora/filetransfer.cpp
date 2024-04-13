@@ -399,7 +399,8 @@ void ACKProtocol::transferFile(char *name)
     unsigned long fileTransferTime = millis() - fileTransferTimerStartingTime;
     Logging::printPacketLoss(packetLoss);
     Logging::printFileTransferTotalTime(fileTransferTime);
-    Logging::printDataRate(bytesTransferred, fileTransferTime);
+    Logging::printDataRate(file.size(), fileTransferTime);
+    Logging::logDataRate(file.size(), fileTransferTime, "/out.log");
     file.close();
 
     resetVars();

@@ -137,6 +137,14 @@ void Logging::printDataRate(unsigned long bytesTransferred, unsigned long fileTr
   Serial.println(" bytes per second");
 }
 
+void Logging::logDataRate(unsigned long bytesTransferred, unsigned long fileTransferTime, char *logFile) {
+  File file = SD.open(logFile, FILE_APPEND);
+  double dataRate = bytesTransferred / (fileTransferTime / 1000.0);
+  char dataRateString[150];
+  sprintf(dataRateString, "Transferred %i bytes in %i seconds, with a data rate of %f bps \n", bytesTransferred, fileTransferTime, dataRate);
+  file.write((uint8_t *) dataRateString, strlen(dataRateString));
+}
+
 void Logging::printInvalidFrequency(double freq) {
   Serial.print("| ERROR          | Invalid frequency ");
   Serial.println(freq);
@@ -186,3 +194,4 @@ void Logging::printSetPacketSize(int size) {
   Serial.print("| INFO           | Set packet size to ");
   Serial.println(size);
 }
+

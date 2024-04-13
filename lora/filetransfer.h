@@ -33,7 +33,7 @@ namespace ACKProtocol
     // | packet number | content |
     // +---------------+---------+
     void receiveContent(uint8_t *message, size_t size);
-    //      2 bit         6 bits         16 bits
+    //      3 bit         6 bits         16 bits
     // +--------------+-------------+---------------+-----------+
     // | payload type | file number | packet amount | file name |
     // +--------------+-------------+---------------+-----------+

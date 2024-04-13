@@ -1,7 +1,7 @@
 #pragma once
 #include <stdint.h>
 #include <stddef.h>
-#include <Arduino.h>
+#include "T3S3.h"
 
 namespace Logging
 {
@@ -42,6 +42,8 @@ namespace Logging
     void printPacketLoss(unsigned int packetLoss);
 
     void printDataRate(unsigned long bytesTransferred, unsigned long fileTransferTime);
+
+    void logDataRate(unsigned long bytesTransferred, unsigned long fileTransferTime, char *logFile);
 
     void printInvalidFrequency(double freq);
 
