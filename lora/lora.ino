@@ -17,5 +17,6 @@ void loop()
     else {
       ACKProtocol::receiveFileProtocolMessage();
     }
+    receiveMode();
   }
 }

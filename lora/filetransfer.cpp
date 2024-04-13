@@ -143,7 +143,6 @@ void ACKProtocol::receiveFileEnd()
     Logging::printDataRate(bytesReceived, fileTransferTime);
 
     resetVars();
-    receiveMode();
 }
 
 bool ACKProtocol::ACKContent(uint16_t packetNumber)
@@ -191,13 +190,11 @@ void ACKProtocol::receiveContent(uint8_t *message, size_t size)
     {
         if (enableDebug)
             Logging::printError("Something went wrong when sending ACKContent");
-        receiveMode();
         return;
     }
     while (!transmittedFlag)
     {
     }
-    receiveMode();
 }
 
 void ACKProtocol::receiveMetadata(uint8_t *message, size_t size)
@@ -244,7 +241,6 @@ void ACKProtocol::receiveMetadata(uint8_t *message, size_t size)
     while (!transmittedFlag)
     {
     }
-    receiveMode();
 }
 
 // --------------------------------------------- //
