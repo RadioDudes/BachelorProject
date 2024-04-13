@@ -256,6 +256,6 @@ Data rate, including code rate:
 $R_b = SF * CR/(2^SF/B)$
 
 PHYPayload data rate:
-$R_b =  SF * CR/(2^SF/B) * \frac{S_{PHYPayload}}{S_{Preamble} + S_{PHDR} + S_{PHDR_CRC} + S_{PHYPayload} + S_{CRC}$, where $S_{Preamble} = SF * 12.25$
+$R_b =  SF * CR/(2^SF/B) * \frac{S_{PHYPayload}}{S_{Preamble} + S_{PHDR} + S_{PHDR_CRC} + S_{PHYPayload} + S_{CRC}}$, where $S_{Preamble} = SF * 12.25$
 
 File data rate:
