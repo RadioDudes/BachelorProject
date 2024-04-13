@@ -250,10 +250,10 @@ The amount of bits per symbol is represented by the spreading factor.
 LoRa preamble is 12.25 symbols [1](https://www.thethingsnetwork.org/docs/lorawan/lora-phy-format/)
 
 Data rate:
-$R_b = SF * 1/(2^SF/B)$
+$R_b = SF * \frac{1}{\frac{2^SF}{B}}$
 
 Data rate, including code rate:
-$R_b = SF * CR/(2^SF/B)$
+$R_b = SF * \frac{CR}{\frac{2^SF}{B}}$
 
 PHYPayload data rate:
 $R_b =  SF * \frac{CR}{\frac{2^SF}{B}} * \frac{S_{PHYPayload}}{S_{Preamble} + S_{PHDR} + S_{PHDR_CRC} + S_{PHYPayload} + S_{CRC}}$, where $S_{Preamble} = SF * 12.25$
