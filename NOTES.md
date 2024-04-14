@@ -62,7 +62,7 @@ $R_c = R_s * 2^S = B$, i.e. the chip rate corresponds to the bandwidth. "one chi
 
 Nominal bit rate, including coding rate, is:
 
-$R_b = S * CR/(2^S/B)$, where RC is the coding rate (4/5, 4/6, ...)
+$R_b = S * CR/(2^S/B)$, where CR is the coding rate (4/5, 4/6, ...)
 
 [3](https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/2R0000001OJa/2BF2MTeiqIwkmxkcjjDZzalPUGlJ76lLdqiv.30prH8)
 
@@ -256,6 +256,6 @@ Data rate, including code rate:
 $R_b = SF * \frac{CR}{\frac{2^SF}{B}}$
 
 PHYPayload data rate:
-$R_b =  SF * \frac{CR}{\frac{2^SF}{B}} * \frac{S_{PHYPayload}}{S_{Preamble} + S_{PHDR} + S_{PHDR_CRC} + S_{PHYPayload} + S_{CRC}}$, where $S_{Preamble} = SF * 12.25$
+$R_b =  SF * \frac{CR}{\frac{2^SF}{B}} * \frac{S_{PHYPayload}}{S_{Preamble} + S_{PHDR} + S_{PHDR_CRC} + CR/S_{PHYPayload} + CR/S_{CRC}}$, where $S_{Preamble} = SF * 12.25$
 
 File data rate:
