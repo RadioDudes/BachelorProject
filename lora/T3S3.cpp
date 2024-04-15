@@ -29,8 +29,14 @@ const int RECEIVE_MODE = 1;
 const int TRANSMIT_MODE = 2;
 int mode = INACTIVE;
 
-// Size of each packet
+double frequency = 2400.0;
+double bandwidth = 203.125;
+uint8_t codingRate = 6;
+uint8_t spreadingFactor = 10;
+
+// Size of the payload inside each packet
 int packetSize = 30;
+
 
 // ---------------------------------------------------------- //
 
@@ -47,6 +53,7 @@ void setSpreadingFactor(uint8_t sf)
     Logging::printInvalidSpreadingFactor(sf);
     return;
   }
+  spreadingFactor = sf;
   Logging::printSetSpreadingFactor(sf);
 }
 
@@ -57,6 +64,7 @@ void setCodingRate(uint8_t cr)
     Logging::printInvalidCodingRate(cr);
     return;
   }
+  codingRate = cr;
   Logging::printSetCodingRate(cr);
 }
 
@@ -67,6 +75,7 @@ void setFrequency(double freq)
     Logging::printInvalidFrequency(freq);
     return;
   }
+  frequency = freq;
   Logging::printSetFrequency(freq);
 }
 
@@ -77,6 +86,7 @@ void setBandwidth(double bw)
     Logging::printInvalidBandwidth(bw);
     return;
   }
+  bandwidth = bw;
   Logging::printSetBandwidth(bw);
 }
 
@@ -220,6 +230,7 @@ void initialize()
   radio.setRfSwitchPins(RADIO_RX_PIN, RADIO_TX_PIN);
 #endif
 
+  // WARNING: Setting output power above 5 for T3S3 with PA will (maybe) result in damage to the development board.
   if (radio.setOutputPower(3) == RADIOLIB_ERR_INVALID_OUTPUT_POWER)
   {
     Logging::printError("Selected output power is invalid for this module!");
@@ -227,28 +238,28 @@ void initialize()
       ;
   }
 
-  if (radio.setFrequency(2400.0) == RADIOLIB_ERR_INVALID_FREQUENCY)
+  if (radio.setFrequency(frequency) == RADIOLIB_ERR_INVALID_FREQUENCY)
   {
     Logging::printError("Selected frequency is invalid for this module!");
     while (true)
       ;
   }
 
-  if (radio.setBandwidth(203.125) == RADIOLIB_ERR_INVALID_BANDWIDTH)
+  if (radio.setBandwidth(bandwidth) == RADIOLIB_ERR_INVALID_BANDWIDTH)
   {
     Logging::printError("Selected bandwidth is invalid for this module!");
     while (true)
       ;
   }
 
-  if (radio.setSpreadingFactor(10) == RADIOLIB_ERR_INVALID_SPREADING_FACTOR)
+  if (radio.setSpreadingFactor(spreadingFactor) == RADIOLIB_ERR_INVALID_SPREADING_FACTOR)
   {
     Logging::printError("Selected spreading factor is invalid for this module!");
     while (true)
       ;
   }
 
-  if (radio.setCodingRate(6) == RADIOLIB_ERR_INVALID_CODING_RATE)
+  if (radio.setCodingRate(codingRate) == RADIOLIB_ERR_INVALID_CODING_RATE)
   {
     Logging::printError("Selected coding rate is invalid for this module!");
     while (true)

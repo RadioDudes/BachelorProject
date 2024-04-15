@@ -43,8 +43,6 @@ namespace Logging
 
     void printDataRate(unsigned long bytesTransferred, unsigned long fileTransferTime);
 
-    void logDataRate(unsigned long bytesTransferred, unsigned long fileTransferTime, char *logFile);
-
     void printInvalidFrequency(double freq);
 
     void printInvalidBandwidth(double bw);
@@ -64,5 +62,9 @@ namespace Logging
     void printSetTimeout(unsigned long timeout);
 
     void printSetPacketSize(int size);
+
+    void logDataRate(unsigned long bytesTransferred, unsigned long fileTransferTime, char *logFile);
+
+    void logStartTransfer(char *filename, unsigned long size, uint8_t sf, uint8_t cr, double freq, double bw, int packetSize, char *logFile);
 
 }

@@ -360,6 +360,7 @@ void ACKProtocol::transferFile(char *name)
     }
 
     Logging::printSendingFile(filename);
+    Logging::logStartTransfer(filename, file.size(), spreadingFactor, codingRate, frequency, bandwidth, packetSize, "/out.log");
 
     // SENDING METADATA
     unsigned long fileTransferTimerStartingTime;

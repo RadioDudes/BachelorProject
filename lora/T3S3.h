@@ -28,6 +28,10 @@ extern volatile bool receivedFlag;
 // Interrupt-driven transmit flag
 extern volatile bool transmittedFlag;
 
+extern double frequency;
+extern double bandwidth;
+extern uint8_t codingRate;
+extern uint8_t spreadingFactor;
 extern int packetSize;
 
 // --------------------------------------------- //

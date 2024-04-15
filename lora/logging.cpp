@@ -137,14 +137,6 @@ void Logging::printDataRate(unsigned long bytesTransferred, unsigned long fileTr
   Serial.println(" bytes per second");
 }
 
-void Logging::logDataRate(unsigned long bytesTransferred, unsigned long fileTransferTime, char *logFile) {
-  File file = SD.open(logFile, FILE_APPEND);
-  double dataRate = bytesTransferred / (fileTransferTime / 1000.0);
-  char dataRateString[150];
-  sprintf(dataRateString, "Transferred %i bytes in %i seconds, with a data rate of %f bps \n", bytesTransferred, fileTransferTime, dataRate);
-  file.write((uint8_t *) dataRateString, strlen(dataRateString));
-}
-
 void Logging::printInvalidFrequency(double freq) {
   Serial.print("| ERROR          | Invalid frequency ");
   Serial.println(freq);
@@ -194,4 +186,32 @@ void Logging::printSetPacketSize(int size) {
   Serial.print("| INFO           | Set packet size to ");
   Serial.println(size);
 }
+
+void Logging::logDataRate(unsigned long bytesTransferred, unsigned long fileTransferTime, char *logFile) {
+  File file = SD.open(logFile, FILE_APPEND);
+  double dataRate = bytesTransferred / (fileTransferTime / 1000.0);
+  char dataRateString[150];
+  sprintf(dataRateString, "Transferred %i bytes in %i seconds, with a data rate of %f bps \n", bytesTransferred, fileTransferTime, dataRate);
+  file.write((uint8_t *) dataRateString, strlen(dataRateString));
+  file.close();
+}
+
+void Logging::logStartTransfer(char *filename, unsigned long size, uint8_t sf, uint8_t cr, double freq, double bw, int packetSize, char *logFile) {
+  File file = SD.open(logFile, FILE_APPEND);
+  char startTransferString[120];
+  sprintf(startTransferString, "Starting transfer of %s, with size %i bytes.\n", filename, size);
+  file.write((uint8_t *) startTransferString, strlen(startTransferString));
+  sprintf(startTransferString, "Spreading factor is %i.\n", sf);
+  file.write((uint8_t *) startTransferString, strlen(startTransferString));
+  sprintf(startTransferString, "Bandwidth is %f.\n", bw);
+  file.write((uint8_t *) startTransferString, strlen(startTransferString));
+  sprintf(startTransferString, "Coding rate is %i.\n", cr);
+  file.write((uint8_t *) startTransferString, strlen(startTransferString));
+  sprintf(startTransferString, "Packet size is %i.\n", packetSize);
+  file.write((uint8_t *) startTransferString, strlen(startTransferString));
+  sprintf(startTransferString, "Frequency is %f.\n", freq);
+  file.write((uint8_t *) startTransferString, strlen(startTransferString));
+  file.close();
+}
+
 
