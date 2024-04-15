@@ -262,3 +262,14 @@ File data rate:
 $R_b =  SF * \frac{CR}{\frac{2^SF}{BW}} * \frac{S_{File}}{(S_{ContentFrame} + S_{ContentACKFrame}) * A_{Packet} + S_{MetaDataFrame} + S_{MetaDataAckFrame} + S_{FinFrame} + S_{FinACKFrame}}$, where $A_{Packet} = \frac{S_{File} + S_{Payload} - 1}{S_{Payload}}$
 
 This theoretical data rate of the file is optimistic, since it assumes that there is always one device transmitting, and that all frames are received, none are corrupted.
+
+The formula, with known variables filled in.
+$R_b =  SF * \frac{CR}{\frac{2^SF}{BW}} * \frac{S_{File}}{(S_{ContentFrame} + S_{ContentACKFrame}) * A_{Packet} + S_{MetaDataFrame} + S_{MetaDataAckFrame} + S_{FinFrame} + S_{FinACKFrame}}$, where $A_{Packet} = \frac{S_{File} + S_{Payload} - 1}{S_{Payload}}$
+
+$(SF * 20.25 + CR/24 + CR/S_{Payload_bits} + CR/16 + SF * 20.25 + CR/8 + CR/16) * A_{Packet} + (SF * 20.25 + CR/24 + CR/S_{Filename_bits} + CR/16) + (SF * 20.25 + CR/8 + CR/16) + (SF * 20.25 + CR/8 + CR/16) + (SF * 20.25 + CR/8 + CR/16)$
+
+The explicit header is 8 symbols. [2](https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/3n000000l9OZ/Kw7ZeYZuAZW3Q4A3R_IUjhYCQEJxkuLrUgl_GNNhuUo)
+
+
+
+
