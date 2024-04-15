@@ -259,4 +259,4 @@ PHYPayload data rate:
 $R_b =  SF * \frac{CR}{\frac{2^SF}{B}} * \frac{S_{PHYPayload}}{S_{Preamble} + S_{PHDR} + S_{PHDR_CRC} + CR/S_{PHYPayload} + CR/S_{CRC}}$, where $S_{Preamble} = SF * 12.25$
 
 File data rate:
-$R_b =  SF * \frac{CR}{\frac{2^SF}{B}} * \frac{S_{Packet}}{S_{ContentFrame} + S_{ACKFrame}}$
+$R_b =  SF * \frac{CR}{\frac{2^SF}{B}} * \frac{S_{File}}{(S_{ContentFrame} + S_{ContentACKFrame}) * A_{Packet} + S_{MetaDataFrame} + S_{MetaDataAckFrame} + S_{FinFrame} + S_{FinACKFrame}}$, where $A_{Packet} = \frac{S_{File} + S_{Payload} - 1}{S_{Payload}}$
