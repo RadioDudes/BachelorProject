@@ -260,3 +260,5 @@ $R_b =  SF * \frac{CR}{\frac{2^SF}{BW}} * \frac{S_{PHYPayload}}{S_{Preamble} + S
 
 File data rate:
 $R_b =  SF * \frac{CR}{\frac{2^SF}{BW}} * \frac{S_{File}}{(S_{ContentFrame} + S_{ContentACKFrame}) * A_{Packet} + S_{MetaDataFrame} + S_{MetaDataAckFrame} + S_{FinFrame} + S_{FinACKFrame}}$, where $A_{Packet} = \frac{S_{File} + S_{Payload} - 1}{S_{Payload}}$
+
+This theoretical data rate of the file is optimistic, since it assumes that there is always one device transmitting, and that all frames are received, none are corrupted.
