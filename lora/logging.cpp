@@ -39,6 +39,15 @@ void Logging::printContentType(int type) {
   } else if (type == 0b100) {
     Serial.println("End of file");
   }
+  else if (type == 0b101) {
+    Serial.println("SF sync request");
+  }
+  else if (type == 0b110) {
+    Serial.println("BW sync request");
+  }
+  else if (type == 0b111) {
+    Serial.println("BW or SF sync acknowledgment");
+  }
 }
 
 void Logging::printPacketAmount(uint16_t packetAmount) {
