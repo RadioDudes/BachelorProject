@@ -62,7 +62,7 @@ $R_c = R_s * 2^S = B$, i.e. the chip rate corresponds to the bandwidth. "one chi
 
 Nominal bit rate, including coding rate, is:
 
-$R_b = S * CR/(2^S/B)$, where RC is the coding rate (4/5, 4/6, ...)
+$R_b = S * CR/(2^S/B)$, where CR is the coding rate (4/5, 4/6, ...)
 
 [3](https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/2R0000001OJa/2BF2MTeiqIwkmxkcjjDZzalPUGlJ76lLdqiv.30prH8)
 
@@ -227,3 +227,72 @@ Used to calculate power received at antenna. Takes gain of antennas and free spa
 Half duplex transmission mode allows both parties to communicate with each other (as opposed to simplex), while not allowing communication to occur simultaneously (as opposed to full-duplex).
 LoRa transceivers are half-duplex.
 [1](https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/3n000000l9OZ/Kw7ZeYZuAZW3Q4A3R_IUjhYCQEJxkuLrUgl_GNNhuUo)
+
+## Theoretical data rate
+
+Coding rate of 4/6
+
+|         Parameters       | Data Rate | Data Rate, including coding rate | PHYPayload data rate | File data rate |
+| ------------------------ | --------- | -------------------------------- | ----------------- | ----------------- |
+| 203 kHz, SF12, 20 bytes |  |
+| 203 kHz, SF12, 50 bytes |       2dBi         |
+| 406 kHz, SF10, 50 bytes |       0db?         |
+| 406 kHz, SF10, 100 bytes |       -112.1dB          |
+| 406 kHz, SF8, 50 bytes  |        0dB?         |
+| 406 kHz, SF8, 100 bytes  |        0dB?         |
+| 812 kHz, SF7, 100 bytes  |        0dB?         |
+| 812 kHz, SF7, 200 bytes  |        0dB?         |
+| 1625 kHz, SF5, 100 bytes |        0dB?          |
+| 1625 kHz, SF5, 250 bytes |        -88.1dBm          |
+
+The amount of bits per symbol is represented by the spreading factor.
+
+LoRa preamble is 12.25 symbols [1](https://www.thethingsnetwork.org/docs/lorawan/lora-phy-format/)
+
+Data rate:
+$R_b = SF * \frac{1}{\frac{2^SF}{BW}}$
+
+Data rate, including code rate:
+$R_b = SF * \frac{CR}{\frac{2^SF}{BW}}$
+
+PHYPayload data rate:
+$R_b =  SF * \frac{CR}{\frac{2^SF}{BW}} * \frac{S_{PHYPayload}}{S_{Preamble} + S_{PHDR} + S_{PHDR_CRC} + CR/S_{PHYPayload} + CR/S_{CRC}}$, where $S_{Preamble} = SF * 12.25$
+
+File data rate:
+$R_b =  SF * \frac{CR}{\frac{2^SF}{BW}} * \frac{S_{File}}{(S_{ContentFrame} + S_{ContentACKFrame}) * A_{Packet} + S_{MetaDataFrame} + S_{MetaDataAckFrame} + S_{FinFrame} + S_{FinACKFrame}}$, where $A_{Packet} = \frac{S_{File} + S_{Payload} - 1}{S_{Payload}}$
+
+This theoretical data rate of the file is optimistic, since it assumes that there is always one device transmitting, and that all frames are received, none are corrupted.
+
+The formula, with known variables filled in.
+$R_b =  SF * \frac{CR}{\frac{2^SF}{BW}} * \frac{S_{File}}{(S_{ContentFrame} + S_{ContentACKFrame}) * A_{Packet} + S_{MetaDataFrame} + S_{MetaDataAckFrame} + S_{FinFrame} + S_{FinACKFrame}}$, where $A_{Packet} = \frac{S_{File_bits} + S_{Payload} - 1}{S_{Payload}}$
+
+$(SF * 20.25 + CR/24 + CR/S_{Payload_bits} + CR/16 + SF * 20.25 + CR/8 + CR/16) * A_{Packet} + (SF * 20.25 + CR/24 + CR/S_{Filename_bits} + CR/16) + (SF * 20.25 + CR/8 + CR/16) + (SF * 20.25 + CR/8 + CR/16) + (SF * 20.25 + CR/8 + CR/16)$
+
+$(SF * 40.5 + 7CR/24 + CR/S_{Payload_bits}) * A_{Packet} + SF * 81 + 32CR/48 + CR/S_{Filename_bits}$
+
+
+$R_b = SF * \frac{CR}{\frac{2^SF}{BW}} * \frac{S_{file_bits}}{(SF * 40.5 + 7CR/24 + CR/S_{Payload_bits}) * \frac{S_{File_bits} + S_{Payload} - 1}{S_{Payload}} + SF * 81 + 32CR/48 + CR/S_{Filename_bits}}$
+
+The explicit header is 8 symbols. [2](https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/3n000000l9OZ/Kw7ZeYZuAZW3Q4A3R_IUjhYCQEJxkuLrUgl_GNNhuUo)
+
+Example:
+SF 10
+BW 203.125
+CR 4/6
+payload size 30
+file size = 3kb
+
+$R_b = SF * \frac{1}{\frac{2^SF}{BW}} = 10 * \frac{1}{\frac{2^10}{203.125}} = 1.983642578125 kbps$
+
+$R_{b_with_CR} = SF * \frac{CR}{\frac{2^SF}{BW}} = 10 * \frac{4/6}{\frac{2^10}{203.125}} = 1.3224283854166665 kbps$
+
+
+$R_{file_b} = SF * \frac{CR}{\frac{2^SF}{BW}} * \frac{S_{file_bits}}{(SF * 40.5 + 7CR/24 + CR/S_{Payload_bits}) * \frac{S_{File_bits} + S_{Payload} - 1}{S_{Payload}} + SF * 81 + 32CR/48 + CR/S_{Filename_bits}}$
+
+$R_{file_b} = SF * \frac{CR}{\frac{2^SF}{BW}} * \frac{S_{file_bits}}{(SF * 40.5 + 7CR/24 + CR/S_{Payload_bits}) * \frac{S_{File_bits} + S_{Payload} - 1}{S_{Payload}} + SF * 81 + 32CR/48 + CR/S_{Filename_bits} = 10 * \frac{4/6}{\frac{2^10}{203.125}} * \frac{24000}{(10 * 40.5 + (7 * 4/6)/24 + (4/6)/30) * \frac{24000 + 30 - 1}{30} + 10 * 81 + (32 * 4/6)/48 + (4/6)/S_{Filename_bits}}$
+
+$SF * \frac{CR}{\frac{2^SF}{BW}} * \frac{S_{file}}{(SF * 40.5 + 7CR/24 + CR/S_{Payload_bits}) * \frac{S_{File_bits} + S_{Payload} - 1}{S_{Payload} + SF * 81 + 32CR/48 + CR/S_{Filename_bits}}$
+
+$10 * \frac{4/6}{\frac{2^10}{203.125}}$
+
+$\frac{24000}{(10 * 40.5 + (7 * 4/6)/24 + (4/6)/30) * \frac{24000 + 30 - 1}{30} + 10 * 81 + (32 * 4/6)/48 + (4/6)/S_{Filename_bits}}$

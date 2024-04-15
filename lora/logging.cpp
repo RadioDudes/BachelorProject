@@ -39,6 +39,15 @@ void Logging::printContentType(int type) {
   } else if (type == 0b100) {
     Serial.println("End of file");
   }
+  else if (type == 0b101) {
+    Serial.println("SF sync request");
+  }
+  else if (type == 0b110) {
+    Serial.println("BW sync request");
+  }
+  else if (type == 0b111) {
+    Serial.println("BW or SF sync acknowledgment");
+  }
 }
 
 void Logging::printPacketAmount(uint16_t packetAmount) {
@@ -215,3 +224,16 @@ void Logging::logStartTransfer(char *filename, unsigned long size, uint8_t sf, u
 }
 
 
+void Logging::printSyncErrorSF(uint8_t expectedSF, uint8_t actualSF) {
+  Serial.print("| ERROR          | SF sync error. Expected SF ");
+  Serial.print(expectedSF);
+  Serial.print(" but received ");
+  Serial.println(actualSF);
+}
+
+void Logging::printSyncErrorBW(double expectedBW, double actualBW) {
+  Serial.print("| ERROR          | BW sync error. Expected BW ");
+  Serial.print(expectedBW);
+  Serial.print(" but received ");
+  Serial.println(actualBW);
+}

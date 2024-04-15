@@ -19,6 +19,8 @@ namespace ACKProtocol
     bool payloadType(uint8_t *message, size_t size);
     void receiveFileProtocolMessage();
     void setTimeout(unsigned long time);
+    void syncBandwidth(double bw);
+    void syncSpreadingFactor(uint8_t sf);
     void resetVars();
 
     // --------------------------------------------- //

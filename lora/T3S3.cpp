@@ -319,6 +319,7 @@ bool transmitMessage(uint8_t *message, size_t len, bool printPacket)
 void receiveMode()
 {
   mode = RECEIVE_MODE;
+  receivedFlag = false;
   radio.startReceive();
 
   if (enableDebug)

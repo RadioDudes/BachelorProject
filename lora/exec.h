@@ -49,7 +49,7 @@ void execCommand(char *message)
       Serial.println(F(" is an invalid bandwidth"));
       return;
     }
-    setBandwidth(bw);
+    ACKProtocol::syncBandwidth(bw);
   }
   else if (strcmp(next, "spreadingfactor") == 0 || strcmp(next, "sf") == 0)
   {
@@ -68,7 +68,7 @@ void execCommand(char *message)
       return;
     }
 
-    setSpreadingFactor(sf);
+    ACKProtocol::syncSpreadingFactor(sf);
   }
   else if (strcmp(next, "reset") == 0)
   {

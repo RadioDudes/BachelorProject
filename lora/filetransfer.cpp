@@ -29,6 +29,10 @@ namespace ACKProtocol
 
     // Boolean for receiver to know if metadata has been received
     volatile bool metadataReceived = false;
+
+    // Variables for transmitter to know if SF or BW change has been received correctly
+    double ackBW = 0;
+    uint8_t ackSF = 0;
 }
 
 // --------------------------------------------- //
@@ -53,6 +57,55 @@ void ACKProtocol::setTimeout(unsigned long time)
 {
     timeoutTime = time;
     Logging::printSetTimeout(time);
+}
+
+void ACKProtocol::syncBandwidth(double bw)
+{
+    uint8_t message[9];
+    message[0] = 0b11000000;
+    double* pBW = (double*) &(message[1]);
+    *pBW = bw;
+
+    transmitMode();
+    transmitMessage(message, 9);
+    while (!transmittedFlag)
+    {
+    }
+
+    receiveACK();
+
+    if (ackBW == bw)
+    {
+        setBandwidth(bw);
+    }
+    else
+    {
+        Logging::printSyncErrorBW(bw, ackBW);
+    }
+}
+
+void ACKProtocol::syncSpreadingFactor(uint8_t sf)
+{
+    uint8_t message[2];
+    message[0] = 0b10100000;
+    message[1] = sf;
+
+    transmitMode();
+    transmitMessage(message, 2);
+    while (!transmittedFlag)
+    {
+    }
+
+    receiveACK();
+
+    if (ackSF == sf)
+    {
+        setSpreadingFactor(sf);
+    }
+    else
+    {
+        Logging::printSyncErrorSF(sf, ackSF);
+    }
 }
 
 bool ACKProtocol::payloadType(uint8_t *message, size_t size)
@@ -100,6 +153,44 @@ bool ACKProtocol::payloadType(uint8_t *message, size_t size)
         lastReceivedPacket = (message[1] << 8) + message[2];
         receiveFileEnd();
     }
+    else if (type == 0b101)
+    {
+        uint8_t ack[2];
+        ack[0] = 0b11100000;
+        ack[1] = message[1];
+
+        transmitMode();
+        transmitMessage(ack, 2);
+        while (!transmittedFlag)
+        {
+        }
+        setSpreadingFactor(message[1]);
+    }
+    else if (type == 0b110)
+    {
+        double receivedBW = *((double *)&(message[1]));
+        uint8_t ack[size];
+        memcpy(ack, message, size);
+        ack[0] = 0b11100000;
+
+        transmitMode();
+        transmitMessage(ack, size);
+        while (!transmittedFlag)
+        {
+        }
+        setBandwidth(receivedBW);
+    }
+    else if (type == 0b111)
+    {
+        if (size > 2)
+        {
+            ackBW = *((double *)&(message[1]));
+        }
+        else
+        {
+            ackSF = message[1];
+        }
+    }
     else
     {
         if (enableDebug)
@@ -112,6 +203,10 @@ bool ACKProtocol::payloadType(uint8_t *message, size_t size)
 void ACKProtocol::receiveFileProtocolMessage()
 {
     size_t messageSize = radio.getPacketLength();
+    if (messageSize == 0)
+    {
+      return;
+    }
     uint8_t message[messageSize];
     if (!receiveMessage(message, messageSize))
     {
@@ -250,7 +345,6 @@ void ACKProtocol::receiveMetadata(uint8_t *message, size_t size)
 void ACKProtocol::receiveACK()
 {
     receiveMode();
-
     // Timeout implementation
     unsigned long timeoutStartTime = millis();
     while (!receivedFlag)

@@ -67,4 +67,6 @@ namespace Logging
 
     void logStartTransfer(char *filename, unsigned long size, uint8_t sf, uint8_t cr, double freq, double bw, int packetSize, char *logFile);
 
+    void printSyncErrorSF(uint8_t expectedSF, uint8_t actualSF);
+    void printSyncErrorBW(double expectedBW, double actualBW);
 }
