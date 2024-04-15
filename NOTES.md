@@ -286,6 +286,9 @@ $R_b = SF * \frac{1}{\frac{2^SF}{BW}} = 10 * \frac{1}{\frac{2^10}{203.125}} = 1.
 
 $R_{b_with_CR} = SF * \frac{CR}{\frac{2^SF}{BW}} = 10 * \frac{4/6}{\frac{2^10}{203.125}} = 1.3224283854166665 kbps$
 
+
+$R_{file_b} = SF * \frac{CR}{\frac{2^SF}{BW}} * \frac{S_{file_bits}}{(SF * 40.5 + 7CR/24 + CR/S_{Payload_bits}) * \frac{S_{File_bits} + S_{Payload} - 1}{S_{Payload}} + SF * 81 + 32CR/48 + CR/S_{Filename_bits}}$
+
 $R_{file_b} = SF * \frac{CR}{\frac{2^SF}{BW}} * \frac{S_{file_bits}}{(SF * 40.5 + 7CR/24 + CR/S_{Payload_bits}) * \frac{S_{File_bits} + S_{Payload} - 1}{S_{Payload}} + SF * 81 + 32CR/48 + CR/S_{Filename_bits} = 10 * \frac{4/6}{\frac{2^10}{203.125}} * \frac{24000}{(10 * 40.5 + (7 * 4/6)/24 + (4/6)/30) * \frac{24000 + 30 - 1}{30} + 10 * 81 + (32 * 4/6)/48 + (4/6)/S_{Filename_bits}}$
 
 $SF * \frac{CR}{\frac{2^SF}{BW}} * \frac{S_{file}}{(SF * 40.5 + 7CR/24 + CR/S_{Payload_bits}) * \frac{S_{File_bits} + S_{Payload} - 1}{S_{Payload} + SF * 81 + 32CR/48 + CR/S_{Filename_bits}}$
