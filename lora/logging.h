@@ -65,4 +65,6 @@ namespace Logging
 
     void printSetPacketSize(int size);
 
+    void printSyncErrorSF(uint8_t expectedSF, uint8_t actualSF);
+    void printSyncErrorBW(double expectedBW, double actualBW);
 }

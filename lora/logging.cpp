@@ -195,3 +195,16 @@ void Logging::printSetPacketSize(int size) {
   Serial.println(size);
 }
 
+void Logging::printSyncErrorSF(uint8_t expectedSF, uint8_t actualSF) {
+  Serial.print("| ERROR          | SF sync error. Expected SF ");
+  Serial.print(expectedSF);
+  Serial.print(" but received ");
+  Serial.println(actualSF);
+}
+
+void Logging::printSyncErrorBW(double expectedBW, double actualBW) {
+  Serial.print("| ERROR          | BW sync error. Expected BW ");
+  Serial.print(expectedBW);
+  Serial.print(" but received ");
+  Serial.println(actualBW);
+}
