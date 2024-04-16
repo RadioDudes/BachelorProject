@@ -63,9 +63,15 @@ namespace Logging
 
     void printSetPacketSize(int size);
 
-    void logDataRate(unsigned long bytesTransferred, unsigned long fileTransferTime, char *logFile);
+    void logFinishTransfer(char *filename, unsigned long bytesTransferred, unsigned long fileTransferTime, unsigned int packetsLost, char *logFile);
 
-    void logStartTransfer(char *filename, unsigned long size, uint8_t sf, uint8_t cr, double freq, double bw, int packetSize, char *logFile);
+    void logStartTransfer(char *filename, unsigned long size, uint8_t sf, uint8_t cr, double freq, double bw, int packetSize, unsigned long timeout, char *logFile);
+
+    void logStartReceiving(char *filename, uint16_t packetAmount, uint8_t sf, uint8_t cr, double freq, double bw, char *logFile);
+
+    void logFinishReceiving(char *filename, char *logFile);
+
+    void logResetDevice(char *logFile);
 
     void printSyncErrorSF(uint8_t expectedSF, uint8_t actualSF);
     void printSyncErrorBW(double expectedBW, double actualBW);

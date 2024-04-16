@@ -142,8 +142,8 @@ void Logging::printDataRate(unsigned long bytesTransferred, unsigned long fileTr
   Serial.print("| INFO           | Transferred ");
   Serial.print(bytesTransferred);
   Serial.print(" bytes, giving a data rate of ");
-  Serial.print(bytesTransferred / (fileTransferTime / 1000.0));
-  Serial.println(" bytes per second");
+  Serial.print(8 * bytesTransferred / (fileTransferTime / 1000.0));
+  Serial.println(" bps");
 }
 
 void Logging::printInvalidFrequency(double freq) {
@@ -196,16 +196,20 @@ void Logging::printSetPacketSize(int size) {
   Serial.println(size);
 }
 
-void Logging::logDataRate(unsigned long bytesTransferred, unsigned long fileTransferTime, char *logFile) {
+
+void Logging::logFinishTransfer(char *filename, unsigned long bytesTransferred, unsigned long fileTransferTime, unsigned int packetsLost, char *logFile) {
   File file = SD.open(logFile, FILE_APPEND);
-  double dataRate = bytesTransferred / (fileTransferTime / 1000.0);
-  char dataRateString[150];
-  sprintf(dataRateString, "Transferred %i bytes in %i seconds, with a data rate of %f bps \n", bytesTransferred, fileTransferTime, dataRate);
-  file.write((uint8_t *) dataRateString, strlen(dataRateString));
+  double dataRate = 8 * bytesTransferred / (fileTransferTime / 1000.0);
+  char finishTransferString[150];
+  sprintf(finishTransferString, "Finished transfer of %s with %i packets lost \n", filename, packetsLost);
+  file.write((uint8_t *) finishTransferString, strlen(finishTransferString));
+  sprintf(finishTransferString, "Transferred %i bytes in %i milliseconds, with a data rate of %f bps \n", bytesTransferred, fileTransferTime, dataRate);
+  file.write((uint8_t *) finishTransferString, strlen(finishTransferString));
   file.close();
 }
 
-void Logging::logStartTransfer(char *filename, unsigned long size, uint8_t sf, uint8_t cr, double freq, double bw, int packetSize, char *logFile) {
+
+void Logging::logStartTransfer(char *filename, unsigned long size, uint8_t sf, uint8_t cr, double freq, double bw, int packetSize, unsigned long timeout, char *logFile) {
   File file = SD.open(logFile, FILE_APPEND);
   char startTransferString[120];
   sprintf(startTransferString, "Starting transfer of %s, with size %i bytes.\n", filename, size);
@@ -220,9 +224,42 @@ void Logging::logStartTransfer(char *filename, unsigned long size, uint8_t sf, u
   file.write((uint8_t *) startTransferString, strlen(startTransferString));
   sprintf(startTransferString, "Frequency is %f.\n", freq);
   file.write((uint8_t *) startTransferString, strlen(startTransferString));
+  sprintf(startTransferString, "Timeout is %i.\n", timeout);
+  file.write((uint8_t *) startTransferString, strlen(startTransferString));
   file.close();
 }
 
+
+void Logging::logFinishReceiving(char *filename, char *logFile) {
+  File file = SD.open(logFile, FILE_APPEND);
+  char finishReceivingString[120];
+  sprintf(finishReceivingString, "Finished receiving %s.\n", filename);
+  file.write((uint8_t *) finishReceivingString, strlen(finishReceivingString));
+  file.close();
+}
+
+void Logging::logStartReceiving(char *filename, uint16_t packetAmount, uint8_t sf, uint8_t cr, double freq, double bw, char *logFile) {
+  File file = SD.open(logFile, FILE_APPEND);
+  char startTransferString[120];
+  sprintf(startTransferString, "Starting to receive %s, with %i packets.\n", filename, packetAmount);
+  file.write((uint8_t *) startTransferString, strlen(startTransferString));
+  sprintf(startTransferString, "Spreading factor is %i.\n", sf);
+  file.write((uint8_t *) startTransferString, strlen(startTransferString));
+  sprintf(startTransferString, "Bandwidth is %f.\n", bw);
+  file.write((uint8_t *) startTransferString, strlen(startTransferString));
+  sprintf(startTransferString, "Coding rate is %i.\n", cr);
+  file.write((uint8_t *) startTransferString, strlen(startTransferString));
+  sprintf(startTransferString, "Frequency is %f.\n", freq);
+  file.write((uint8_t *) startTransferString, strlen(startTransferString));
+  file.close();
+}
+
+void Logging::logResetDevice(char *logFile) {
+  File file = SD.open(logFile, FILE_APPEND);
+  char *resetDeviceString = "Device was reset.\n";
+  file.write((uint8_t *) resetDeviceString, strlen(resetDeviceString));
+  file.close();
+}
 
 void Logging::printSyncErrorSF(uint8_t expectedSF, uint8_t actualSF) {
   Serial.print("| ERROR          | SF sync error. Expected SF ");

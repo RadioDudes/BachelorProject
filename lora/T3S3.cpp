@@ -9,7 +9,7 @@ Ticker ledTicker;
 SX1280 radio = new Module(RADIO_CS_PIN, RADIO_DIO1_PIN, RADIO_RST_PIN, RADIO_BUSY_PIN);
 
 // Boolean for enabling/disabling debug info (screen and serial prints)
-bool enableDebug = true;
+bool enableDebug = false;
 
 // Counters for amount of packets sent and received
 int sendCounter = 0;
@@ -32,7 +32,7 @@ int mode = INACTIVE;
 double frequency = 2400.0;
 double bandwidth = 203.125;
 uint8_t codingRate = 6;
-uint8_t spreadingFactor = 10;
+uint8_t spreadingFactor = 12;
 
 // Size of the payload inside each packet
 int packetSize = 30;
@@ -265,6 +265,8 @@ void initialize()
     while (true)
       ;
   }
+
+  Logging::logResetDevice("/out.log");
 
   radio.setDio1Action(setFlag);
 }

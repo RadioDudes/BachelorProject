@@ -9,7 +9,7 @@ namespace ACKProtocol
 #define FILENAME_SIZE 100
 
     // Timeout defined in milliseconds
-    unsigned long timeoutTime = 500;
+    unsigned long timeoutTime = 2000;
 
     // Amount of packets timed out/"lost"
     unsigned int packetLoss = 0;
@@ -236,6 +236,7 @@ void ACKProtocol::receiveFileEnd()
     Logging::printPacketLoss(receiveCounter - (lastReceivedPacket + 1));
     Logging::printFileTransferTotalTime(fileTransferTime);
     Logging::printDataRate(bytesReceived, fileTransferTime);
+    Logging::logFinishReceiving(filename, "/out.log");
 
     resetVars();
 }
@@ -325,6 +326,8 @@ void ACKProtocol::receiveMetadata(uint8_t *message, size_t size)
         strcat(buffer, filename);
         Display::displayInfoTop(buffer);
     }
+
+    Logging::logStartReceiving(filename, packetAmount, spreadingFactor, codingRate, frequency, bandwidth, "/out.log");
 
     transmitMode();
     if (!ACKMetadata())
@@ -454,7 +457,7 @@ void ACKProtocol::transferFile(char *name)
     }
 
     Logging::printSendingFile(filename);
-    Logging::logStartTransfer(filename, file.size(), spreadingFactor, codingRate, frequency, bandwidth, packetSize, "/out.log");
+    Logging::logStartTransfer(filename, file.size(), spreadingFactor, codingRate, frequency, bandwidth, packetSize, timeoutTime, "/out.log");
 
     // SENDING METADATA
     unsigned long fileTransferTimerStartingTime;
@@ -491,7 +494,7 @@ void ACKProtocol::transferFile(char *name)
     Logging::printPacketLoss(packetLoss);
     Logging::printFileTransferTotalTime(fileTransferTime);
     Logging::printDataRate(file.size(), fileTransferTime);
-    Logging::logDataRate(file.size(), fileTransferTime, "/out.log");
+    Logging::logFinishTransfer(filename, file.size(), fileTransferTime, packetLoss, "/out.log");
     file.close();
 
     resetVars();
