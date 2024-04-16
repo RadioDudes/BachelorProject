@@ -146,6 +146,12 @@ void Logging::printDataRate(unsigned long bytesTransferred, unsigned long fileTr
   Serial.println(" bps");
 }
 
+void Logging::printAvgSNR(unsigned long totalSNR, int packetsReceived) {
+  Serial.print("| INFO           | Averaged an SNR of ");
+  Serial.print(totalSNR / ( (double) packetsReceived));
+  Serial.println(" dB per packet.");
+}
+
 void Logging::printInvalidFrequency(double freq) {
   Serial.print("| ERROR          | Invalid frequency ");
   Serial.println(freq);

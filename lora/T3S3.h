@@ -34,6 +34,9 @@ extern uint8_t codingRate;
 extern uint8_t spreadingFactor;
 extern int packetSize;
 
+// Store every SNR of every received packet, to later calculate avg using receiveCounter
+extern unsigned long totalSNR;
+
 // --------------------------------------------- //
 //              FUNCTIONALITY CODE               //
 // --------------------------------------------- //

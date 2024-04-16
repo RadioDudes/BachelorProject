@@ -47,6 +47,7 @@ void RawProtocol::resetVars()
     lastReceivedPacket = UINT16_MAX;
     receivedPacketCount = UINT16_MAX;
     packetLoss = 0;
+    totalSNR = 0;
 }
 
 bool RawProtocol::payloadType(uint8_t *message, size_t size)

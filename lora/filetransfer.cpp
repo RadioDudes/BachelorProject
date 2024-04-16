@@ -51,6 +51,7 @@ void ACKProtocol::resetVars()
     lastReceivedPacket = UINT16_MAX;
     receivedPacketCount = UINT16_MAX;
     packetLoss = 0;
+    totalSNR = 0;
 }
 
 void ACKProtocol::setTimeout(unsigned long time)
@@ -236,6 +237,7 @@ void ACKProtocol::receiveFileEnd()
     Logging::printPacketLoss(receiveCounter - (lastReceivedPacket + 1));
     Logging::printFileTransferTotalTime(fileTransferTime);
     Logging::printDataRate(bytesReceived, fileTransferTime);
+    Logging::printAvgSNR(totalSNR, receiveCounter);
     Logging::logFinishReceiving(filename, "/out.log");
 
     resetVars();

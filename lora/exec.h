@@ -72,8 +72,9 @@ void execCommand(char *message)
   }
   else if (strcmp(next, "reset") == 0)
   {
-    receiveCounter = 0;
-    sendCounter = 0;
+    ACKProtocol::resetVars();
+    RawProtocol::resetVars();
+    Logging::printInfo("Variables reset.");
   }
   else if (strcmp(next, "download") == 0)
   {

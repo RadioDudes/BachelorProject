@@ -37,6 +37,8 @@ uint8_t spreadingFactor = 12;
 // Size of the payload inside each packet
 int packetSize = 30;
 
+// Store every SNR of every received packet, to later calculate avg using receiveCounter
+unsigned long totalSNR = 0;
 
 // ---------------------------------------------------------- //
 
@@ -353,6 +355,7 @@ bool receiveMessage(uint8_t *buffer, size_t messageSize)
   if (state == RADIOLIB_ERR_NONE)
   {
     receiveCounter++;
+    totalSNR += radio.getSNR();
     bytesReceived += messageSize;
     return true;
   }

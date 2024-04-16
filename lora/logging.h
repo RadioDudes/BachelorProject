@@ -43,6 +43,8 @@ namespace Logging
 
     void printDataRate(unsigned long bytesTransferred, unsigned long fileTransferTime);
 
+    void printAvgSNR(unsigned long totalSNR, int packetsReceived);
+
     void printInvalidFrequency(double freq);
 
     void printInvalidBandwidth(double bw);
