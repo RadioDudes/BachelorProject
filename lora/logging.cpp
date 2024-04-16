@@ -146,9 +146,9 @@ void Logging::printDataRate(unsigned long bytesTransferred, unsigned long fileTr
   Serial.println(" bps");
 }
 
-void Logging::printAvgSNR(unsigned long totalSNR, int packetsReceived) {
+void Logging::printAvgSNR(double totalSNR, int packetsReceived) {
   Serial.print("| INFO           | Averaged an SNR of ");
-  Serial.print(totalSNR / ( (double) packetsReceived));
+  Serial.print(totalSNR / packetsReceived);
   Serial.println(" dB per packet.");
 }
 
@@ -236,10 +236,12 @@ void Logging::logStartTransfer(char *filename, unsigned long size, uint8_t sf, u
 }
 
 
-void Logging::logFinishReceiving(char *filename, char *logFile) {
+void Logging::logFinishReceiving(char *filename, double totalSNR, int packetsReceived, char *logFile) {
   File file = SD.open(logFile, FILE_APPEND);
   char finishReceivingString[120];
   sprintf(finishReceivingString, "Finished receiving %s.\n", filename);
+  file.write((uint8_t *) finishReceivingString, strlen(finishReceivingString));
+  sprintf(finishReceivingString, "Avg SNR per packet is %f.\n", (totalSNR /  packetsReceived));
   file.write((uint8_t *) finishReceivingString, strlen(finishReceivingString));
   file.close();
 }

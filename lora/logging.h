@@ -43,7 +43,7 @@ namespace Logging
 
     void printDataRate(unsigned long bytesTransferred, unsigned long fileTransferTime);
 
-    void printAvgSNR(unsigned long totalSNR, int packetsReceived);
+    void printAvgSNR(double totalSNR, int packetsReceived);
 
     void printInvalidFrequency(double freq);
 
@@ -71,7 +71,7 @@ namespace Logging
 
     void logStartReceiving(char *filename, uint16_t packetAmount, uint8_t sf, uint8_t cr, double freq, double bw, char *logFile);
 
-    void logFinishReceiving(char *filename, char *logFile);
+    void logFinishReceiving(char *filename, double totalSNR, int packetsReceived, char *logFile);
 
     void logResetDevice(char *logFile);
 

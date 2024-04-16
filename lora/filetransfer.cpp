@@ -238,7 +238,7 @@ void ACKProtocol::receiveFileEnd()
     Logging::printFileTransferTotalTime(fileTransferTime);
     Logging::printDataRate(bytesReceived, fileTransferTime);
     Logging::printAvgSNR(totalSNR, receiveCounter);
-    Logging::logFinishReceiving(filename, "/out.log");
+    Logging::logFinishReceiving(filename, totalSNR, receiveCounter, "/out.log");
 
     resetVars();
 }

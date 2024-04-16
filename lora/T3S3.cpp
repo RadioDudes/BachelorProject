@@ -38,7 +38,7 @@ uint8_t spreadingFactor = 12;
 int packetSize = 30;
 
 // Store every SNR of every received packet, to later calculate avg using receiveCounter
-unsigned long totalSNR = 0;
+double totalSNR = 0;
 
 // ---------------------------------------------------------- //
 
