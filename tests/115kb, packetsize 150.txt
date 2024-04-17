@@ -1,0 +1,28 @@
+115kb, packetsize 150
+
+t utf8 encoded message: "send /115kb.jpg\n" ----
+Message is: send /115kb.jpg
+| INFO           | Sending file /115kb.jpg
+| INFO           | 12 packets lost
+| INFO           | File transfer took 15745 milliseconds
+| INFO           | Transferred 116892 bytes, giving a data rate of 59392.57 bps
+---- Sent utf8 encoded message: "send /115kb.jpg\n" ----
+Message is: send /115kb.jpg
+| INFO           | Sending file /115kb.jpg
+| INFO           | 8 packets lost
+| INFO           | File transfer took 14818 milliseconds
+| INFO           | Transferred 116892 bytes, giving a data rate of 63108.11 bps
+---- Sent utf8 encoded message: "send /115kb.jpg\n" ----
+Message is: send /115kb.jpg
+| INFO           | Sending file /115kb.jpg
+| INFO           | 10 packets lost
+| INFO           | File transfer took 15439 milliseconds
+| INFO           | Transferred 116892 bytes, giving a data rate of 60569.73 bps
+
+
+timeout = 100
+
+| Sending file /115kb.jpg
+| INFO           | 32 packets lost
+| INFO           | File transfer took 16586 milliseconds
+| INFO           | Transferred 116892 bytes, giving a data rate of 56381.04 bps

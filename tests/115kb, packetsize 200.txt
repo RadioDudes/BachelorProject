@@ -1,0 +1,20 @@
+packetsize 200
+| INFO           | Set packet size to 200
+---- Sent utf8 encoded message: "send /115kb.jpg\n" ----
+Message is: send /115kb.jpg
+| INFO           | Sending file /115kb.jpg
+| INFO           | 9 packets lost
+| INFO           | File transfer took 14004 milliseconds
+| INFO           | Transferred 116892 bytes, giving a data rate of 66776.35 bps
+---- Sent utf8 encoded message: "send /115kb.jpg\n" ----
+Message is: send /115kb.jpg
+| INFO           | Sending file /115kb.jpg
+| INFO           | 7 packets lost
+| INFO           | File transfer took 13625 milliseconds
+| INFO           | Transferred 116892 bytes, giving a data rate of 68633.83 bps
+---- Sent utf8 encoded message: "send /115kb.jpg\n" ----
+Message is: send /115kb.jpg
+| INFO           | Sending file /115kb.jpg
+| INFO           | 4 packets lost
+| INFO           | File transfer took 12893 milliseconds
+| INFO           | Transferred 116892 bytes, giving a data rate of 72530.52 bps

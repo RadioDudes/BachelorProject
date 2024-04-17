@@ -1,0 +1,670 @@
+Device was reset.
+Device was reset.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 12.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /a.txt.
+Avg SNR per packet is 5.541667.
+Avg RSSI per packet is -84.666667.
+Device was reset.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 11.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /a.txt.
+Avg SNR per packet is 5.375000.
+Avg RSSI per packet is -98.375000.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 10.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /a.txt.
+Avg SNR per packet is 5.500000.
+Avg RSSI per packet is -98.000000.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 9.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /a.txt.
+Avg SNR per packet is 6.535714.
+Avg RSSI per packet is -100.571429.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 8.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /a.txt.
+Avg SNR per packet is 8.392857.
+Avg RSSI per packet is -98.000000.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 7.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /a.txt.
+Avg SNR per packet is 8.625000.
+Avg RSSI per packet is -97.875000.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 6.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /a.txt.
+Avg SNR per packet is 8.500000.
+Avg RSSI per packet is -97.714286.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 5.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 5.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /a.txt.
+Avg SNR per packet is 6.527778.
+Avg RSSI per packet is -99.888889.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 5.
+Bandwidth is 406.250000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /a.txt.
+Avg SNR per packet is 6.964286.
+Avg RSSI per packet is -97.428571.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 5.
+Bandwidth is 812.500000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /a.txt.
+Avg SNR per packet is 6.250000.
+Avg RSSI per packet is -96.428571.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /a.txt.
+Avg SNR per packet is 5.535714.
+Avg RSSI per packet is -92.571429.
+Starting to receive /a.txt, with 2 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /a.txt.
+Avg SNR per packet is 2.843750.
+Avg RSSI per packet is -94.000000.
+Starting to receive /a.txt, with 2 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /a.txt.
+Avg SNR per packet is 4.937500.
+Avg RSSI per packet is -92.250000.
+Starting to receive /testImages/3kb.jpg, with 26 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /testImages/3kb.jpg.
+Avg SNR per packet is 3.904412.
+Avg RSSI per packet is -92.875000.
+Device was reset.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /a.txt.
+Avg SNR per packet is 5.062500.
+Avg RSSI per packet is -93.000000.
+Starting to receive /testImages/3kb.jpg, with 85 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /testImages/3kb.jpg.
+Avg SNR per packet is 5.113861.
+Avg RSSI per packet is -91.670792.
+Device was reset.
+Device was reset.
+Starting to receive /testImages/3kb.jpg, with 26 packets.
+Spreading factor is 7.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /testImages/3kb.jpg.
+Avg SNR per packet is 13.327586.
+Avg RSSI per packet is -87.206897.
+Device was reset.
+Device was reset.
+Starting to receive /heart.png, with 47 packets.
+Spreading factor is 7.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /heart.png.
+Avg SNR per packet is 12.093137.
+Avg RSSI per packet is -92.862745.
+Device was reset.
+Starting to receive /3kb.jpg, with 85 packets.
+Spreading factor is 7.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /3kb.jpg.
+Avg SNR per packet is 12.323034.
+Avg RSSI per packet is -91.651685.
+Starting to receive /3kb.jpg, with 17 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /3kb.jpg.
+Avg SNR per packet is 6.159091.
+Avg RSSI per packet is -91.363636.
+Starting to receive /19kb.jpg, with 126 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Starting to receive /19kb.jpg, with 126 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /19kb.jpg.
+Avg SNR per packet is 4.727273.
+Avg RSSI per packet is -92.371212.
+Starting to receive /115kb.jpg, with 780 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /115kb.jpg.
+Avg SNR per packet is 5.683165.
+Avg RSSI per packet is -91.230769.
+Starting to receive /115kb.jpg, with 780 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /115kb.jpg.
+Avg SNR per packet is 6.046086.
+Avg RSSI per packet is -90.767677.
+Starting to receive /115kb.jpg, with 780 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /115kb.jpg.
+Avg SNR per packet is 6.231692.
+Avg RSSI per packet is -90.388889.
+Starting to receive /115kb.jpg, with 585 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /115kb.jpg.
+Avg SNR per packet is 5.956376.
+Avg RSSI per packet is -90.869128.
+Starting to receive /115kb.jpg, with 585 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /115kb.jpg.
+Avg SNR per packet is 5.739899.
+Avg RSSI per packet is -91.195286.
+Starting to receive /115kb.jpg, with 585 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /115kb.jpg.
+Avg SNR per packet is 5.517677.
+Avg RSSI per packet is -91.509680.
+Starting to receive /115kb.jpg, with 780 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /115kb.jpg.
+Avg SNR per packet is 6.226220.
+Avg RSSI per packet is -90.318836.
+Starting to receive /115kb.jpg, with 780 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /115kb.jpg.
+Avg SNR per packet is 5.483586.
+Avg RSSI per packet is -91.391098.
+Starting to receive /115kb.jpg, with 780 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /115kb.jpg.
+Avg SNR per packet is 7.540506.
+Avg RSSI per packet is -87.663291.
+Starting to receive /115kb.jpg, with 780 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /115kb.jpg.
+Avg SNR per packet is 4.948807.
+Avg RSSI per packet is -92.146985.
+Starting to receive /115kb.jpg, with 780 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /115kb.jpg.
+Avg SNR per packet is 4.923526.
+Avg RSSI per packet is -92.128378.
+Starting to receive /115kb.jpg, with 780 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Starting to receive /115kb.jpg, with 780 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /115kb.jpg.
+Avg SNR per packet is 5.217228.
+Avg RSSI per packet is -91.741573.
+Starting to receive /115kb.jpg, with 780 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /115kb.jpg.
+Avg SNR per packet is 4.417453.
+Avg RSSI per packet is -92.765330.
+Starting to receive /115kb.jpg, with 780 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /115kb.jpg.
+Avg SNR per packet is 5.075269.
+Avg RSSI per packet is -91.825269.
+Starting to receive /115kb.jpg, with 780 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Device was reset.
+Starting to receive /115kb.jpg, with 585 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Starting to receive /115kb.jpg, with 585 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Device was reset.
+Starting to receive /a.txt, with 1 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /a.txt.
+Avg SNR per packet is 3.291667.
+Avg RSSI per packet is -95.166667.
+Starting to receive /3kb.jpg, with 17 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /3kb.jpg.
+Avg SNR per packet is 7.163462.
+Avg RSSI per packet is -88.346154.
+Starting to receive /3kb.jpg, with 17 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /3kb.jpg.
+Avg SNR per packet is 8.987500.
+Avg RSSI per packet is -85.050000.
+Starting to receive /19kb.jpg, with 126 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Starting to receive /19kb.jpg, with 126 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Device was reset.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 12.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 12.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 12.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /a.txt.
+Avg SNR per packet is -4.727273.
+Avg RSSI per packet is -103.954545.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 12.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /a.txt.
+Avg SNR per packet is -7.214286.
+Avg RSSI per packet is -104.500000.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 10.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /a.txt.
+Avg SNR per packet is -3.892857.
+Avg RSSI per packet is -105.821429.
+Device was reset.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 8.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 8.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /a.txt.
+Avg SNR per packet is -4.479167.
+Avg RSSI per packet is -106.041667.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 7.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /a.txt.
+Avg SNR per packet is -0.687500.
+Avg RSSI per packet is -106.687500.
+Starting to receive /3kb.jpg, with 85 packets.
+Spreading factor is 7.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Starting to receive /3kb.jpg, with 85 packets.
+Spreading factor is 7.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Device was reset.
+Device was reset.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 5.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 5.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 5.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /a.txt.
+Avg SNR per packet is 5.500000.
+Avg RSSI per packet is -102.305556.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 5.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /a.txt.
+Avg SNR per packet is 8.541667.
+Avg RSSI per packet is -96.833333.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Starting to receive /a.txt, with 4 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /a.txt.
+Avg SNR per packet is 2.162500.
+Avg RSSI per packet is -95.400000.
+Starting to receive /115kb.jpg, with 3897 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Starting to receive /115kb.jpg, with 3897 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Starting to receive /115kb.jpg, with 3897 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Starting to receive /115kb.jpg, with 3897 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Starting to receive /115kb.jpg, with 3897 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Starting to receive /115kb.jpg, with 3897 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Starting to receive /115kb.jpg, with 3897 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Starting to receive /115kb.jpg, with 3897 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Starting to receive /115kb.jpg, with 3897 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Device was reset.
+Starting to receive /115kb.jpg, with 3897 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Device was reset.
+Device was reset.
+Starting to receive /115kb.jpg, with 3897 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Starting to receive /115kb.jpg, with 3897 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Starting to receive /115kb.jpg, with 3897 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Starting to receive /115kb.jpg, with 3897 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Device was reset.
+Starting to receive /3kb.jpg, with 85 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /3kb.jpg.
+Avg SNR per packet is 7.758065.
+Avg RSSI per packet is -86.733871.
+Starting to receive /3kb.jpg, with 85 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /3kb.jpg.
+Avg SNR per packet is 8.997126.
+Avg RSSI per packet is -84.666667.
+Starting to receive /3kb.jpg, with 85 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /3kb.jpg.
+Avg SNR per packet is 8.007653.
+Avg RSSI per packet is -85.604592.
+Starting to receive /3kb.jpg, with 85 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /3kb.jpg.
+Avg SNR per packet is 9.561111.
+Avg RSSI per packet is -83.633333.
+Starting to receive /3kb.jpg, with 85 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /3kb.jpg.
+Avg SNR per packet is 9.306180.
+Avg RSSI per packet is -84.146067.
+Starting to receive /a.txt, with 1 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /a.txt.
+Avg SNR per packet is 9.250000.
+Avg RSSI per packet is -82.666667.
+Starting to receive /3kb.jpg, with 13 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Starting to receive /3kb.jpg, with 13 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /3kb.jpg.
+Avg SNR per packet is 3.310345.
+Avg RSSI per packet is -93.896552.
+Starting to receive /3kb.jpg, with 13 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /3kb.jpg.
+Avg SNR per packet is 9.375000.
+Avg RSSI per packet is -83.625000.
+Starting to receive /3kb.jpg, with 13 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /3kb.jpg.
+Avg SNR per packet is 8.150000.
+Avg RSSI per packet is -87.333333.
+Starting to receive /3kb.jpg, with 13 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /3kb.jpg.
+Avg SNR per packet is 8.800000.
+Avg RSSI per packet is -83.866667.
+Starting to receive /520kb.jpg, with 2660 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /520kb.jpg.
+Avg SNR per packet is 9.915370.
+Avg RSSI per packet is -81.647037.
+Starting to receive /520kb.jpg, with 2660 packets.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Frequency is 2400.000000.

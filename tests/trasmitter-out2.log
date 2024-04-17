@@ -1,0 +1,414 @@
+Device was reset.
+Starting transfer of /3kb.jpg, with size 2543 bytes.
+Spreading factor is 7.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Packet size is 30.
+Frequency is 2400.000000.
+Timeout is 2000.
+Finished transfer of /3kb.jpg with 1 packets lost 
+Transferred 2543 bytes in 9253 milliseconds, with a data rate of 2198.638279 bps 
+Starting transfer of /3kb.jpg, with size 2543 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 150.
+Frequency is 2400.000000.
+Timeout is 200.
+Finished transfer of /3kb.jpg with 1 packets lost 
+Transferred 2543 bytes in 590 milliseconds, with a data rate of 34481.355932 bps 
+Starting transfer of /19kb.jpg, with size 18876 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 150.
+Frequency is 2400.000000.
+Timeout is 200.
+Finished transfer of /19kb.jpg with 4 packets lost 
+Transferred 18876 bytes in 2830 milliseconds, with a data rate of 53359.717314 bps 
+Starting transfer of /115kb.jpg, with size 116892 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 150.
+Frequency is 2400.000000.
+Timeout is 200.
+Finished transfer of /115kb.jpg with 11 packets lost 
+Transferred 116892 bytes in 15501 milliseconds, with a data rate of 60327.462744 bps 
+Starting transfer of /115kb.jpg, with size 116892 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 150.
+Frequency is 2400.000000.
+Timeout is 200.
+Finished transfer of /115kb.jpg with 8 packets lost 
+Transferred 116892 bytes in 14807 milliseconds, with a data rate of 63154.994259 bps 
+Starting transfer of /115kb.jpg, with size 116892 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 150.
+Frequency is 2400.000000.
+Timeout is 200.
+Finished transfer of /115kb.jpg with 8 packets lost 
+Transferred 116892 bytes in 14801 milliseconds, with a data rate of 63180.595906 bps 
+Starting transfer of /115kb.jpg, with size 116892 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 200.
+Frequency is 2400.000000.
+Timeout is 200.
+Finished transfer of /115kb.jpg with 9 packets lost 
+Transferred 116892 bytes in 14004 milliseconds, with a data rate of 66776.349614 bps 
+Starting transfer of /115kb.jpg, with size 116892 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 200.
+Frequency is 2400.000000.
+Timeout is 200.
+Finished transfer of /115kb.jpg with 7 packets lost 
+Transferred 116892 bytes in 13625 milliseconds, with a data rate of 68633.834862 bps 
+Starting transfer of /115kb.jpg, with size 116892 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 200.
+Frequency is 2400.000000.
+Timeout is 200.
+Finished transfer of /115kb.jpg with 4 packets lost 
+Transferred 116892 bytes in 12893 milliseconds, with a data rate of 72530.520437 bps 
+Starting transfer of /115kb.jpg, with size 116892 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 150.
+Frequency is 2400.000000.
+Timeout is 200.
+Finished transfer of /115kb.jpg with 18 packets lost 
+Transferred 116892 bytes in 17118 milliseconds, with a data rate of 54628.811777 bps 
+Starting transfer of /115kb.jpg, with size 116892 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 150.
+Frequency is 2400.000000.
+Timeout is 200.
+Finished transfer of /115kb.jpg with 12 packets lost 
+Transferred 116892 bytes in 15745 milliseconds, with a data rate of 59392.569070 bps 
+Starting transfer of /115kb.jpg, with size 116892 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 150.
+Frequency is 2400.000000.
+Timeout is 200.
+Finished transfer of /115kb.jpg with 8 packets lost 
+Transferred 116892 bytes in 14818 milliseconds, with a data rate of 63108.111756 bps 
+Starting transfer of /115kb.jpg, with size 116892 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 150.
+Frequency is 2400.000000.
+Timeout is 200.
+Finished transfer of /115kb.jpg with 10 packets lost 
+Transferred 116892 bytes in 15439 milliseconds, with a data rate of 60569.726019 bps 
+Starting transfer of /115kb.jpg, with size 116892 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 150.
+Frequency is 2400.000000.
+Timeout is 100.
+Finished transfer of /115kb.jpg with 32 packets lost 
+Transferred 116892 bytes in 16586 milliseconds, with a data rate of 56381.044254 bps 
+Starting transfer of /115kb.jpg, with size 116892 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 150.
+Frequency is 2400.000000.
+Timeout is 50.
+Finished transfer of /115kb.jpg with 35 packets lost 
+Transferred 116892 bytes in 14326 milliseconds, with a data rate of 65275.443250 bps 
+Starting transfer of /115kb.jpg, with size 116892 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 150.
+Frequency is 2400.000000.
+Timeout is 50.
+Finished transfer of /115kb.jpg with 86 packets lost 
+Transferred 116892 bytes in 17816 milliseconds, with a data rate of 52488.549618 bps 
+Starting transfer of /115kb.jpg, with size 116892 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 150.
+Frequency is 2400.000000.
+Timeout is 50.
+Finished transfer of /115kb.jpg with 100 packets lost 
+Transferred 116892 bytes in 18665 milliseconds, with a data rate of 50101.044736 bps 
+Starting transfer of /115kb.jpg, with size 116892 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 150.
+Frequency is 2400.000000.
+Timeout is 300.
+Device was reset.
+Starting transfer of /115kb.jpg, with size 116892 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 200.
+Frequency is 2400.000000.
+Timeout is 300.
+Device was reset.
+Starting transfer of /a.txt, with size 101 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 150.
+Frequency is 2400.000000.
+Timeout is 2000.
+Finished transfer of /a.txt with 0 packets lost 
+Transferred 101 bytes in 211 milliseconds, with a data rate of 3829.383886 bps 
+Starting transfer of /3kb.jpg, with size 2543 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 150.
+Frequency is 2400.000000.
+Timeout is 2000.
+Finished transfer of /3kb.jpg with 4 packets lost 
+Transferred 2543 bytes in 9227 milliseconds, with a data rate of 2204.833640 bps 
+Starting transfer of /3kb.jpg, with size 2543 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 150.
+Frequency is 2400.000000.
+Timeout is 2000.
+Finished transfer of /3kb.jpg with 2 packets lost 
+Transferred 2543 bytes in 4933 milliseconds, with a data rate of 4124.062437 bps 
+Starting transfer of /19kb.jpg, with size 18876 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 150.
+Frequency is 2400.000000.
+Timeout is 2000.
+Device was reset.
+Device was reset.
+Starting transfer of /a.txt, with size 101 bytes.
+Spreading factor is 12.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Packet size is 30.
+Frequency is 2400.000000.
+Timeout is 2000.
+Finished transfer of /a.txt with 5 packets lost 
+Transferred 101 bytes in 19181 milliseconds, with a data rate of 42.125020 bps 
+Starting transfer of /a.txt, with size 101 bytes.
+Spreading factor is 12.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Packet size is 30.
+Frequency is 2400.000000.
+Timeout is 2000.
+Finished transfer of /a.txt with 2 packets lost 
+Transferred 101 bytes in 15823 milliseconds, with a data rate of 51.064906 bps 
+Starting transfer of /a.txt, with size 101 bytes.
+Spreading factor is 10.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Packet size is 30.
+Frequency is 2400.000000.
+Timeout is 2000.
+Finished transfer of /a.txt with 0 packets lost 
+Transferred 101 bytes in 2445 milliseconds, with a data rate of 330.470348 bps 
+Device was reset.
+Device was reset.
+Starting transfer of /a.txt, with size 101 bytes.
+Spreading factor is 8.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Packet size is 30.
+Frequency is 2400.000000.
+Timeout is 2000.
+Finished transfer of /a.txt with 4 packets lost 
+Transferred 101 bytes in 5105 milliseconds, with a data rate of 158.276200 bps 
+Starting transfer of /a.txt, with size 101 bytes.
+Spreading factor is 7.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Packet size is 30.
+Frequency is 2400.000000.
+Timeout is 2000.
+Finished transfer of /a.txt with 2 packets lost 
+Transferred 101 bytes in 4727 milliseconds, with a data rate of 170.932938 bps 
+Starting transfer of /3kb.jpg, with size 2543 bytes.
+Spreading factor is 7.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Packet size is 30.
+Frequency is 2400.000000.
+Timeout is 2000.
+Device was reset.
+Device was reset.
+Device was reset.
+Starting transfer of /a.txt, with size 101 bytes.
+Spreading factor is 5.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Packet size is 30.
+Frequency is 2400.000000.
+Timeout is 2000.
+Finished transfer of /a.txt with 2 packets lost 
+Transferred 101 bytes in 331 milliseconds, with a data rate of 2441.087613 bps 
+Starting transfer of /a.txt, with size 101 bytes.
+Spreading factor is 5.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Packet size is 30.
+Frequency is 2400.000000.
+Timeout is 200.
+Finished transfer of /a.txt with 0 packets lost 
+Transferred 101 bytes in 344 milliseconds, with a data rate of 2348.837209 bps 
+Starting transfer of /a.txt, with size 101 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 30.
+Frequency is 2400.000000.
+Timeout is 200.
+Finished transfer of /a.txt with 12 packets lost 
+Transferred 101 bytes in 1199 milliseconds, with a data rate of 673.894912 bps 
+Starting transfer of /115kb.jpg, with size 116892 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 30.
+Frequency is 2400.000000.
+Timeout is 200.
+Device was reset.
+Starting transfer of /115kb.jpg, with size 116892 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 30.
+Frequency is 2400.000000.
+Timeout is 2000.
+Device was reset.
+Device was reset.
+Starting transfer of /115kb.jpg, with size 116892 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 30.
+Frequency is 2400.000000.
+Timeout is 2000.
+Device was reset.
+Starting transfer of /3kb.jpg, with size 2543 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 30.
+Frequency is 2400.000000.
+Timeout is 2000.
+Finished transfer of /3kb.jpg with 4 packets lost 
+Transferred 2543 bytes in 10900 milliseconds, with a data rate of 1866.422018 bps 
+Starting transfer of /3kb.jpg, with size 2543 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 30.
+Frequency is 2400.000000.
+Timeout is 200.
+Finished transfer of /3kb.jpg with 0 packets lost 
+Transferred 2543 bytes in 2784 milliseconds, with a data rate of 7307.471264 bps 
+Starting transfer of /3kb.jpg, with size 2543 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 30.
+Frequency is 2400.000000.
+Timeout is 200.
+Finished transfer of /3kb.jpg with 11 packets lost 
+Transferred 2543 bytes in 5312 milliseconds, with a data rate of 3829.819277 bps 
+Starting transfer of /3kb.jpg, with size 2543 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 30.
+Frequency is 2400.000000.
+Timeout is 200.
+Finished transfer of /3kb.jpg with 2 packets lost 
+Transferred 2543 bytes in 3274 milliseconds, with a data rate of 6213.805742 bps 
+Starting transfer of /3kb.jpg, with size 2543 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 30.
+Frequency is 2400.000000.
+Timeout is 200.
+Finished transfer of /3kb.jpg with 2 packets lost 
+Transferred 2543 bytes in 3256 milliseconds, with a data rate of 6248.157248 bps 
+Starting transfer of /a.txt, with size 101 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 200.
+Frequency is 2400.000000.
+Timeout is 200.
+Finished transfer of /a.txt with 0 packets lost 
+Transferred 101 bytes in 143 milliseconds, with a data rate of 5650.349650 bps 
+Starting transfer of /3kb.jpg, with size 2543 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 200.
+Frequency is 2400.000000.
+Timeout is 200.
+Finished transfer of /3kb.jpg with 12 packets lost 
+Transferred 2543 bytes in 2782 milliseconds, with a data rate of 7312.724659 bps 
+Starting transfer of /3kb.jpg, with size 2543 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 200.
+Frequency is 2400.000000.
+Timeout is 200.
+Finished transfer of /3kb.jpg with 1 packets lost 
+Transferred 2543 bytes in 988 milliseconds, with a data rate of 20591.093117 bps 
+Starting transfer of /3kb.jpg, with size 2543 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 200.
+Frequency is 2400.000000.
+Timeout is 200.
+Finished transfer of /3kb.jpg with 0 packets lost 
+Transferred 2543 bytes in 772 milliseconds, with a data rate of 26352.331606 bps 
+Starting transfer of /3kb.jpg, with size 2543 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 200.
+Frequency is 2400.000000.
+Timeout is 200.
+Finished transfer of /3kb.jpg with 7 packets lost 
+Transferred 2543 bytes in 743 milliseconds, with a data rate of 27380.888291 bps 
+Starting transfer of /520kb.jpg, with size 531886 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 200.
+Frequency is 2400.000000.
+Timeout is 200.
+Finished transfer of /520kb.jpg with 29 packets lost 
+Transferred 531886 bytes in 61020 milliseconds, with a data rate of 69732.677811 bps 

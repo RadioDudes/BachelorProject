@@ -1,0 +1,19 @@
+---- Sent utf8 encoded message: "send /520kb.jpg\n" ----
+Message is: send /520kb.jpg
+| INFO           | Sending file /520kb.jpg
+| INFO           | 29 packets lost
+| INFO           | File transfer took 61020 milliseconds
+| INFO           | Transferred 531886 bytes, giving a data rate of 69732.68 bps
+
+jonas: kaffe
+adam: rektangel
+sf 5, bw 1625, packetsize 200, timeout 200
+
+Message is: raw
+| INFO           | Now using raw protocol!
+---- Sent utf8 encoded message: "send /520kb.jpg\n" ----
+Message is: send /520kb.jpg
+| INFO           | Sending file /520kb.jpg
+| INFO           | 0 packets lost
+| INFO           | File transfer took 34165 milliseconds
+| INFO           | Transferred 539883 bytes, giving a data rate of 126417.80 bps
