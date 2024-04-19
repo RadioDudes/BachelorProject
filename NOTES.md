@@ -204,6 +204,20 @@ We use a 4cm antenna, which has a gain of 2dBi. It is not meant for 2.4GHz, sinc
 | $L_{rx}$ |        0dB?          |
 | $P_{rx}$ |        -88.1dBm          |
 
+www.ve2dbe.com/rmonline_s.asp
+https://www.heywhatsthat.com/
+https://www.scadacore.com/tools/rf-path/rf-line-of-sight/
+https://ispdesign.ui.com/#
+
+Antenner brugt i Copenhill - Amager Strandpark test
+Feeder antenna, circular polarization, 2.4
+Patch antenna, 2.4
+Cantenna, perhaps 8 - 12 dBi gain
+
+Antenner i Lund - Danmark test
+Cantenna
+indkapslet yagi antenna, yagi wimo, 12dBi, https://www.wimo.com/en/ya2400-directional-wifi-antenna
+
 ### Receiver sensitivity
 
 SX1280 receiver sensitivity goes down to -132dBm
