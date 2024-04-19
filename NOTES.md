@@ -280,9 +280,13 @@ This theoretical data rate of the file is optimistic, since it assumes that ther
 The formula, with known variables filled in.
 $R_b =  SF * \frac{CR}{\frac{2^SF}{BW}} * \frac{S_{File}}{(S_{ContentFrame} + S_{ContentACKFrame}) * A_{Packet} + S_{MetaDataFrame} + S_{MetaDataAckFrame} + S_{FinFrame} + S_{FinACKFrame}}$, where $A_{Packet} = \frac{S_{File_bits} + S_{Payload} - 1}{S_{Payload}}$
 
-$(SF * 20.25 + CR/24 + CR/S_{Payload_bits} + CR/16 + SF * 20.25 + CR/8 + CR/16) * A_{Packet} + (SF * 20.25 + CR/24 + CR/S_{Filename_bits} + CR/16) + (SF * 20.25 + CR/8 + CR/16) + (SF * 20.25 + CR/8 + CR/16) + (SF * 20.25 + CR/8 + CR/16)$
+Bottom term:
+$(SF * 20.25 + 24/CR + CR/S_{Payload_bits} + 16/CR + SF * 20.25 + 16/CR + 16/CR) * A_{Packet} + (SF * 20.25 + 24/CR + S_{Filename_bits}/CR + 16/CR) + (SF * 20.25 + 8/CR + 16/CR) + (SF * 20.25 + 8/CR + 16/CR) + (SF * 20.25 + 8/CR + 16/CR)$
 
-$(SF * 40.5 + 7CR/24 + CR/S_{Payload_bits}) * A_{Packet} + SF * 81 + 32CR/48 + CR/S_{Filename_bits}$
+$(SF * 40.5 + (72+S_{Payload_bits})/CR) * A_{Packet} + SF * 81 + (112 + S_{Filename_bits})/CR$
+
+
+**UPDATE BELOW ADAM**
 
 
 $R_b = SF * \frac{CR}{\frac{2^SF}{BW}} * \frac{S_{file_bits}}{(SF * 40.5 + 7CR/24 + CR/S_{Payload_bits}) * \frac{S_{File_bits} + S_{Payload} - 1}{S_{Payload}} + SF * 81 + 32CR/48 + CR/S_{Filename_bits}}$
