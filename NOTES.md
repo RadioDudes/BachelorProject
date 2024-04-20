@@ -272,11 +272,8 @@ $R_b = SF * \frac{CR}{\frac{2^SF}{BW}}$
 
 The data rate of LoRa is multiplied with the percentage of the data frame, that is actually file data. This way, the amount of the data rate which is used for file data is calculated. 
 
-PHYPayload data rate:
-$R_b =  SF * \frac{1}{\frac{2^SF}{BW}} * \frac{S_{PHYPayloadBits}}{S_{Preamble} + S_{Header} + S_{PHYPayloadBits}/CR + S_{CRCBits}/CR}$, where $S_{Preamble} = SF * 12.25$ and $S_{Header} = SF * 8$
-
 File data rate:
-$R_b =  SF * \frac{1}{\frac{2^SF}{BW}} * \frac{S_{FileBits}}{(S_{ContentFrameBits} + S_{ContentACKFrameBits}) * A_{Packet} + S_{MetaDataFrameBits} + S_{MetaDataAckFrameBits} + S_{FinFrameBits} + S_{FinACKFrameBits}}$, where $A_{Packet} = \frac{S_{FileBits} + S_{PayloadBits} - 1}{S_{PayloadBits}}$
+$R_b =  SF * \frac{1}{\frac{2^SF}{BW}} * \frac{S_{FileBits}}{(S_{ContentFrameBits} + S_{ContentACKFrameBits}) * A_{Packet} + S_{MetaDataFrameBits} + S_{MetaDataAckFrameBits} + S_{FinFrameBits} + S_{FinACKFrameBits}}$, where $A_{Packet} = floor(\frac{S_{FileBits} + S_{PayloadBits} - 1}{S_{PayloadBits}})$
 
 The LoRa datasheet provides formulas for calculating the size of LoRa packets in terms of symbols. This depends on wether or not "long interleaving" is turned on, which for our purposes it isn't.
 
@@ -290,15 +287,17 @@ $N_{Symbol} = N_{SymbolPreamble} + 4.25 + 8 + ceil(\frac{max(8 \cdot N_{BytePayl
 For SF > 10:
 $N_{Symbol} = N_{SymbolPreamble} + 4.25 + 8 + ceil(\frac{max(8 \cdot N_{BytePayload} + N_{BitCRC} - 4 \cdot SF + 8 + N_{SymbolHeader}, 0)}{4 \cdot (SF - 2)}) \cdot (CR + 4)$
 
+[sx1280 datasheet](https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/3n000000l9OZ/Kw7ZeYZuAZW3Q4A3R_IUjhYCQEJxkuLrUgl_GNNhuUo)
+
 |    | Payload Size in Bytes |
 | -- | ------------ |
 | Metadata packet | 3 + FilenameBytes |
 | Content Packet | 3 + ContentBytes |
 | EOF packet | 1 |
-| All ACK packets | 1 |
+| Metadata and EOF ACK | 1 |
+| Content ACK | 3 |
 
-
-
+The size of a packet in bits can be calculated from its size in symbols, multiplied by the spreading factor.
 
 This theoretical data rate of the file is optimistic, since it assumes that there is always one device transmitting, and that all frames are received, none are corrupted.
 
@@ -306,8 +305,21 @@ Example:
 SF 5
 BW 1625
 CR 4/6
-payload size 30B
-file size = 3kB
+payload size 200B
+file size = 530kB
 filename size 5B
+
+$N_{SymbolPreamble} = 12.25$
+$N_{BitCRC} = 16$
+$N_{SymbolHeader} = 20$
+
+$S_{ContentFrameBits} = 5 \cdot (12.25 + 6.25 + 8 + ceil(\frac{max(8 \cdot (3 + 200) + 16 - 4 \cdot 5 + 20, 0)}{4 \cdot 5}) \cdot (2 + 4)) = $
+$S_{ContentACKFrameBits} = 5 \cdot (12.25 + 6.25 + 8 + ceil(\frac{max(8 \cdot 3 + 16 - 4 \cdot 5 + 20, 0)}{4 \cdot 5}) \cdot (2 + 4)) = $
+$S_{MetaDataFrameBits} = 5 \cdot (12.25 + 6.25 + 8 + ceil(\frac{max(8 \cdot (3 + 5) + 16 - 4 \cdot 5 + 20, 0)}{4 \cdot 5}) \cdot (2 + 4)) = $
+$S_{MetaDataAckFrameBits} = 5 \cdot (12.25 + 6.25 + 8 + ceil(\frac{max(8 \cdot 1 + 16 - 4 \cdot 5 + 20, 0)}{4 \cdot 5}) \cdot (2 + 4)) = $
+$S_{FinFrameBits} = 5 \cdot (12.25 + 6.25 + 8 + ceil(\frac{max(8 \cdot 1 + 16 - 4 \cdot 5 + 20, 0)}{4 \cdot 5}) \cdot (2 + 4)) = $
+$S_{FinACKFrameBits} = 5 \cdot (12.25 + 6.25 + 8 + ceil(\frac{max(8 \cdot 1 + 16 - 4 \cdot 5 + 20, 0)}{4 \cdot 5}) \cdot (2 + 4)) = $
+
+$A_{Packet} = floor(\frac{530 \cdot 1000 + 200 - 1}{200})$
 
 ## Interleaving (short vs long)
