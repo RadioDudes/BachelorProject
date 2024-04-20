@@ -278,6 +278,18 @@ $R_b =  SF * \frac{1}{\frac{2^SF}{BW}} * \frac{S_{PHYPayloadBits}}{S_{Preamble} 
 File data rate:
 $R_b =  SF * \frac{1}{\frac{2^SF}{BW}} * \frac{S_{FileBits}}{(S_{ContentFrameBits} + S_{ContentACKFrameBits}) * A_{Packet} + S_{MetaDataFrameBits} + S_{MetaDataAckFrameBits} + S_{FinFrameBits} + S_{FinACKFrameBits}}$, where $A_{Packet} = \frac{S_{FileBits} + S_{PayloadBits} - 1}{S_{PayloadBits}}$
 
+The LoRa datasheet provides formulas for calculating the size of LoRa packets in terms of symbols. This depends on wether or not "long interleaving" is turned on, which for our purposes it isn't.
+
+Where CR = 1, 2, 3, 4
+For SF < 7:
+$N_{Symbol} = N_{SymbolPreamble} + 6.25 + 8 + ceil(\frac{max(8 \cdot N_{BytePayload} + N_{BitCRC} - 4 \cdot SF + N_{SymbolHeader}, 0)}{4 \cdot SF}) \cdot (CR + 4)$
+
+For 7 <= SF <= 10:
+$N_{Symbol} = N_{SymbolPreamble} + 4.25 + 8 + ceil(\frac{max(8 \cdot N_{BytePayload} + N_{BitCRC} - 4 \cdot SF + 8 + N_{SymbolHeader}, 0)}{4 \cdot SF}) \cdot (CR + 4)$
+
+For SF > 10:
+$N_{Symbol} = N_{SymbolPreamble} + 4.25 + 8 + ceil(\frac{max(8 \cdot N_{BytePayload} + N_{BitCRC} - 4 \cdot SF + 8 + N_{SymbolHeader}, 0)}{4 \cdot (SF - 2)}) \cdot (CR + 4)$
+
 This theoretical data rate of the file is optimistic, since it assumes that there is always one device transmitting, and that all frames are received, none are corrupted.
 
 The formula, with known variables filled in.
@@ -317,3 +329,5 @@ $SF * \frac{CR}{\frac{2^SF}{BW}} * \frac{S_{file}}{(SF * 40.5 + 7CR/24 + CR/S_{P
 $10 * \frac{4/6}{\frac{2^10}{203.125}}$
 
 $\frac{24000}{(10 * 40.5 + (7 * 4/6)/24 + (4/6)/30) * \frac{24000 + 30 - 1}{30} + 10 * 81 + (32 * 4/6)/48 + (4/6)/S_{Filename_bits}}$
+
+## Interleaving (short vs long)
