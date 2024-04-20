@@ -290,44 +290,24 @@ $N_{Symbol} = N_{SymbolPreamble} + 4.25 + 8 + ceil(\frac{max(8 \cdot N_{BytePayl
 For SF > 10:
 $N_{Symbol} = N_{SymbolPreamble} + 4.25 + 8 + ceil(\frac{max(8 \cdot N_{BytePayload} + N_{BitCRC} - 4 \cdot SF + 8 + N_{SymbolHeader}, 0)}{4 \cdot (SF - 2)}) \cdot (CR + 4)$
 
+|    | Payload Size in Bytes |
+| -- | ------------ |
+| Metadata packet | 3 + FilenameBytes |
+| Content Packet | 3 + ContentBytes |
+| EOF packet | 1 |
+| All ACK packets | 1 |
+
+
+
+
 This theoretical data rate of the file is optimistic, since it assumes that there is always one device transmitting, and that all frames are received, none are corrupted.
 
-The formula, with known variables filled in.
-
-Bottom term:
-$(SF * 20.25 + 24/CR + CR/S_{Payload_bits} + 16/CR + SF * 20.25 + 16/CR + 16/CR) * A_{Packet} + (SF * 20.25 + 24/CR + S_{FilenameBits}/CR + 16/CR) + (SF * 20.25 + 8/CR + 16/CR) + (SF * 20.25 + 8/CR + 16/CR) + (SF * 20.25 + 8/CR + 16/CR)$
-
-$(SF * 40.5 + (72+S_{Payload_bits})/CR) * A_{Packet} + SF * 81 + (112 + S_{FilenameBits})/CR$
-
-
-**UPDATE BELOW ADAM**
-
-
-$R_b = SF \cdot \frac{1}{\frac{2^SF}{BW}} \cdot \frac{S_{FileBits}}{(SF \cdot 40.5 + (72+S_{Payload_bits})/CR) \cdot A_{Packet} + SF \cdot 81 + (112 + S_{Filename_bits})/CR}$
-
-The explicit header is 8 symbols. [2](https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/3n000000l9OZ/Kw7ZeYZuAZW3Q4A3R_IUjhYCQEJxkuLrUgl_GNNhuUo)
-
 Example:
-SF 10
-BW 203.125
+SF 5
+BW 1625
 CR 4/6
 payload size 30B
 file size = 3kB
 filename size 5B
-
-$R_b = SF \cdot \frac{1}{\frac{2^SF}{BW}} = 10 \cdot \frac{1}{\frac{2^10}{203.125}} = 1.983642578125 kbps$
-
-$R_{b\_with\_CR} = SF \cdot \frac{CR}{\frac{2^SF}{BW}} = 10 \cdot \frac{4/6}{\frac{2^10}{203.125}} = 1.3224283854166665 kbps$
-
-
-$R_{file\_b} = SF \cdot \frac{CR}{\frac{2^SF}{BW}} \cdot \frac{S_{FileBits}}{(SF \cdot 40.5 + (72+S_{Payload_bits})/CR) \cdot A_{Packet} + SF \cdot 81 + (112 + S_{Filename_bits})/CR}$
-
-$R_{file_b} = SF * \frac{CR}{\frac{2^SF}{BW}} * \frac{S_{file_bits}}{(SF * 40.5 + 7CR/24 + CR/S_{Payload_bits}) * \frac{S_{File_bits} + S_{Payload} - 1}{S_{Payload}} + SF * 81 + 32CR/48 + CR/S_{Filename_bits} = 10 * \frac{4/6}{\frac{2^10}{203.125}} * \frac{24000}{(10 * 40.5 + (7 * 4/6)/24 + (4/6)/30) * \frac{24000 + 30 - 1}{30} + 10 * 81 + (32 * 4/6)/48 + (4/6)/S_{Filename_bits}}$
-
-$SF * \frac{CR}{\frac{2^SF}{BW}} * \frac{S_{file}}{(SF * 40.5 + 7CR/24 + CR/S_{Payload_bits}) * \frac{S_{File_bits} + S_{Payload} - 1}{S_{Payload} + SF * 81 + 32CR/48 + CR/S_{Filename_bits}}$
-
-$10 * \frac{4/6}{\frac{2^10}{203.125}}$
-
-$\frac{24000}{(10 * 40.5 + (7 * 4/6)/24 + (4/6)/30) * \frac{24000 + 30 - 1}{30} + 10 * 81 + (32 * 4/6)/48 + (4/6)/S_{Filename_bits}}$
 
 ## Interleaving (short vs long)
