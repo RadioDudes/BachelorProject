@@ -299,27 +299,29 @@ $N_{Symbol} = N_{SymbolPreamble} + 4.25 + 8 + ceil(\frac{max(8 \cdot N_{BytePayl
 
 The size of a packet in bits can be calculated from its size in symbols, multiplied by the spreading factor.
 
-This theoretical data rate of the file is optimistic, since it assumes that there is always one device transmitting, and that all frames are received, none are corrupted.
+This theoretical data rate of the file is optimistic, since it assumes that there is always one device transmitting, and that all frames are received, none are corrued.
 
 Example:
 SF 5
 BW 1625
 CR 4/6
 payload size 200B
-file size = 530kB
+file size = 116.89kB
 filename size 5B
 
 $N_{SymbolPreamble} = 12.25$
 $N_{BitCRC} = 16$
 $N_{SymbolHeader} = 20$
 
-$S_{ContentFrameBits} = 5 \cdot (12.25 + 6.25 + 8 + ceil(\frac{max(8 \cdot (3 + 200) + 16 - 4 \cdot 5 + 20, 0)}{4 \cdot 5}) \cdot (2 + 4)) = $
-$S_{ContentACKFrameBits} = 5 \cdot (12.25 + 6.25 + 8 + ceil(\frac{max(8 \cdot 3 + 16 - 4 \cdot 5 + 20, 0)}{4 \cdot 5}) \cdot (2 + 4)) = $
-$S_{MetaDataFrameBits} = 5 \cdot (12.25 + 6.25 + 8 + ceil(\frac{max(8 \cdot (3 + 5) + 16 - 4 \cdot 5 + 20, 0)}{4 \cdot 5}) \cdot (2 + 4)) = $
-$S_{MetaDataAckFrameBits} = 5 \cdot (12.25 + 6.25 + 8 + ceil(\frac{max(8 \cdot 1 + 16 - 4 \cdot 5 + 20, 0)}{4 \cdot 5}) \cdot (2 + 4)) = $
-$S_{FinFrameBits} = 5 \cdot (12.25 + 6.25 + 8 + ceil(\frac{max(8 \cdot 1 + 16 - 4 \cdot 5 + 20, 0)}{4 \cdot 5}) \cdot (2 + 4)) = $
-$S_{FinACKFrameBits} = 5 \cdot (12.25 + 6.25 + 8 + ceil(\frac{max(8 \cdot 1 + 16 - 4 \cdot 5 + 20, 0)}{4 \cdot 5}) \cdot (2 + 4)) = $
+$S_{ContentFrameBits} = 5 \cdot (12.25 + 6.25 + 8 + ceil(\frac{max(8 \cdot (3 + 200) + 16 - 4 \cdot 5 + 20, 0)}{4 \cdot 5}) \cdot (2 + 4)) = 2592.5$
+$S_{ContentACKFrameBits} = 5 \cdot (12.25 + 6.25 + 8 + ceil(\frac{max(8 \cdot 3 + 16 - 4 \cdot 5 + 20, 0)}{4 \cdot 5}) \cdot (2 + 4)) = 192.5$
+$S_{MetaDataFrameBits} = 5 \cdot (12.25 + 6.25 + 8 + ceil(\frac{max(8 \cdot (3 + 5) + 16 - 4 \cdot 5 + 20, 0)}{4 \cdot 5}) \cdot (2 + 4)) = 252.5$
+$S_{MetaDataAckFrameBits} = 5 \cdot (12.25 + 6.25 + 8 + ceil(\frac{max(8 \cdot 1 + 16 - 4 \cdot 5 + 20, 0)}{4 \cdot 5}) \cdot (2 + 4)) = 192.5$
+$S_{FinFrameBits} = 5 \cdot (12.25 + 6.25 + 8 + ceil(\frac{max(8 \cdot 1 + 16 - 4 \cdot 5 + 20, 0)}{4 \cdot 5}) \cdot (2 + 4)) = 192.5$
+$S_{FinACKFrameBits} = 5 \cdot (12.25 + 6.25 + 8 + ceil(\frac{max(8 \cdot 1 + 16 - 4 \cdot 5 + 20, 0)}{4 \cdot 5}) \cdot (2 + 4)) = 192.5$
 
-$A_{Packet} = floor(\frac{530 \cdot 1000 + 200 - 1}{200})$
+$A_{Packet} = floor(\frac{116.89 \cdot 1000 + 200 - 1}{200}) = 585$
+
+$R_b =  5 * \frac{1}{\frac{2^5}{1625}} * \frac{116.89 * 1000 * 8}{(2592.5 + 192.5) * 585 + 252.5 + 192.5 + 192.5 + 192.5} = 145.65$
 
 ## Interleaving (short vs long)
