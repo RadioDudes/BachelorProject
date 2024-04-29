@@ -236,12 +236,14 @@ void Logging::logStartTransfer(char *filename, unsigned long size, uint8_t sf, u
 }
 
 
-void Logging::logFinishReceiving(char *filename, double totalSNR, int packetsReceived, char *logFile) {
+void Logging::logFinishReceiving(char *filename, double totalSNR, double totalRSSI, int packetsReceived, char *logFile) {
   File file = SD.open(logFile, FILE_APPEND);
   char finishReceivingString[120];
   sprintf(finishReceivingString, "Finished receiving %s.\n", filename);
   file.write((uint8_t *) finishReceivingString, strlen(finishReceivingString));
   sprintf(finishReceivingString, "Avg SNR per packet is %f.\n", (totalSNR /  packetsReceived));
+  file.write((uint8_t *) finishReceivingString, strlen(finishReceivingString));
+  sprintf(finishReceivingString, "Avg RSSI per packet is %f.\n", (totalRSSI /  packetsReceived));
   file.write((uint8_t *) finishReceivingString, strlen(finishReceivingString));
   file.close();
 }

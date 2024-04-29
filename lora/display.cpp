@@ -9,6 +9,13 @@ void Display::displayInfoTop(char *message)
     u8g2->updateDisplayArea(0, 0, 16, 4);
 }
 
+void Display::displayInfoSecondRow(char *message)
+{
+    u8g2->clearBuffer();
+    u8g2->drawStr(0, 40, message);
+    u8g2->updateDisplayArea(0, 3, 16, 4);
+}
+
 void Display::displayInfoBot(char *message)
 {
     u8g2->clearBuffer();

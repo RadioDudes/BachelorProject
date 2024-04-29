@@ -52,6 +52,7 @@ void ACKProtocol::resetVars()
     receivedPacketCount = UINT16_MAX;
     packetLoss = 0;
     totalSNR = 0;
+    totalRSSI = 0;
 }
 
 void ACKProtocol::setTimeout(unsigned long time)
@@ -203,6 +204,14 @@ bool ACKProtocol::payloadType(uint8_t *message, size_t size)
 
 void ACKProtocol::receiveFileProtocolMessage()
 {
+
+    if (enableDebug)
+    {
+        char buffer[50];
+        sprintf(buffer, "RSSI: %f", getRSSI());
+        Display::displayInfoSecondRow(buffer);
+    }
+
     size_t messageSize = radio.getPacketLength();
     if (messageSize == 0)
     {
@@ -237,8 +246,7 @@ void ACKProtocol::receiveFileEnd()
     Logging::printPacketLoss(receiveCounter - (lastReceivedPacket + 1));
     Logging::printFileTransferTotalTime(fileTransferTime);
     Logging::printDataRate(bytesReceived, fileTransferTime);
-    Logging::printAvgSNR(totalSNR, receiveCounter);
-    Logging::logFinishReceiving(filename, totalSNR, receiveCounter, "/out.log");
+    Logging::logFinishReceiving(filename, totalSNR, totalRSSI, receiveCounter, "/out.log");
 
     resetVars();
 }
@@ -261,6 +269,14 @@ bool ACKProtocol::ACKMetadata()
 
 void ACKProtocol::receiveContent(uint8_t *message, size_t size)
 {
+    // In debugging mode, write the signal strength on screen
+    if (enableDebug)
+    {
+        char buffer[50];
+        sprintf(buffer, "RSSI: %f", getRSSI());
+        Display::displayInfoSecondRow(buffer);
+    }
+
     uint8_t first = message[0];
     uint8_t second = message[1];
     uint16_t packetNumber = (first << 8) + second;

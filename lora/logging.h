@@ -71,7 +71,7 @@ namespace Logging
 
     void logStartReceiving(char *filename, uint16_t packetAmount, uint8_t sf, uint8_t cr, double freq, double bw, char *logFile);
 
-    void logFinishReceiving(char *filename, double totalSNR, int packetsReceived, char *logFile);
+    void logFinishReceiving(char *filename, double totalSNR, double totalRSSI, int packetsReceived, char *logFile);
 
     void logResetDevice(char *logFile);
 

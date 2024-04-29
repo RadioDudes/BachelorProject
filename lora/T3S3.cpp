@@ -37,8 +37,9 @@ uint8_t spreadingFactor = 12;
 // Size of the payload inside each packet
 int packetSize = 30;
 
-// Store every SNR of every received packet, to later calculate avg using receiveCounter
+// Store every SNR and RSSI of every received packet, to later calculate avg using receiveCounter
 double totalSNR = 0;
+double totalRSSI = 0;
 
 // ---------------------------------------------------------- //
 
@@ -108,6 +109,10 @@ void setFlag(void)
   {
     transmittedFlag = true;
   }
+}
+
+float getRSSI() {
+  return radio.getRSSI();
 }
 
 void initialize()
@@ -356,6 +361,7 @@ bool receiveMessage(uint8_t *buffer, size_t messageSize)
   {
     receiveCounter++;
     totalSNR += radio.getSNR();
+    totalRSSI += radio.getRSSI();
     bytesReceived += messageSize;
     return true;
   }

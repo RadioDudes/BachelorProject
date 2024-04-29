@@ -8,5 +8,6 @@ extern DISPLAY_MODEL *u8g2;
 
 namespace Display {
     void displayInfoTop(char *message);
+    void displayInfoSecondRow(char *message);
     void displayInfoBot(char *message);
 }
