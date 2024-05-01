@@ -1,0 +1,10 @@
+Device was reset.
+Starting transfer of /520kb.jpg, with size 531886 bytes.
+Spreading factor is 5.
+Bandwidth is 1625.000000.
+Coding rate is 6.
+Packet size is 245.
+Frequency is 2400.000000.
+Timeout is 300.
+Finished transfer of /520kb.jpg with 154 packets lost 
+Transferred 531886 bytes in 97424 milliseconds, with a data rate of 43675.973066 bps 

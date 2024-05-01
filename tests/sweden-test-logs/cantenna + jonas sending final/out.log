@@ -1,0 +1,46 @@
+Device was reset.
+Starting transfer of /19kb.jpg, with size 18876 bytes.
+Spreading factor is 7.
+Bandwidth is 812.500000.
+Coding rate is 6.
+Packet size is 30.
+Frequency is 2400.000000.
+Timeout is 2000.
+Finished transfer of /19kb.jpg with 42 packets lost 
+Transferred 18876 bytes in 132543 milliseconds, with a data rate of 1139.313279 bps 
+Starting transfer of /19kb.jpg, with size 18876 bytes.
+Spreading factor is 7.
+Bandwidth is 812.500000.
+Coding rate is 6.
+Packet size is 245.
+Frequency is 2400.000000.
+Timeout is 300.
+Finished transfer of /19kb.jpg with 24 packets lost 
+Transferred 18876 bytes in 21431 milliseconds, with a data rate of 7046.241426 bps 
+Starting transfer of /19kb.jpg, with size 18876 bytes.
+Spreading factor is 6.
+Bandwidth is 812.500000.
+Coding rate is 6.
+Packet size is 245.
+Frequency is 2400.000000.
+Timeout is 300.
+Finished transfer of /19kb.jpg with 8 packets lost 
+Transferred 18876 bytes in 12228 milliseconds, with a data rate of 12349.362120 bps 
+Starting transfer of /19kb.jpg, with size 18876 bytes.
+Spreading factor is 5.
+Bandwidth is 812.500000.
+Coding rate is 6.
+Packet size is 245.
+Frequency is 2400.000000.
+Timeout is 300.
+Finished transfer of /19kb.jpg with 100 packets lost 
+Transferred 18876 bytes in 42253 milliseconds, with a data rate of 3573.900078 bps 
+Starting transfer of /19kb.jpg, with size 18876 bytes.
+Spreading factor is 5.
+Bandwidth is 812.500000.
+Coding rate is 6.
+Packet size is 245.
+Frequency is 2400.000000.
+Timeout is 300.
+Finished transfer of /19kb.jpg with 62 packets lost 
+Transferred 18876 bytes in 30001 milliseconds, with a data rate of 5033.432219 bps 
