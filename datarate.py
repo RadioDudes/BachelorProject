@@ -36,7 +36,7 @@ if __name__ == "__main__":
     payload = 30
     filesize = 3
     filename = 8
-    preamble = 12.25
+    preamble = 12
     bitcrc = 16
     header = 20
 
@@ -47,7 +47,7 @@ if __name__ == "__main__":
     parser.add_argument("-ps", "--payloadsize", help = "Set size of payload in bytes, default is 30B")
     parser.add_argument("-fs", "--filesize", help = "Set size of file in kB, default is 3kB")
     parser.add_argument("-fn", "--filename", help = "Set size of filename in bytes, default is 8B")
-    parser.add_argument("-pre", "--preamble", help = "Set size of preamble in symbols, default is 12.25")
+    parser.add_argument("-pre", "--preamble", help = "Set size of preamble in symbols, default is 12")
     parser.add_argument("-crc", "--bitcrc", help = "Set size of crc in bits, default is 16")
     parser.add_argument("-head", "--header", help = "Set size of header, default is 20")
 
