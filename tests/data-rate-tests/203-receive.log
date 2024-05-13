@@ -1,0 +1,73 @@
+Device was reset.
+Starting to receive /3kb.jpg, with 13 packets.
+Spreading factor is 12.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /3kb.jpg.
+Avg SNR per packet is 5.382353.
+Avg RSSI per packet is -9.352941.
+Starting to receive /3kb.jpg, with 13 packets.
+Spreading factor is 11.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /3kb.jpg.
+Avg SNR per packet is 7.625000.
+Avg RSSI per packet is -10.437500.
+Starting to receive /8kb.jpg, with 38 packets.
+Spreading factor is 10.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /8kb.jpg.
+Avg SNR per packet is 7.024390.
+Avg RSSI per packet is -9.317073.
+Starting to receive /8kb.jpg, with 38 packets.
+Spreading factor is 9.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /8kb.jpg.
+Avg SNR per packet is 11.048780.
+Avg RSSI per packet is -10.243902.
+Starting to receive /8kb.jpg, with 38 packets.
+Spreading factor is 8.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /8kb.jpg.
+Avg SNR per packet is 13.481707.
+Avg RSSI per packet is -9.341463.
+Starting to receive /8kb.jpg, with 38 packets.
+Spreading factor is 7.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /8kb.jpg.
+Avg SNR per packet is 14.432927.
+Avg RSSI per packet is -10.170732.
+Starting to receive /8kb.jpg, with 38 packets.
+Spreading factor is 6.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /8kb.jpg.
+Avg SNR per packet is 13.609756.
+Avg RSSI per packet is -10.048780.
+Starting to receive /8kb.jpg, with 38 packets.
+Spreading factor is 6.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /8kb.jpg.
+Avg SNR per packet is 13.412500.
+Avg RSSI per packet is -11.175000.
+Starting to receive /8kb.jpg, with 38 packets.
+Spreading factor is 5.
+Bandwidth is 203.125000.
+Coding rate is 6.
+Frequency is 2400.000000.
+Finished receiving /8kb.jpg.
+Avg SNR per packet is 11.457317.
+Avg RSSI per packet is -11.463415.

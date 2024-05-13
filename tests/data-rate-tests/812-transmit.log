@@ -1,0 +1,73 @@
+Device was reset.
+Starting transfer of /8kb.jpg, with size 7443 bytes.
+Spreading factor is 12.
+Bandwidth is 812.500000.
+Coding rate is 6.
+Packet size is 200.
+Frequency is 2400.000000.
+Timeout is 200.
+Finished transfer of /8kb.jpg with 0 packets lost 
+Transferred 7443 bytes in 57687 milliseconds, with a data rate of 1032.190962 bps 
+Starting transfer of /8kb.jpg, with size 7443 bytes.
+Spreading factor is 11.
+Bandwidth is 812.500000.
+Coding rate is 6.
+Packet size is 200.
+Frequency is 2400.000000.
+Timeout is 200.
+Finished transfer of /8kb.jpg with 0 packets lost 
+Transferred 7443 bytes in 31804 milliseconds, with a data rate of 1872.217331 bps 
+Starting transfer of /8kb.jpg, with size 7443 bytes.
+Spreading factor is 10.
+Bandwidth is 812.500000.
+Coding rate is 6.
+Packet size is 200.
+Frequency is 2400.000000.
+Timeout is 200.
+Finished transfer of /8kb.jpg with 0 packets lost 
+Transferred 7443 bytes in 14661 milliseconds, with a data rate of 4061.387354 bps 
+Starting transfer of /8kb.jpg, with size 7443 bytes.
+Spreading factor is 9.
+Bandwidth is 812.500000.
+Coding rate is 6.
+Packet size is 200.
+Frequency is 2400.000000.
+Timeout is 200.
+Finished transfer of /8kb.jpg with 0 packets lost 
+Transferred 7443 bytes in 8192 milliseconds, with a data rate of 7268.554688 bps 
+Starting transfer of /8kb.jpg, with size 7443 bytes.
+Spreading factor is 8.
+Bandwidth is 812.500000.
+Coding rate is 6.
+Packet size is 200.
+Frequency is 2400.000000.
+Timeout is 200.
+Finished transfer of /8kb.jpg with 0 packets lost 
+Transferred 7443 bytes in 4749 milliseconds, with a data rate of 12538.218572 bps 
+Starting transfer of /8kb.jpg, with size 7443 bytes.
+Spreading factor is 7.
+Bandwidth is 812.500000.
+Coding rate is 6.
+Packet size is 200.
+Frequency is 2400.000000.
+Timeout is 200.
+Finished transfer of /8kb.jpg with 0 packets lost 
+Transferred 7443 bytes in 2781 milliseconds, with a data rate of 21411.003236 bps 
+Starting transfer of /8kb.jpg, with size 7443 bytes.
+Spreading factor is 6.
+Bandwidth is 812.500000.
+Coding rate is 6.
+Packet size is 200.
+Frequency is 2400.000000.
+Timeout is 200.
+Finished transfer of /8kb.jpg with 0 packets lost 
+Transferred 7443 bytes in 1745 milliseconds, with a data rate of 34122.636103 bps 
+Starting transfer of /8kb.jpg, with size 7443 bytes.
+Spreading factor is 5.
+Bandwidth is 812.500000.
+Coding rate is 6.
+Packet size is 200.
+Frequency is 2400.000000.
+Timeout is 200.
+Finished transfer of /8kb.jpg with 0 packets lost 
+Transferred 7443 bytes in 1151 milliseconds, with a data rate of 51732.406603 bps 
