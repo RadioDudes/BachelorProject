@@ -6,7 +6,7 @@ def dataRate(sf, bw):
     return sf/((2**sf)/bw)
 
 def packetAmount(filesize, payload):
-    return math.floor((filesize * 1000 + payload - 1)/payload)
+    return math.floor((filesize * 1000) / payload)
 
 def frameBits(sf, cr, payload, preamble, bitcrc, header):
     if sf < 7:
@@ -22,10 +22,11 @@ def fileDataRate(sf, bw, cr, payload, filesize, filename, preamble, bitcrc, head
     contentACKFrameBits = frameBits(sf, cr, 3, preamble, bitcrc, header)
     metaDataFrameBits = frameBits(sf, cr, 3+filename, preamble, bitcrc, header)
     metaDataACKFrameBits = EOFFrameBits = EOFACKFrameBits = frameBits(sf, cr, 1, preamble, bitcrc, header)
+    lastPacket = frameBits(sf, cr, 3+((filesize * 1000) % payload), preamble, bitcrc, header)
     
     fileSizeBits = filesize * 1000 * 8
     _dataRate = dataRate(sf, bw)
-    dataTransferred = (contentFrameBits + contentACKFrameBits) * _packetAmount + metaDataFrameBits + metaDataACKFrameBits + EOFFrameBits + EOFACKFrameBits
+    dataTransferred = (contentFrameBits + contentACKFrameBits) * _packetAmount + metaDataFrameBits + metaDataACKFrameBits + EOFFrameBits + EOFACKFrameBits + lastPacket + contentACKFrameBits
     
     return  _dataRate * (fileSizeBits/dataTransferred)
 
