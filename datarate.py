@@ -21,12 +21,12 @@ def fileDataRate(sf, bw, cr, payload, filesize, filename, preamble, bitcrc, head
     contentFrameBits = frameBits(sf, cr, 3+payload, preamble, bitcrc, header)
     contentACKFrameBits = frameBits(sf, cr, 3, preamble, bitcrc, header)
     metaDataFrameBits = frameBits(sf, cr, 3+filename, preamble, bitcrc, header)
-    metaDataACKFrameBits = EOFFrameBits = EOFACKFrameBits = frameBits(sf, cr, 1, preamble, bitcrc, header)
+    metaDataACKFrameBits = EOFFrameBits = frameBits(sf, cr, 1, preamble, bitcrc, header)
     lastPacket = frameBits(sf, cr, 3+((filesize * 1000) % payload), preamble, bitcrc, header)
     
     fileSizeBits = filesize * 1000 * 8
     _dataRate = dataRate(sf, bw)
-    dataTransferred = (contentFrameBits + contentACKFrameBits) * _packetAmount + metaDataFrameBits + metaDataACKFrameBits + EOFFrameBits + EOFACKFrameBits + lastPacket + contentACKFrameBits
+    dataTransferred = (contentFrameBits + contentACKFrameBits) * _packetAmount + metaDataFrameBits + metaDataACKFrameBits + EOFFrameBits + lastPacket + contentACKFrameBits
     
     return  _dataRate * (fileSizeBits/dataTransferred)
 
